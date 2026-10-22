@@ -1,0 +1,59 @@
+/* ==========================================
+   משתנים: הצבעים, הפונטים והריווחים מהפיגמה
+   ========================================== */
+:root {
+  /* צבעים */
+  --color-background: #FFFFFF;
+  --color-text: #000000;
+
+  /* פונטים */
+  /* אם קבצי הפונט לא נמצאים בפרויקט, הדפדפן יציג פונט מונו אחר */
+  --font-main: "ABC Diatype Mono", monospace;
+  --font-weight-regular: 400;
+
+  /* כותרת "COMING SOON": בפיגמה 128px בפריים ברוחב 1440px */
+  --title-size: min(128px, 8.9vw);  /* קטנה יחד עם רוחב המסך */
+  --title-letter-spacing: 0.21em;   /* 21% בפיגמה */
+
+  /* ריווחים */
+  --space-title-top: 29.3vh;        /* בפיגמה הכותרת מתחילה 300px מלמעלה, מתוך 1024px */
+}
+
+/* ==========================================
+   בסיס
+   ========================================== */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  min-height: 100vh;
+  background-color: var(--color-background);
+  color: var(--color-text);
+  font-family: var(--font-main);
+  font-weight: var(--font-weight-regular);
+}
+
+/* ==========================================
+   עמוד "בקרוב"
+   ========================================== */
+
+/* המסך כולו: מרכז את הכותרת לרוחב */
+.coming-soon {
+  min-height: 100vh;
+  padding-top: var(--space-title-top);
+  text-align: center;
+}
+
+/* הכותרת הגדולה */
+.coming-soon-title {
+  font-size: var(--title-size);
+  font-weight: var(--font-weight-regular);
+  letter-spacing: var(--title-letter-spacing);
+  line-height: normal;
+  white-space: nowrap;  /* תמיד בשורה אחת */
+  /* letter-spacing מוסיף רווח גם אחרי האות האחרונה. זה מבטל אותו כדי שהכותרת תהיה במרכז בדיוק */
+  margin-right: calc(-1 * var(--title-letter-spacing));
+}
