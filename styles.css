@@ -3,20 +3,39 @@
    ========================================== */
 :root {
   /* צבעים */
-  --color-background: #FFFFFF;
-  --color-text: #000000;
+  --color-background: #000000;
+  --color-text: #FFFFFF;
 
   /* פונטים */
   /* אם קבצי הפונט לא נמצאים בפרויקט, הדפדפן יציג פונט מונו אחר */
   --font-main: "ABC Diatype Mono", monospace;
   --font-weight-regular: 400;
 
-  /* כותרת "COMING SOON": בפיגמה 128px בפריים ברוחב 1440px */
-  --title-size: min(128px, 8.9vw);  /* קטנה יחד עם רוחב המסך */
-  --title-letter-spacing: 0.21em;   /* 21% בפיגמה */
+  /* יחידת מידה: פיקסל אחד בפיגמה.
+     הפריים ברוחב 1440px, אז במסך צר יותר הכול קטן באותו יחס */
+  --page-width: 1440px;
+  --unit: min(1px, calc(100vw / 1440));
 
-  /* ריווחים */
-  --space-title-top: 29.3vh;        /* בפיגמה הכותרת מתחילה 300px מלמעלה, מתוך 1024px */
+  /* גדלי טקסט */
+  --text-huge: calc(360 * var(--unit));   /* "process" */
+  --text-large: calc(30 * var(--unit));   /* כותרות העדכונים ו-#A/#B */
+  --text-small: calc(20 * var(--unit));   /* המשפט בסוף */
+
+  /* ריווחים (המרחקים מהפריים בפיגמה) */
+  --space-page-side: calc(34 * var(--unit));        /* מרווח הכותרות מצד שמאל */
+  --space-content-side: calc(82 * var(--unit));     /* מרווח התמונות של #A/#B מצד שמאל */
+  --space-label-side: calc(13 * var(--unit));       /* הזחה של #A/#B מעל התמונה */
+  --space-xs: calc(22 * var(--unit));
+  --space-s: calc(25 * var(--unit));
+  --space-m: calc(54 * var(--unit));
+  --space-directions-gap: calc(65 * var(--unit));   /* רווח בין #A ל-#B */
+  --space-page-bottom: calc(370 * var(--unit));
+
+  /* מיקום וגודל התמונות */
+  --coming-soon-image-left: calc(891 * var(--unit));
+  --coming-soon-image-width: calc(440 * var(--unit));
+  --direction-a-width: calc(594 * var(--unit));
+  --direction-b-width: calc(590 * var(--unit));
 }
 
 /* ==========================================
@@ -29,31 +48,141 @@
 }
 
 body {
-  min-height: 100vh;
   background-color: var(--color-background);
   color: var(--color-text);
   font-family: var(--font-main);
   font-weight: var(--font-weight-regular);
 }
 
-/* ==========================================
-   עמוד "בקרוב"
-   ========================================== */
-
-/* המסך כולו: מרכז את הכותרת לרוחב */
-.coming-soon {
-  min-height: 100vh;
-  padding-top: var(--space-title-top);
-  text-align: center;
+img {
+  display: block;
 }
 
-/* הכותרת הגדולה */
-.coming-soon-title {
-  font-size: var(--title-size);
+/* ==========================================
+   עמוד "process"
+   ========================================== */
+
+/* העמוד כולו: ברוחב הפריים, במרכז המסך */
+.process-page {
+  max-width: var(--page-width);
+  margin: 0 auto;
+  padding-bottom: var(--space-page-bottom);
+  overflow-x: clip;  /* "process" רחבה מהמסך, אז חותכים את מה שבולט */
+}
+
+/* הכותרת הענקית: בפיגמה היא יוצאת קצת מלמעלה ומשמאל */
+.process-title {
+  font-size: var(--text-huge);
   font-weight: var(--font-weight-regular);
-  letter-spacing: var(--title-letter-spacing);
-  line-height: normal;
-  white-space: nowrap;  /* תמיד בשורה אחת */
-  /* letter-spacing מוסיף רווח גם אחרי האות האחרונה. זה מבטל אותו כדי שהכותרת תהיה במרכז בדיוק */
-  margin-right: calc(-1 * var(--title-letter-spacing));
+  line-height: 1.325;  /* כמו בפיגמה: 477px גובה ל-360px טקסט */
+  white-space: nowrap;
+  margin-top: calc(-91 * var(--unit));
+  margin-left: calc(-31 * var(--unit));
+}
+
+/* כותרת של עדכון, למשל "19.10 ----- ..." */
+.update-title {
+  font-size: var(--text-large);
+  font-weight: var(--font-weight-regular);
+  line-height: 1.333;
+  margin-left: var(--space-page-side);
+}
+
+/* הכותרת של העדכון השני רחוקה יותר מהתמונה שמעליה */
+.update-title-second {
+  margin-top: var(--space-m);
+}
+
+/* צילום המסך של עמוד ה-Coming Soon, בצד ימין */
+.coming-soon-image {
+  width: var(--coming-soon-image-width);
+  aspect-ratio: 440 / 316;
+  object-fit: cover;
+  margin-top: var(--space-s);
+  margin-left: var(--coming-soon-image-left);
+}
+
+/* שני הכיוונים זה לצד זה */
+.directions {
+  display: grid;
+  grid-template-columns: var(--direction-a-width) var(--direction-b-width);
+  column-gap: var(--space-directions-gap);
+  align-items: start;
+  margin-top: var(--space-s);
+  padding-left: var(--space-content-side);
+}
+
+/* התווית #A או #B */
+.direction-label {
+  font-size: var(--text-large);
+  line-height: 1.333;
+  padding-left: var(--space-label-side);
+}
+
+/* "חלון" שמראה רק חלק מהתמונה, כמו החיתוך בפיגמה */
+.direction-image-frame {
+  position: relative;
+  overflow: hidden;
+}
+
+.direction-image-frame-a {
+  aspect-ratio: 594 / 296;
+}
+
+.direction-image-frame-b {
+  aspect-ratio: 590 / 294;
+}
+
+/* אותה תמונה בשני החלונות, כל פעם חלק אחר שלה */
+.direction-image {
+  position: absolute;
+  max-width: none;
+}
+
+.direction-image-a {
+  width: 208.65%;
+  height: 263.44%;
+  left: 0;
+  top: -0.12%;
+}
+
+.direction-image-b {
+  width: 210.1%;
+  height: 265.23%;
+  left: -110.1%;
+  top: -0.8%;
+}
+
+/* המשפט הקטן בסוף */
+.update-note {
+  font-size: var(--text-small);
+  line-height: 1.35;
+  margin-top: var(--space-xs);
+  margin-left: var(--space-content-side);
+}
+
+/* ==========================================
+   טלפון: עד שיהיה עיצוב לנייד בפיגמה,
+   הטקסט לא קטן מדי והתמונות אחת מתחת לשנייה
+   ========================================== */
+@media (max-width: 767px) {
+  :root {
+    --text-large: 18px;
+    --text-small: 14px;
+    --space-page-side: 16px;
+    --space-content-side: 16px;
+    --space-s: 16px;
+    --space-m: 40px;
+  }
+
+  .coming-soon-image {
+    width: calc(100% - 2 * var(--space-page-side));
+    margin-left: var(--space-page-side);
+  }
+
+  .directions {
+    grid-template-columns: 1fr;
+    row-gap: var(--space-s);
+    padding-right: var(--space-content-side);
+  }
 }
