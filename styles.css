@@ -3,8 +3,8 @@
    ========================================== */
 :root {
   /* צבעים */
-  --color-background: #000000;
-  --color-text: #FFFFFF;
+  --color-black: #000000;
+  --color-white: #FFFFFF;
 
   /* פונטים */
   /* אם קבצי הפונט לא נמצאים בפרויקט, הדפדפן יציג פונט מונו אחר */
@@ -18,8 +18,10 @@
 
   /* גדלי טקסט */
   --text-huge: calc(360 * var(--unit));   /* "process" */
+  --text-title: calc(128 * var(--unit));  /* "COMING SOON" */
   --text-large: calc(30 * var(--unit));   /* כותרות העדכונים ו-#A/#B */
-  --text-small: calc(20 * var(--unit));   /* המשפט בסוף */
+  --text-small: calc(20 * var(--unit));   /* "My Process" והמשפט בסוף עמוד ה-process */
+  --letter-spacing-wide: 0.21em;          /* 21% בפיגמה, בעמוד ה-Coming Soon */
 
   /* ריווחים (המרחקים מהפריים בפיגמה) */
   --space-page-side: calc(34 * var(--unit));        /* מרווח הכותרות מצד שמאל */
@@ -30,6 +32,9 @@
   --space-m: calc(54 * var(--unit));
   --space-directions-gap: calc(65 * var(--unit));   /* רווח בין #A ל-#B */
   --space-page-bottom: calc(370 * var(--unit));
+  --space-title-top: calc(300 * var(--unit));       /* "COMING SOON" מתחילה 300px מלמעלה */
+  --space-title-side: calc(163 * var(--unit));      /* ו-163px משמאל */
+  --space-link-indent: calc(20 * var(--unit));      /* "My Process" מוזז 20px ימינה מהכותרת */
 
   /* מיקום וגודל התמונות */
   --coming-soon-image-left: calc(891 * var(--unit));
@@ -48,10 +53,20 @@
 }
 
 body {
-  background-color: var(--color-background);
-  color: var(--color-text);
   font-family: var(--font-main);
   font-weight: var(--font-weight-regular);
+}
+
+/* עמוד בהיר: רקע לבן וטקסט שחור (Coming Soon) */
+.page-light {
+  background-color: var(--color-white);
+  color: var(--color-black);
+}
+
+/* עמוד כהה: רקע שחור וטקסט לבן (process) */
+.page-dark {
+  background-color: var(--color-black);
+  color: var(--color-white);
 }
 
 img {
@@ -59,7 +74,39 @@ img {
 }
 
 /* ==========================================
-   עמוד "process"
+   עמוד "Coming Soon" (index.html)
+   ========================================== */
+
+/* המסך כולו, ברוחב הפריים ובמרכז */
+.coming-soon {
+  max-width: var(--page-width);
+  min-height: 100vh;
+  margin: 0 auto;
+  padding-top: var(--space-title-top);
+  padding-left: var(--space-title-side);
+}
+
+/* הכותרת הגדולה */
+.coming-soon-title {
+  font-size: var(--text-title);
+  font-weight: var(--font-weight-regular);
+  letter-spacing: var(--letter-spacing-wide);
+  line-height: 1.328;  /* כמו בפיגמה: 170px גובה ל-128px טקסט */
+  white-space: nowrap;  /* תמיד בשורה אחת */
+}
+
+/* הקישור לעמוד ה-process, עם קו תחתון */
+.coming-soon-link {
+  display: inline-block;
+  margin-left: var(--space-link-indent);
+  font-size: var(--text-small);
+  letter-spacing: var(--letter-spacing-wide);
+  color: inherit;  /* אותו צבע כמו הטקסט, ולא כחול */
+  text-decoration: underline;
+}
+
+/* ==========================================
+   עמוד "process" (process.html)
    ========================================== */
 
 /* העמוד כולו: ברוחב הפריים, במרכז המסך */
@@ -167,6 +214,9 @@ img {
    ========================================== */
 @media (max-width: 767px) {
   :root {
+    --text-title: 9vw;  /* "COMING SOON" ממלאת את רוחב המסך */
+    --space-title-side: 16px;
+    --space-link-indent: 0px;
     --text-large: 18px;
     --text-small: 14px;
     --space-page-side: 16px;
