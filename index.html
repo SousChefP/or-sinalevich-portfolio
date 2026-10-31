@@ -5,13 +5,70 @@
   <!-- מתאים את העמוד לרוחב המסך בטלפון ובטאבלט -->
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Or Sinalevich</title>
-  <link rel="stylesheet" href="styles.css">
-</head>
-<body>
 
-  <!-- עמוד הבית: כאן נבנה את ההירו -->
-  <main>
+  <!-- הפונטים מהפיגמה, מ-Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Aldrich&family=Cal+Sans&family=Crimson+Text:ital@1&display=swap">
+
+  <link rel="stylesheet" href="styles.css">
+
+  <!-- three.js: הספרייה שמציירת את האובייקטים התלת-ממדיים.
+       נטענת מהאינטרנט (CDN), בלי התקנה. הגרסה 0.160 היא זו שהאובייקטים נבנו איתה -->
+  <script type="importmap">
+    {
+      "imports": {
+        "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
+        "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"
+      }
+    }
+  </script>
+</head>
+<body class="page-light">
+
+  <!-- ההירו: מסך אחד עם הכותרת, הקישורים והאובייקטים התלת-ממדיים -->
+  <main class="hero">
+
+    <!-- קישורים במחשב: למעלה יצירת קשר, למטה עמודים -->
+    <nav class="hero-nav hero-nav-desktop">
+      <a class="hero-link hero-link-instagram" href="https://www.instagram.com/orsi.221/" target="_blank" rel="noopener">Instagram<br>[orsi.221]</a>
+      <a class="hero-link hero-link-linkedin" href="https://www.linkedin.com/in/orsinalevich/" target="_blank" rel="noopener">LinkedIn<br>[Connect]</a>
+      <!-- במחשב: לחיצה מעתיקה את כתובת המייל (copy-email.js) -->
+      <a class="hero-link hero-link-email" href="mailto:orsinalevich@gmail.com" data-copy-email>E-Mail<br><span class="copy-email-feedback" aria-live="polite">[Say Hi]</span></a>
+      <!-- העמודים האלה עוד לא קיימים, אז הכפתורים עדיין לא מובילים לשום מקום -->
+      <button class="hero-link hero-link-about" type="button">[About me]</button>
+      <button class="hero-link hero-link-classic" type="button">[Classic View]</button>
+    </nav>
+
+    <!-- קישורים בטלפון: למעלה עמודים, מתחת לכותרת יצירת קשר -->
+    <nav class="hero-nav hero-nav-mobile">
+      <button class="hero-link hero-link-about" type="button">[About Me]</button>
+      <button class="hero-link hero-link-classic" type="button">[Classic View]</button>
+      <div class="hero-contact-list">
+        <a class="hero-link" href="https://www.instagram.com/orsi.221/" target="_blank" rel="noopener">[Instagram]</a>
+        <a class="hero-link" href="https://www.linkedin.com/in/orsinalevich/" target="_blank" rel="noopener">[LinkedIn]</a>
+        <!-- בטלפון: לחיצה פותחת את אפליקציית המייל -->
+        <a class="hero-link" href="mailto:orsinalevich@gmail.com">[E-Mail]</a>
+      </div>
+    </nav>
+
+    <!-- הכותרת הראשית -->
+    <h1 class="hero-title">
+      <span class="hero-title-hi">Hi, I’m</span>
+      <em class="hero-title-name">Orsi</em>
+    </h1>
+
+    <!-- האובייקטים התלת-ממדיים מצוירים כאן (hero.js) -->
+    <div class="hero-objects" id="hero-objects"></div>
+
+    <!-- הטקסט שמופיע ליד אובייקט: בהובר במחשב, בלחיצה ממושכת בטלפון.
+         התוכן והמיקום נקבעים ב-hero.js (label של כל אובייקט) -->
+    <p class="hero-object-label"></p>
+
   </main>
+
+  <script src="copy-email.js"></script>
+  <script type="module" src="hero.js"></script>
 
 </body>
 </html>

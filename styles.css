@@ -10,6 +10,15 @@
   /* אם קבצי הפונט לא נמצאים בפרויקט, הדפדפן יציג פונט מונו אחר */
   --font-main: "ABC Diatype Mono", monospace;
   --font-weight-regular: 400;
+  --font-hero-ui: "Aldrich", sans-serif;            /* הקישורים בהירו */
+  --font-hero-display: "Cal Sans", sans-serif;      /* "Hi, I’m" ותחומי העיסוק */
+  --font-hero-name: "Crimson Text", serif;          /* "Orsi", באיטליק */
+
+  /* ההירו: מידת קנה מידה. פיקסל אחד בפריים של פיגמה (1440×823 במחשב),
+     קטן או גדל לפי המסך כך שכל הפריים תמיד נכנס */
+  --hero-scale: min(calc(100vw / 1440), calc(100svh / 823));
+  --hero-link-size: 18px;
+  --hero-edge: 28px;                                /* מרחק הקישורים משולי המסך */
 
   /* יחידת מידה: פיקסל אחד בפיגמה.
      הפריים ברוחב 1440px, אז במסך צר יותר הכול קטן באותו יחס */
@@ -234,5 +243,186 @@ img {
     grid-template-columns: 1fr;
     row-gap: var(--space-s);
     padding-right: var(--space-content-side);
+  }
+}
+
+/* ==========================================
+   ההירו בעמוד הבית (index.html)
+   ========================================== */
+
+/* מסך אחד מלא. כל החלקים ממוקמים ביחס אליו */
+.hero {
+  position: relative;
+  height: 100svh;
+  overflow: hidden;
+  font-family: var(--font-hero-ui);
+  user-select: none;  /* גרירה על ההירו לא מסמנת טקסט */
+  -webkit-touch-callout: none;  /* באייפון: לחיצה ממושכת לא פותחת תפריט */
+}
+
+/* כל הקישורים: שחורים, בלי קו תחתון */
+.hero-link {
+  position: absolute;
+  font-size: var(--hero-link-size);
+  line-height: normal;
+  color: inherit;
+  text-decoration: none;
+  white-space: nowrap;
+  z-index: 1;
+}
+
+.hero-link:hover {
+  text-decoration: underline;
+}
+
+/* כפתורים (About, Classic View) נראים בדיוק כמו הקישורים */
+button.hero-link {
+  background: none;
+  border: 0;
+  padding: 0;
+  font-family: inherit;
+  cursor: pointer;
+}
+
+/* --- קישורים במחשב --- */
+.hero-nav-desktop .hero-link-instagram {
+  top: 25px;
+  left: var(--hero-edge);
+}
+
+.hero-nav-desktop .hero-link-linkedin {
+  top: 25px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.hero-nav-desktop .hero-link-email {
+  top: 25px;
+  right: var(--hero-edge);
+  text-align: right;
+}
+
+.hero-nav-desktop .hero-link-about {
+  bottom: 21px;
+  left: var(--hero-edge);
+}
+
+.hero-nav-desktop .hero-link-classic {
+  bottom: 21px;
+  right: var(--hero-edge);
+}
+
+/* הקישורים של הטלפון מוסתרים במחשב */
+.hero-nav-mobile {
+  display: none;
+}
+
+/* הכותרת: במרכז המסך, בשורה אחת */
+.hero-title {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-family: var(--font-hero-display);
+  font-size: calc(150 * var(--hero-scale));
+  font-weight: var(--font-weight-regular);
+  line-height: normal;
+  white-space: nowrap;
+}
+
+/* "Orsi": פונט אחר, באיטליק */
+.hero-title-name {
+  font-family: var(--font-hero-name);
+  font-style: italic;
+}
+
+/* האזור שבו מצוירים האובייקטים: כל המסך, מעל הכותרת.
+   pointer-events: none מאפשר ללחוץ על הקישורים שמתחתיו */
+.hero-objects {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 2;
+}
+
+/* הטקסט שמופיע ליד אובייקט (בהובר / בלחיצה ממושכת).
+   hero.js מזיז אותו כך שיהיה צמוד לאובייקט */
+.hero-object-label {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: calc(185 * var(--hero-scale));
+  font-family: var(--font-hero-display);
+  font-size: calc(24 * var(--hero-scale));
+  line-height: normal;
+  pointer-events: none;
+  z-index: 3;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+.hero-object-label.is-visible {
+  opacity: 1;
+}
+
+/* --- טלפון: פריים של 393×670 בפיגמה --- */
+@media (max-width: 767px) {
+  :root {
+    --hero-scale: min(calc(100vw / 393), calc(100svh / 670));
+    --hero-edge: 17px;
+  }
+
+  .hero-nav-desktop {
+    display: none;
+  }
+
+  .hero-nav-mobile {
+    display: block;
+  }
+
+  .hero-nav-mobile .hero-link-about {
+    top: 25px;
+    left: var(--hero-edge);
+  }
+
+  .hero-nav-mobile .hero-link-classic {
+    top: 25px;
+    right: var(--hero-edge);
+  }
+
+  /* Instagram, LinkedIn, E-Mail: אחד מתחת לשני, מתחת לכותרת.
+     רחוק יותר מהכותרת מאשר בפיגמה (49), כדי שלא ייצמדו אליה */
+  .hero-contact-list {
+    position: absolute;
+    top: calc(50% + 85 * var(--hero-scale));
+    left: calc(50% - 102.5 * var(--hero-scale));
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .hero-contact-list .hero-link {
+    position: static;
+  }
+
+  /* הכותרת בשתי שורות, ממורכזת */
+  .hero-title {
+    top: calc(50% - 165 * var(--hero-scale));
+    transform: translateX(-50%);
+    text-align: center;
+    line-height: calc(110 * var(--hero-scale));
+  }
+
+  .hero-title-hi,
+  .hero-title-name {
+    display: block;
+  }
+
+  .hero-title-hi {
+    font-size: calc(80 * var(--hero-scale));
+  }
+
+  .hero-title-name {
+    font-size: calc(142 * var(--hero-scale));
   }
 }
