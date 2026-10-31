@@ -39,8 +39,8 @@ const OBJECTS = [
     label: 'Product, UX.UI Design, Branding',  // הטקסט שמופיע בהובר / בלחיצה ממושכת
     desktop: [899, 134, 358, 180],
     mobile: [213, 83, 151, 76],
-    classicDesktop: [28, 398, 294, 148],
-    classicMobile: [65, 498, 261, 131],
+    classicDesktop: [37, 392, 309, 156],
+    classicMobile: [36, 464, 321, 161],
     aboutDesktop: [1180, 132, 231, 117],
     aboutMobile: [330, 570, 111, 56],
     conveyorSlot: 3,        // המקום בתור על המסוע (About בטלפון)
@@ -52,8 +52,8 @@ const OBJECTS = [
     label: null,                 // עוד אין טקסט
     desktop: [132, 61, 369, 231],
     mobile: [28, 122, 156, 97],
-    classicDesktop: [366, 378, 303, 189],
-    classicMobile: [61, 837, 269, 169],
+    classicDesktop: [396, 378, 290, 182],
+    classicMobile: [31, 799, 331, 207],
     aboutDesktop: [118, 568, 284, 178],
     aboutMobile: [-50, 549, 114, 71],  // חלק מהאובייקט מחוץ למסך, כמו בפיגמה
     conveyorSlot: 0,        // המקום בתור על המסוע (About בטלפון)
@@ -65,8 +65,8 @@ const OBJECTS = [
     label: null,                 // עוד אין טקסט
     desktop: [177, 477, 436, 233],
     mobile: [209, 416, 184, 98],
-    classicDesktop: [712, 374, 359, 191],
-    classicMobile: [43, 1227, 306, 163],
+    classicDesktop: [721, 378, 344, 184],
+    classicMobile: [16, 1204, 360, 192],
     aboutDesktop: [29, 128, 281, 150],
     aboutMobile: [179, 553, 136, 73],
     conveyorSlot: 2,        // המקום בתור על המסוע (About בטלפון)
@@ -78,8 +78,8 @@ const OBJECTS = [
     label: null,                 // עוד אין טקסט
     desktop: [889, 477, 311, 246],
     mobile: [35, 520, 131, 104],
-    classicDesktop: [1121, 370, 255, 202],
-    classicMobile: [76, 1616, 239, 189],
+    classicDesktop: [1115, 360, 257, 204],
+    classicMobile: [52, 1572, 287, 227],
     aboutDesktop: [1175, 551, 200, 159],
     aboutMobile: [69, 553, 96, 77],
     conveyorSlot: 1,        // המקום בתור על המסוע (About בטלפון)
@@ -170,6 +170,7 @@ const camera = new THREE.PerspectiveCamera(30, 1, 1, 10000);
 // כמה נקודות על פני השטח של כל אובייקט. בכל פריים בודקים איפה הן על המסך,
 // וכך יודעים בדיוק איפה הקצוות של האובייקט, גם כשהוא מסובב
 const EDGE_POINTS = 400;
+const screenPoint = new THREE.Vector3();  // נקודה זמנית לחישובים על המסך
 
 function samplePoints(object) {
   object.updateMatrixWorld(true);
@@ -184,6 +185,10 @@ function samplePoints(object) {
   });
   return points;
 }
+
+const objectSpaces = document.querySelectorAll('.classic-object-space');  // באותו סדר כמו OBJECTS
+
+OBJECTS.forEach((item, index) => { item.space = objectSpaces[index]; });
 
 for (const item of OBJECTS) {
   item.object = item.create();
@@ -220,16 +225,26 @@ let screenHeight = 0;
 let heroScreen = null; // גודל ההירו כשהוא מסך אחד (בתצוגה המשחקית)
 let scale = 1;         // כמה פיקסלים במסך שווה פיקסל אחד בפריים (כמו --hero-scale ב-CSS)
 
-function layout() {
-  screenWidth = container.clientWidth;
-  screenHeight = container.clientHeight;
-
-  renderer.setSize(screenWidth, screenHeight);
+// אזור הציור בגודל של ה-container, והמצלמה מותאמת אליו
+function fitDrawingArea() {
+  // משנים את גודל הציור רק כשהוא באמת השתנה (בטלפון הדפדפן שולח resize גם בגלילה)
+  const width = container.clientWidth;
+  const height = container.clientHeight;
+  if (width !== screenWidth || height !== screenHeight) {
+    screenWidth = width;
+    screenHeight = height;
+    // ב-Classic View בטלפון הציור ארוך כמו כל העמוד, אז מגבילים את החדות כדי שלא יהיה כבד מדי
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2, 4096 / screenHeight));
+    renderer.setSize(screenWidth, screenHeight);
+  }
   camera.aspect = screenWidth / screenHeight;
   camera.position.z = (screenHeight / 2) / Math.tan(THREE.MathUtils.degToRad(camera.fov / 2));
   camera.updateProjectionMatrix();
   camera.updateMatrixWorld();  // כדי שבדיקת הקצוות תעבוד כבר בפריים הראשון
+}
 
+function layout() {
+  fitDrawingArea();
   const mobile = MOBILE_QUERY.matches;
   const frame = mobile ? FRAMES.mobile : FRAMES.desktop;
 
@@ -260,11 +275,18 @@ function layout() {
     const [cx, cy, cw, ch] = mobile ? item.classicMobile : item.classicDesktop;
     item.calmPlaces = {};
     item.calmSizes = {};
+    item.calmSizes.classic = fit(item, cw, ch) * frame.calmSize;
     item.calmPlaces.classic = new THREE.Vector2(
       heroScreen.width / 2 + (cx + cw / 2 - frame.width / 2) * spread,
-      mobile ? (cy + ch / 2) * scale : heroScreen.height / 2 + (cy + ch / 2 - frame.height / 2) * scale,
+      heroScreen.height / 2 + (cy + ch / 2 - frame.height / 2) * scale,
     );
-    item.calmSizes.classic = fit(item, cw, ch) * frame.calmSize;
+    if (mobile) {
+      // בטלפון: מודדים כמה מקום האובייקט תופס על המסך (בזווית ובגודל שלו),
+      // ושומרים לו בדיוק את המקום הזה מעל הטקסט שלו (classic-object-space)
+      const rest = restingBounds(item, item.calmSizes.classic);
+      item.restTop = rest.top;
+      item.space.style.setProperty('--object-height', `${rest.bottom - rest.top}px`);
+    }
 
     // About: ממורכז כמו הפריים, במחשב ובטלפון
     const [ax, ay, aw, ah] = mobile ? item.aboutMobile : item.aboutDesktop;
@@ -274,6 +296,9 @@ function layout() {
     );
     item.calmSizes.about = fit(item, aw, ah) * (mobile ? CONVEYOR.grow : frame.calmSize);
   }
+
+  // בטלפון גובה העמוד תלוי במקום ששמרנו לאובייקטים, אז מתאימים שוב את אזור הציור
+  if (mobile) fitDrawingArea();
 }
 
 // המקום של אובייקט על המסוע. כשהוא יוצא משמאל (מחוץ למסך) הוא קופץ לסוף התור מימין
@@ -288,13 +313,32 @@ function conveyorPlace(item) {
   );
 }
 
+// איפה הקצה העליון והתחתון של אובייקט שעומד בזווית המנוחה, ביחס למרכז שלו (בפיקסלים)
+function restingBounds(item, size) {
+  item.object.position.set(0, 0, 0);
+  item.object.rotation.set(...item.tilt);
+  item.object.scale.setScalar(size);
+  measure(item);
+  return { top: item.bounds.top - screenHeight / 2, bottom: item.bounds.bottom - screenHeight / 2 };
+}
+
+// Classic View בטלפון: האובייקט ממלא את המקום ששמור לו מעל הטקסט
+function classicSpacePlace(item) {
+  const space = item.space.getBoundingClientRect();
+  return new THREE.Vector2(
+    space.left + space.width / 2 - heroRect.left,
+    space.top - heroRect.top - item.restTop,
+  );
+}
+
 // ממיר נקודה בהירו (בפיקסלים) לנקודה בעולם התלת-ממדי. ההירו זז כשגוללים
 let heroRect = hero.getBoundingClientRect();
+let containerRect = container.getBoundingClientRect();
 
 function heroToWorld(point) {
   return new THREE.Vector2(
-    heroRect.left + point.x - screenWidth / 2,
-    screenHeight / 2 - (heroRect.top + point.y),
+    heroRect.left - containerRect.left + point.x - screenWidth / 2,
+    screenHeight / 2 - (heroRect.top - containerRect.top + point.y),
   );
 }
 
@@ -308,6 +352,7 @@ const raycaster = new THREE.Raycaster();
 const mouse = new THREE.Vector2();     // מיקום העכבר, מ-‎-1 עד 1 בכל כיוון
 let held = null;                       // האובייקט שמחזיקים עכשיו
 let turning = null;                    // ב-Classic View: האובייקט שמסובבים עכשיו
+let turningByTouch = false;            // מסובבים באצבע (ולא בעכבר)
 let suppressClick = false;             // לא להפעיל קישור שנמצא מתחת לאובייקט שלחצו עליו
 let pointerInside = false;             // העכבר נמצא מעל ההירו (במחשב)
 let lastClient = { x: 0, y: 0 };       // המיקום האחרון של העכבר במסך
@@ -420,8 +465,10 @@ function startTurning(event) {
   item.pressStart = { x: event.clientX, y: event.clientY, time: event.timeStamp };
   item.lastPointer = { x: event.clientX, y: event.clientY, time: event.timeStamp };
 
-  // בטלפון לא תופסים את האצבע, כדי שעדיין אפשר יהיה לגלול
-  if (event.pointerType !== 'touch') {
+  // בטלפון לא תופסים את האצבע, כדי שעדיין אפשר יהיה לגלול.
+  // האובייקט מגיב רק אם זו נגיעה קצרה (ראו release), לא כשמתחילים לגלול עליו
+  turningByTouch = event.pointerType === 'touch';
+  if (!turningByTouch) {
     event.preventDefault();
     hero.setPointerCapture(event.pointerId);
     hero.style.cursor = 'grabbing';
@@ -539,7 +586,6 @@ hero.addEventListener('click', (event) => {
 // --- הצורה של כל אובייקט על המסך ---
 // בכל פריים מטילים את הנקודות של האובייקט על המסך ומחשבים את קו המתאר שלו
 // (כמו גומייה שנמתחת סביבו). לפיו יודעים איפה הוא נוגע בקצוות ובאובייקטים האחרים.
-const screenPoint = new THREE.Vector3();
 
 function measure(item) {
   item.object.updateMatrixWorld(true);
@@ -719,6 +765,9 @@ const easeInOut = (t) => (t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) 
 function setView(nextView, animate = true) {
   if (nextView === view) return;
 
+  // איפה אזור הציור לפני המעבר (בטלפון הוא משתנה בין מסך אחד לכל העמוד)
+  const areaBefore = { rect: container.getBoundingClientRect(), width: screenWidth, height: screenHeight };
+
   // בטלפון הכותרת משנה צורה ב-About (שורה אחת במקום שתיים), אז היא מופיעה מחדש ברכות
   if (animate && MOBILE_QUERY.matches && (view === 'about' || nextView === 'about') && !REDUCE_MOTION) {
     title.animate([{ opacity: 0 }, { opacity: 1 }], { duration: 700, delay: 150, easing: 'ease', fill: 'backwards' });
@@ -742,6 +791,7 @@ function setView(nextView, animate = true) {
   hero.style.cursor = '';
   hideLabel();
   layout();
+  const areaAfter = container.getBoundingClientRect();
 
   OBJECTS.forEach((item, index) => {
     // בתצוגה המשחקית מתחילים מחדש מהמקום מהפיגמה
@@ -755,6 +805,11 @@ function setView(nextView, animate = true) {
 
     // יוצאים מהמקום שבו האובייקט נמצא עכשיו (גם אם הוא באמצע מעבר קודם)
     const from = { ...item.pose };
+    // אותה נקודה על המסך, באזור הציור החדש
+    const screenX = from.x + areaBefore.width / 2 + areaBefore.rect.left;
+    const screenY = areaBefore.height / 2 - from.y + areaBefore.rect.top;
+    from.x = screenX - areaAfter.left - screenWidth / 2;
+    from.y = screenHeight / 2 - (screenY - areaAfter.top);
     from.rx = item.tilt[0] + shortestAngle(from.rx - item.tilt[0]);
     from.ry = item.tilt[1] + shortestAngle(from.ry - item.tilt[1]);
     from.rz = item.tilt[2] + shortestAngle(from.rz - item.tilt[2]);
@@ -827,6 +882,7 @@ function update() {
   const dt = Math.min(clock.getDelta(), 0.05);  // אם הלשונית הייתה ברקע, לא לקפוץ קדימה
   const time = clock.elapsedTime;
   heroRect = hero.getBoundingClientRect();
+  containerRect = container.getBoundingClientRect();
   const playful = view === 'playful';
   const onConveyor = view === 'about' && MOBILE_QUERY.matches;
   if (onConveyor && !REDUCE_MOTION) conveyorDistance += CONVEYOR.speed * dt;
@@ -898,10 +954,13 @@ function update() {
       // Classic View ו-About: במקום שלו, מרחף קלות. מסתובב כשנוגעים בו, ומתקרב כשהעכבר עליו
       springBack(item.spin, item.spinVelocity, dt, 'x');
       springBack(item.spin, item.spinVelocity, dt, 'y');
-      const liftTarget = item === hovered || item === turning ? IDLE.hoverLift : 0;
+      const liftTarget = item === hovered || (item === turning && !turningByTouch) ? IDLE.hoverLift : 0;
       item.lift += (liftTarget - item.lift) * (1 - Math.exp(-8 * dt));
 
-      const place = heroToWorld(onConveyor ? conveyorPlace(item) : item.calmPlaces[view]);
+      let placeOnHero = item.calmPlaces[view];
+      if (onConveyor) placeOnHero = conveyorPlace(item);
+      else if (view === 'classic' && MOBILE_QUERY.matches) placeOnHero = classicSpacePlace(item);
+      const place = heroToWorld(placeOnHero);
       target = {
         x: place.x,
         y: place.y + wave * IDLE.floatHeight * scale,
