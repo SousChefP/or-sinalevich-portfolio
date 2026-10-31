@@ -9,7 +9,7 @@
   <!-- הפונטים מהפיגמה, מ-Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Aldrich&family=Cal+Sans&family=Crimson+Text:ital@1&display=swap">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Aldrich&family=Cal+Sans&family=Crimson+Text:ital@0;1&display=swap">
 
   <link rel="stylesheet" href="styles.css">
 
@@ -35,15 +35,16 @@
       <a class="hero-link hero-link-linkedin" href="https://www.linkedin.com/in/orsinalevich/" target="_blank" rel="noopener">LinkedIn<br>[Connect]</a>
       <!-- במחשב: לחיצה מעתיקה את כתובת המייל (copy-email.js) -->
       <a class="hero-link hero-link-email" href="mailto:orsinalevich@gmail.com" data-copy-email>E-Mail<br><span class="copy-email-feedback" aria-live="polite">[Say Hi]</span></a>
-      <!-- העמודים האלה עוד לא קיימים, אז הכפתורים עדיין לא מובילים לשום מקום -->
-      <button class="hero-link hero-link-about" type="button">[About me]</button>
-      <button class="hero-link hero-link-classic" type="button">[Classic View]</button>
+      <!-- פותח את About me, ושם הופך ל-[Go Back] (hero.js) -->
+      <button class="hero-link hero-link-about" type="button" data-about-toggle>[About me]</button>
+      <!-- מחליף בין התצוגה המשחקית ל-Classic View (hero.js) -->
+      <button class="hero-link hero-link-view" type="button" data-view-toggle>[Classic View]</button>
     </nav>
 
     <!-- קישורים בטלפון: למעלה עמודים, מתחת לכותרת יצירת קשר -->
     <nav class="hero-nav hero-nav-mobile">
-      <button class="hero-link hero-link-about" type="button">[About Me]</button>
-      <button class="hero-link hero-link-classic" type="button">[Classic View]</button>
+      <button class="hero-link hero-link-about" type="button" data-about-toggle>[About Me]</button>
+      <button class="hero-link hero-link-view" type="button" data-view-toggle>[Classic View]</button>
       <div class="hero-contact-list">
         <a class="hero-link" href="https://www.instagram.com/orsi.221/" target="_blank" rel="noopener">[Instagram]</a>
         <a class="hero-link" href="https://www.linkedin.com/in/orsinalevich/" target="_blank" rel="noopener">[LinkedIn]</a>
@@ -60,6 +61,32 @@
 
     <!-- האובייקטים התלת-ממדיים מצוירים כאן (hero.js) -->
     <div class="hero-objects" id="hero-objects"></div>
+
+    <!-- Classic View: התחום ומשפט על כל פרויקט, מתחת לאובייקט שלו.
+         מוסתר בתצוגה המשחקית -->
+    <ul class="classic-list">
+      <li class="classic-item classic-item-reach">
+        <h2 class="classic-field">Product Design, UX/UI, Branding</h2>
+        <p class="classic-about">AI personal training app for pro climbers</p>
+      </li>
+      <li class="classic-item classic-item-talk">
+        <h2 class="classic-field">Web Design, Brand Identity</h2>
+        <p class="classic-about">Brand and mini-site for a father-daughter kids podcast</p>
+      </li>
+      <li class="classic-item classic-item-small-spaces">
+        <h2 class="classic-field">Illustration for Digital Products</h2>
+        <p class="classic-about">An illustrated sub-brand app for IKEA</p>
+      </li>
+      <li class="classic-item classic-item-euka">
+        <h2 class="classic-field">Branding &amp; Packaging Design</h2>
+        <p class="classic-about">Psycho-active mushroom tea product concept</p>
+      </li>
+    </ul>
+
+    <!-- About me: מופיע רק בתצוגה הזאת -->
+    <p class="about-part about-text">A product and UX/UI designer, graduating from Bezalel in 2027. I design smart interfaces that solve complex problems, and I love building my designs with code. Looking for a junior product or UX/UI designer role.</p>
+    <!-- עוד לא הוחלט אם הקובץ ייפתח בחלון חדש או יורד, אז בינתיים הכפתור לא עושה כלום -->
+    <button class="hero-link about-part about-cv" type="button">[Get my CV]</button>
 
     <!-- הטקסט שמופיע ליד אובייקט: בהובר במחשב, בלחיצה ממושכת בטלפון.
          התוכן והמיקום נקבעים ב-hero.js (label של כל אובייקט) -->

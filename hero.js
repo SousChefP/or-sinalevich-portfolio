@@ -6,6 +6,11 @@
 // - נוטה וזז קצת לכיוון העכבר
 // - אפשר לתפוס, לגרור ולזרוק אותו
 // - נגיעה או לחיצה מסובבת אותו, ואחרי סיבוב הוא חוזר לזווית המנוחה
+// ב-Classic View האובייקטים מסתדרים בשורה ומרחפים קלות במקום. אי אפשר להזיז אותם,
+// אבל הם עדיין מגיבים: מתקרבים כשהעכבר עליהם, ומסתובבים בנגיעה או בגרירה.
+// ב-About me האובייקטים עוברים לפינות ומתנהגים כמו ב-Classic View.
+// בטלפון הם נעים בתחתית כמו על מסוע: יוצאים מצד אחד של המסך וחוזרים מהצד השני.
+// במעבר בין התצוגות כל אובייקט עף בתנועה רכה למקום החדש שלו.
 // ==========================================
 
 import * as THREE from 'three';
@@ -19,20 +24,14 @@ import { createEukaTea } from './3d objects/euka-tea-object/euka-tea-object.js';
 // --- המיקומים מהפיגמה ---
 // box: המלבן של התמונה בפריים (x, y, רוחב, גובה בפיקסלים).
 // האובייקט מוקטן או מוגדל כך שימלא את המלבן הזה, ואז מוגדל עוד לפי objectSize.
+// ב-Classic View בטלפון הפריים ארוך (393×2028), וגוללים בו. לכן שם המיקום נמדד מלמעלה.
 const FRAMES = {
-  desktop: { width: 1440, height: 823, objectSize: 1.25 },  // objectSize: פי כמה גדול מהפיגמה
-  mobile: { width: 393, height: 670, objectSize: 1.25 },
+  desktop: { width: 1440, height: 823, objectSize: 1.25, calmSize: 1 },  // objectSize: פי כמה גדול מהפיגמה
+  mobile: { width: 393, height: 670, objectSize: 1.25, calmSize: 1 },    // calmSize: ב-Classic View וב-About
 };
 
+// הסדר כאן הוא הסדר בשורה של Classic View (משמאל לימין / מלמעלה למטה)
 const OBJECTS = [
-  {
-    name: 'talk about it',
-    create: createTalkAboutIt,
-    tilt: [-0.22, 0.45, -0.14],  // זווית המנוחה (x, y, z). לכל אובייקט זווית אחרת
-    label: null,                 // עוד אין טקסט
-    desktop: [132, 61, 369, 231],
-    mobile: [28, 122, 156, 97],
-  },
   {
     name: 'REACH',
     create: createReach,
@@ -40,6 +39,24 @@ const OBJECTS = [
     label: 'Product, UX.UI Design, Branding',  // הטקסט שמופיע בהובר / בלחיצה ממושכת
     desktop: [899, 134, 358, 180],
     mobile: [213, 83, 151, 76],
+    classicDesktop: [28, 398, 294, 148],
+    classicMobile: [65, 498, 261, 131],
+    aboutDesktop: [1180, 132, 231, 117],
+    aboutMobile: [330, 570, 111, 56],
+    conveyorSlot: 3,        // המקום בתור על המסוע (About בטלפון)
+  },
+  {
+    name: 'talk about it',
+    create: createTalkAboutIt,
+    tilt: [-0.22, 0.45, -0.14],  // זווית המנוחה (x, y, z). לכל אובייקט זווית אחרת
+    label: null,                 // עוד אין טקסט
+    desktop: [132, 61, 369, 231],
+    mobile: [28, 122, 156, 97],
+    classicDesktop: [366, 378, 303, 189],
+    classicMobile: [61, 837, 269, 169],
+    aboutDesktop: [118, 568, 284, 178],
+    aboutMobile: [-50, 549, 114, 71],  // חלק מהאובייקט מחוץ למסך, כמו בפיגמה
+    conveyorSlot: 0,        // המקום בתור על המסוע (About בטלפון)
   },
   {
     name: 'small spaces',
@@ -48,6 +65,11 @@ const OBJECTS = [
     label: null,                 // עוד אין טקסט
     desktop: [177, 477, 436, 233],
     mobile: [209, 416, 184, 98],
+    classicDesktop: [712, 374, 359, 191],
+    classicMobile: [43, 1227, 306, 163],
+    aboutDesktop: [29, 128, 281, 150],
+    aboutMobile: [179, 553, 136, 73],
+    conveyorSlot: 2,        // המקום בתור על המסוע (About בטלפון)
   },
   {
     name: 'euka tea',
@@ -56,6 +78,11 @@ const OBJECTS = [
     label: null,                 // עוד אין טקסט
     desktop: [889, 477, 311, 246],
     mobile: [35, 520, 131, 104],
+    classicDesktop: [1121, 370, 255, 202],
+    classicMobile: [76, 1616, 239, 189],
+    aboutDesktop: [1175, 551, 200, 159],
+    aboutMobile: [69, 553, 96, 77],
+    conveyorSlot: 1,        // המקום בתור על המסוע (About בטלפון)
   },
 ];
 
@@ -82,6 +109,33 @@ const MOTION = {
   tapMaxTime: 300,       // זמן מקסימלי (במילישניות) שעדיין נחשב נגיעה
   longPressTime: 450,    // כמה זמן (במילישניות) מחזיקים אצבע כדי שהטקסט יופיע בטלפון
   labelStayTime: 1500,   // כמה זמן הטקסט נשאר אחרי שמרימים את האצבע
+};
+
+// --- Classic View: ריחוף שקט במקום ---
+const IDLE = {
+  floatHeight: 5,        // כמה פיקסלים האובייקט עולה ויורד
+  floatTurn: 0.03,       // כמה הוא מתנדנד
+  floatSway: 0.08,       // כמה הוא מסתובב הלוך ושוב
+  mouseTilt: 0.12,       // כמה הוא נוטה לכיוון העכבר
+  hoverLift: 25,         // כמה הוא "מתקרב" למסך כשהעכבר עליו
+  dragSpin: 0.15,        // כמה גרירה מסובבת אותו במקום
+  maxSpread: 1.3,        // במסך רחב השורה נפתחת לרוחב, עד פי כמה מהמרווחים בפיגמה
+};
+
+// --- About בטלפון: המסוע ---
+const CONVEYOR = {
+  grow: 1.6,             // פי כמה גדולים מהפיגמה
+  spacing: 210,          // המרחק בין אובייקט לאובייקט על המסוע (בפיקסלים של הפריים)
+  speed: 30,             // כמה פיקסלים בשנייה המסוע זז שמאלה
+  y: 590,                // גובה המסוע בפריים (המרכז של האובייקטים)
+};
+let conveyorDistance = 0;  // כמה המסוע זז מאז שנכנסו ל-About
+
+// --- המעבר בין התצוגות ---
+const VIEW_CHANGE = {
+  duration: 1.1,         // כמה שניות כל אובייקט בדרך (כמו --hero-view-time ב-styles.css)
+  stagger: 0.08,         // כל אובייקט יוצא קצת אחרי הקודם
+  arc: 60,               // כמה פיקסלים האובייקט מתקרב למסך באמצע הדרך, כמו קשת
 };
 
 // מי שביקש פחות תנועה בהגדרות המכשיר: בלי ריחוף ובלי תגובה לעכבר (גרירה עדיין עובדת)
@@ -152,14 +206,19 @@ for (const item of OBJECTS) {
   item.floatPhase = Math.random() * Math.PI * 2;  // כל אובייקט מרחף בקצב קצת אחר
   item.driftAngle = Math.random() * Math.PI * 2;  // הכיוון שאליו הוא נודד
   item.extra = new THREE.Vector2();          // הריחוף והעכבר בפריים האחרון
+  item.home = new THREE.Vector2();           // המקום בתצוגה המשחקית, בעולם התלת-ממדי
+  item.travel = null;                        // בזמן מעבר בין תצוגות: מאיפה יצא ומתי
+  item.pose = null;                          // המיקום, הזווית והגודל שצוירו בפריים האחרון
 }
 
 // --- מיקום לפי גודל המסך ---
 // המצלמה מוצבת כך שיחידה אחת בעולם התלת-ממדי = פיקסל אחד במסך.
 // כך אפשר להשתמש במספרים מהפיגמה ישירות.
-let screenWidth = 0;
+let view = 'playful';  // 'playful' (התצוגה המשחקית), 'classic' או 'about'
+let screenWidth = 0;   // גודל האזור שבו מצוירים האובייקטים
 let screenHeight = 0;
-let scale = 1;  // כמה פיקסלים במסך שווה פיקסל אחד בפריים (כמו --hero-scale ב-CSS)
+let heroScreen = null; // גודל ההירו כשהוא מסך אחד (בתצוגה המשחקית)
+let scale = 1;         // כמה פיקסלים במסך שווה פיקסל אחד בפריים (כמו --hero-scale ב-CSS)
 
 function layout() {
   screenWidth = container.clientWidth;
@@ -171,22 +230,72 @@ function layout() {
   camera.updateProjectionMatrix();
   camera.updateMatrixWorld();  // כדי שבדיקת הקצוות תעבוד כבר בפריים הראשון
 
-  const frame = MOBILE_QUERY.matches ? FRAMES.mobile : FRAMES.desktop;
-  scale = Math.min(screenWidth / frame.width, screenHeight / frame.height);
+  const mobile = MOBILE_QUERY.matches;
+  const frame = mobile ? FRAMES.mobile : FRAMES.desktop;
+
+  // ב-Classic View בטלפון ההירו ארוך, אז שומרים את הגובה שלו כשהיה מסך אחד
+  const longHero = view === 'classic' && mobile && heroScreen;
+  heroScreen = {
+    width: hero.clientWidth,
+    height: longHero ? heroScreen.height : hero.clientHeight,
+  };
+  scale = Math.min(heroScreen.width / frame.width, heroScreen.height / frame.height);
+
+  // במחשב, במסך רחב: כמה המרווחים של Classic View ו-About נפתחים לרוחב (כמו --spread ב-CSS)
+  const spread = mobile ? scale : Math.min(Math.max(scale, heroScreen.width / frame.width), scale * IDLE.maxSpread);
+
+  // גודל: האובייקט ממלא את המלבן בלי לחרוג ממנו
+  const fit = (item, w, h) => Math.min((w * scale) / item.baseSize.x, (h * scale) / item.baseSize.y);
 
   for (const item of OBJECTS) {
-    const [x, y, w, h] = MOBILE_QUERY.matches ? item.mobile : item.desktop;
-
-    // "הבית": מרכז המלבן מהפיגמה, ביחס למרכז המסך (בעולם התלת-ממדי y עולה למעלה)
-    item.home = new THREE.Vector2(
-      (x + w / 2 - frame.width / 2) * scale,
-      -(y + h / 2 - frame.height / 2) * scale,
+    // התצוגה המשחקית: מרכז המלבן מהפיגמה, ביחס להירו (בפיקסלים, y למטה)
+    const [x, y, w, h] = mobile ? item.mobile : item.desktop;
+    item.homeOnHero = new THREE.Vector2(
+      heroScreen.width / 2 + (x + w / 2 - frame.width / 2) * scale,
+      heroScreen.height / 2 + (y + h / 2 - frame.height / 2) * scale,
     );
+    item.playfulSize = fit(item, w, h) * frame.objectSize;
 
-    // גודל: האובייקט ממלא את המלבן בלי לחרוג ממנו, ומוגדל לפי objectSize
-    const fit = Math.min((w * scale) / item.baseSize.x, (h * scale) / item.baseSize.y) * frame.objectSize;
-    item.object.scale.setScalar(fit);
+    // Classic View. במחשב: ממורכז כמו הפריים. בטלפון: ממורכז לרוחב, ונמדד מלמעלה (גוללים)
+    const [cx, cy, cw, ch] = mobile ? item.classicMobile : item.classicDesktop;
+    item.calmPlaces = {};
+    item.calmSizes = {};
+    item.calmPlaces.classic = new THREE.Vector2(
+      heroScreen.width / 2 + (cx + cw / 2 - frame.width / 2) * spread,
+      mobile ? (cy + ch / 2) * scale : heroScreen.height / 2 + (cy + ch / 2 - frame.height / 2) * scale,
+    );
+    item.calmSizes.classic = fit(item, cw, ch) * frame.calmSize;
+
+    // About: ממורכז כמו הפריים, במחשב ובטלפון
+    const [ax, ay, aw, ah] = mobile ? item.aboutMobile : item.aboutDesktop;
+    item.calmPlaces.about = new THREE.Vector2(
+      heroScreen.width / 2 + (ax + aw / 2 - frame.width / 2) * spread,
+      heroScreen.height / 2 + (ay + ah / 2 - frame.height / 2) * scale,
+    );
+    item.calmSizes.about = fit(item, aw, ah) * (mobile ? CONVEYOR.grow : frame.calmSize);
   }
+}
+
+// המקום של אובייקט על המסוע. כשהוא יוצא משמאל (מחוץ למסך) הוא קופץ לסוף התור מימין
+function conveyorPlace(item) {
+  const frame = FRAMES.mobile;
+  const loop = CONVEYOR.spacing * OBJECTS.length;  // אורך המסוע כולו, ארוך מהמסך
+  const along = THREE.MathUtils.euclideanModulo((item.conveyorSlot + 0.5) * CONVEYOR.spacing - conveyorDistance, loop);
+  const x = along - (loop - frame.width) / 2;  // המסוע ממורכז, והקצוות שלו מחוץ למסך
+  return new THREE.Vector2(
+    heroScreen.width / 2 + (x - frame.width / 2) * scale,
+    heroScreen.height / 2 + (CONVEYOR.y - frame.height / 2) * scale,
+  );
+}
+
+// ממיר נקודה בהירו (בפיקסלים) לנקודה בעולם התלת-ממדי. ההירו זז כשגוללים
+let heroRect = hero.getBoundingClientRect();
+
+function heroToWorld(point) {
+  return new THREE.Vector2(
+    heroRect.left + point.x - screenWidth / 2,
+    screenHeight / 2 - (heroRect.top + point.y),
+  );
 }
 
 layout();
@@ -198,6 +307,7 @@ window.addEventListener('resize', layout);
 const raycaster = new THREE.Raycaster();
 const mouse = new THREE.Vector2();     // מיקום העכבר, מ-‎-1 עד 1 בכל כיוון
 let held = null;                       // האובייקט שמחזיקים עכשיו
+let turning = null;                    // ב-Classic View: האובייקט שמסובבים עכשיו
 let suppressClick = false;             // לא להפעיל קישור שנמצא מתחת לאובייקט שלחצו עליו
 let pointerInside = false;             // העכבר נמצא מעל ההירו (במחשב)
 let lastClient = { x: 0, y: 0 };       // המיקום האחרון של העכבר במסך
@@ -231,8 +341,8 @@ function placeLabel() {
   const height = label.offsetHeight;
   let x = right - 135 * scale;
   let y = bottom + 5 * scale;
-  if (y + height > screenHeight) y = top - height - 5 * scale;  // אין מקום למטה: מעל האובייקט
-  x = THREE.MathUtils.clamp(x, 8, screenWidth - width - 8);
+  if (y + height > heroScreen.height) y = top - height - 5 * scale;  // אין מקום למטה: מעל האובייקט
+  x = THREE.MathUtils.clamp(x, 8, heroScreen.width - width - 8);
   label.style.transform = `translate(${x}px, ${y}px)`;
 }
 
@@ -264,14 +374,16 @@ function objectAt(clientX, clientY) {
 
 // בטלפון: נגיעה באובייקט לא גוללת את העמוד
 hero.addEventListener('touchstart', (event) => {
+  if (view !== 'playful') return;  // ב-Classic View וב-About גוללים כרגיל
   const touch = event.touches[0];
   if (objectAt(touch.clientX, touch.clientY)) event.preventDefault();
 }, { passive: false });
 
 // לחיצה: אם יש אובייקט מתחת, תופסים אותו
 hero.addEventListener('pointerdown', (event) => {
+  if (view !== 'playful') { startTurning(event); return; }  // רק לסובב במקום
   const item = objectAt(event.clientX, event.clientY);
-  if (!item) return;
+  if (!item || item.travel) return;  // אובייקט שעוד בדרך למקומו אי אפשר לתפוס
 
   event.preventDefault();
   hero.setPointerCapture(event.pointerId);
@@ -300,6 +412,22 @@ hero.addEventListener('pointerdown', (event) => {
   }
 });
 
+// ב-Classic View וב-About: לחיצה על אובייקט מתחילה לסובב אותו במקום
+function startTurning(event) {
+  const item = objectAt(event.clientX, event.clientY);
+  if (!item || item.travel) return;
+  turning = item;
+  item.pressStart = { x: event.clientX, y: event.clientY, time: event.timeStamp };
+  item.lastPointer = { x: event.clientX, y: event.clientY, time: event.timeStamp };
+
+  // בטלפון לא תופסים את האצבע, כדי שעדיין אפשר יהיה לגלול
+  if (event.pointerType !== 'touch') {
+    event.preventDefault();
+    hero.setPointerCapture(event.pointerId);
+    hero.style.cursor = 'grabbing';
+  }
+}
+
 hero.addEventListener('pointermove', (event) => {
   const rect = container.getBoundingClientRect();
   mouse.set(
@@ -308,6 +436,13 @@ hero.addEventListener('pointermove', (event) => {
   );
   if (event.pointerType === 'mouse') pointerInside = true;
   lastClient = { x: event.clientX, y: event.clientY };
+
+  // ב-Classic View וב-About: גרירה עם העכבר מסובבת את האובייקט, והוא נשאר במקום
+  if (turning && event.pointerType !== 'touch') {
+    turning.spinVelocity.y += (event.clientX - turning.lastPointer.x) * IDLE.dragSpin / MOTION.weight;
+    turning.spinVelocity.x += (event.clientY - turning.lastPointer.y) * IDLE.dragSpin / MOTION.weight;
+    turning.lastPointer = { x: event.clientX, y: event.clientY, time: event.timeStamp };
+  }
 
   if (!held) return;
 
@@ -339,18 +474,31 @@ hero.addEventListener('pointermove', (event) => {
   held.lastPointer = { x: event.clientX, y: event.clientY, time: event.timeStamp };
 });
 
+// נגיעה קצרה בלי תזוזה: מסובבת את האובייקט
+function isTap(item, event) {
+  const moved = Math.hypot(event.clientX - item.pressStart.x, event.clientY - item.pressStart.y);
+  const time = event.timeStamp - item.pressStart.time;
+  return event.type !== 'pointercancel' && moved < MOTION.tapMaxMove && time < MOTION.tapMaxTime;
+}
+
+function tapSpin(item) {
+  const direction = Math.random() < 0.5 ? -1 : 1;
+  item.spinVelocity.y += (direction * MOTION.tapSpin) / MOTION.weight;
+}
+
 function release(event) {
+  if (turning) {
+    if (isTap(turning, event)) tapSpin(turning);
+    turning = null;
+    hero.style.cursor = '';
+    return;
+  }
+
   // באצבע אין "עכבר" שנשאר במקום, אז האובייקטים חוזרים להסתכל קדימה
   if (event.pointerType === 'touch') mouse.set(0, 0);
   if (!held) return;
 
-  // נגיעה קצרה בלי תזוזה: סיבוב
-  const moved = Math.hypot(event.clientX - held.pressStart.x, event.clientY - held.pressStart.y);
-  const time = event.timeStamp - held.pressStart.time;
-  if (moved < MOTION.tapMaxMove && time < MOTION.tapMaxTime) {
-    const direction = Math.random() < 0.5 ? -1 : 1;
-    held.spinVelocity.y += (direction * MOTION.tapSpin) / MOTION.weight;
-  }
+  if (isTap(held, event)) tapSpin(held);
 
   held = null;
   hero.style.cursor = '';
@@ -450,13 +598,17 @@ function moveBy(item, dx, dy) {
 // הנדידה שלו מתהפכת, כדי שירחף משם בחזרה פנימה.
 function keepInside(item) {
   const { left, right, top, bottom } = item.bounds;
+  const edgeLeft = heroRect.left;
+  const edgeTop = heroRect.top;
+  const edgeRight = edgeLeft + heroScreen.width;
+  const edgeBottom = edgeTop + heroScreen.height;
 
   let pushX = 0;
-  if (left < 0) pushX = -left;
-  else if (right > screenWidth) pushX = screenWidth - right;
+  if (left < edgeLeft) pushX = edgeLeft - left;
+  else if (right > edgeRight) pushX = edgeRight - right;
   let pushY = 0;
-  if (top < 0) pushY = -top;
-  else if (bottom > screenHeight) pushY = screenHeight - bottom;
+  if (top < edgeTop) pushY = edgeTop - top;
+  else if (bottom > edgeBottom) pushY = edgeBottom - bottom;
 
   if (pushX === 0 && pushY === 0) return;
   moveBy(item, pushX, pushY);
@@ -548,16 +700,144 @@ function springBack(spin, spinVelocity, dt, axis) {
   spin[axis] += spinVelocity[axis] * dt;
 }
 
+// ==========================================
+// מעבר בין התצוגות: המשחקית, Classic View ו-About me
+// ==========================================
+const viewButtons = document.querySelectorAll('[data-view-toggle]');
+const aboutButtons = document.querySelectorAll('[data-about-toggle]');
+const title = document.querySelector('.hero-title');
+let mainView = 'playful';    // התצוגה שחוזרים אליה מ-About ([Go Back])
+let aboutPushed = false;     // נכנסנו ל-About בכפתור, אז "חזרה" = אחורה בדפדפן
+
+// זווית בין ‎-π ל-π, כדי שאחרי סיבובים שלמים האובייקט לא יסתובב אחורה בדרך
+function shortestAngle(angle) {
+  return Math.atan2(Math.sin(angle), Math.cos(angle));
+}
+
+const easeInOut = (t) => (t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2);
+
+function setView(nextView, animate = true) {
+  if (nextView === view) return;
+
+  // בטלפון הכותרת משנה צורה ב-About (שורה אחת במקום שתיים), אז היא מופיעה מחדש ברכות
+  if (animate && MOBILE_QUERY.matches && (view === 'about' || nextView === 'about') && !REDUCE_MOTION) {
+    title.animate([{ opacity: 0 }, { opacity: 1 }], { duration: 700, delay: 150, easing: 'ease', fill: 'backwards' });
+  }
+
+  view = nextView;
+  if (view !== 'about') mainView = view;
+  conveyorDistance = 0;  // המסוע מתחיל מההתחלה
+  hero.classList.toggle('is-classic', view === 'classic');
+  hero.classList.toggle('is-about', view === 'about');
+  for (const button of viewButtons) {
+    button.textContent = mainView === 'classic' ? '[Playful View]' : '[Classic View]';
+  }
+  for (const button of aboutButtons) {
+    button.textContent = view === 'about' ? '[Go Back]' : button.dataset.label;
+  }
+
+  // משחררים את מה שמחזיקים ומסתירים את הטקסט
+  held = null;
+  turning = null;
+  hero.style.cursor = '';
+  hideLabel();
+  layout();
+
+  OBJECTS.forEach((item, index) => {
+    // בתצוגה המשחקית מתחילים מחדש מהמקום מהפיגמה
+    item.offset.set(0, 0);
+    item.velocity.set(0, 0);
+    item.spin.set(0, 0);
+    item.spinVelocity.set(0, 0);
+    item.lift = 0;
+
+    if (!animate || REDUCE_MOTION || !item.pose) { item.travel = null; return; }
+
+    // יוצאים מהמקום שבו האובייקט נמצא עכשיו (גם אם הוא באמצע מעבר קודם)
+    const from = { ...item.pose };
+    from.rx = item.tilt[0] + shortestAngle(from.rx - item.tilt[0]);
+    from.ry = item.tilt[1] + shortestAngle(from.ry - item.tilt[1]);
+    from.rz = item.tilt[2] + shortestAngle(from.rz - item.tilt[2]);
+    item.travel = { from, time: -index * VIEW_CHANGE.stagger };
+  });
+}
+
+// לכל תצוגה כתובת משלה (‎#classic, ‎#about), כך שאפשר לשתף אותה,
+// וכפתור "אחורה" בדפדפן מחזיר לתצוגה הקודמת
+function viewFromAddress() {
+  if (location.hash === '#classic') return 'classic';
+  if (location.hash === '#about') return 'about';
+  return 'playful';
+}
+
+function goTo(nextView) {
+  history.pushState(null, '', nextView === 'playful' ? location.pathname + location.search : '#' + nextView);
+  setView(nextView);
+}
+
+// [Classic View] / [Playful View]
+for (const button of viewButtons) {
+  button.addEventListener('click', () => {
+    aboutPushed = false;
+    goTo(view === 'classic' ? 'playful' : 'classic');
+  });
+}
+
+// [About me] / [Go Back]
+for (const button of aboutButtons) {
+  button.dataset.label = button.textContent;  // הטקסט המקורי, לחזרה מ-About
+  button.addEventListener('click', () => {
+    if (view !== 'about') {
+      goTo('about');
+      aboutPushed = true;
+    } else if (aboutPushed) {
+      history.back();  // חוזרים לתצוגה שממנה הגענו
+    } else {
+      goTo(mainView);  // נכנסו ישר ל-‎#about: חוזרים לתצוגה המשחקית
+    }
+  });
+}
+
+window.addEventListener('popstate', () => {
+  aboutPushed = false;
+  setView(viewFromAddress());
+});
+
+// נכנסים ישר לתצוגה שבכתובת (בלי מעבר)
+setView(viewFromAddress(), false);
+
+// אובייקט בדרך: מתקדם מהמקום שממנו יצא אל המקום החדש, ברכות ובקשת קטנה לכיוון המסך
+function travel(item, target, dt) {
+  const trip = item.travel;
+  trip.time += dt;
+  const progress = THREE.MathUtils.clamp(trip.time / VIEW_CHANGE.duration, 0, 1);
+  const eased = easeInOut(progress);
+
+  const pose = {};
+  for (const key in target) pose[key] = THREE.MathUtils.lerp(trip.from[key], target[key], eased);
+  pose.z += Math.sin(Math.PI * eased) * VIEW_CHANGE.arc * scale;
+
+  if (progress >= 1) item.travel = null;  // הגיע
+  return pose;
+}
+
 const clock = new THREE.Clock();
 
 function update() {
   const dt = Math.min(clock.getDelta(), 0.05);  // אם הלשונית הייתה ברקע, לא לקפוץ קדימה
   const time = clock.elapsedTime;
+  heroRect = hero.getBoundingClientRect();
+  const playful = view === 'playful';
+  const onConveyor = view === 'about' && MOBILE_QUERY.matches;
+  if (onConveyor && !REDUCE_MOTION) conveyorDistance += CONVEYOR.speed * dt;
 
   // העכבר (במחשב): על איזה אובייקט הוא עומד. בודקים בכל פריים, כי האובייקטים זזים גם כשהעכבר לא
-  if (pointerInside && !held) {
-    const hovered = objectAt(lastClient.x, lastClient.y);
+  let hovered = null;
+  if (pointerInside && !held && !turning) {
+    hovered = objectAt(lastClient.x, lastClient.y);
     hero.style.cursor = hovered ? 'grab' : '';
+  }
+  if (playful && pointerInside && !held) {
     if (hovered !== labelBlocked) labelBlocked = null;  // העכבר עזב את האובייקט ששיחקו בו
     if (hovered && hovered !== labelBlocked) showLabel(hovered);
     else hideLabel();
@@ -565,63 +845,93 @@ function update() {
 
   for (const item of OBJECTS) {
     const object = item.object;
+    item.home.copy(heroToWorld(item.homeOnHero));
 
     // 1. ריחוף ועכבר (לא כשמבקשים פחות תנועה)
-    let floatTurn = 0;
-    let floatSway = 0;
-    let floatY = 0;
+    let wave = 0;
+    let sway = 0;
     if (!REDUCE_MOTION) {
-      const wave = Math.sin(time * MOTION.floatSpeed * Math.PI * 2 * 0.5 + item.floatPhase);
-      floatY = wave * MOTION.floatHeight;
-      floatTurn = wave * MOTION.floatTurn;
-      floatSway = Math.sin(time * 0.37 + item.floatPhase * 2) * MOTION.floatSway;
+      wave = Math.sin(time * MOTION.floatSpeed * Math.PI * 2 * 0.5 + item.floatPhase);
+      sway = Math.sin(time * 0.37 + item.floatPhase * 2);
 
       const smooth = 1 - Math.exp(-MOTION.mouseSmooth * dt);
       item.mouseTilt.lerp(mouse.clone().multiplyScalar(1 / MOTION.weight), smooth);
     }
-    const mouseX = item.mouseTilt.x * MOTION.mouseShift;
-    const mouseY = item.mouseTilt.y * MOTION.mouseShift;
-    item.extra.set(mouseX, floatY + mouseY);
 
-    // 2. תנועה: זריקה (מאטה בהדרגה) + נדידה איטית בחלל, שלא נעצרת אף פעם
-    if (item !== held) {
-      item.offset.addScaledVector(item.velocity, dt);
-      item.velocity.multiplyScalar(Math.exp(-MOTION.throwSlowdown * dt));
+    let target;
+    if (playful) {
+      const mouseX = item.mouseTilt.x * MOTION.mouseShift;
+      const mouseY = item.mouseTilt.y * MOTION.mouseShift;
+      item.extra.set(mouseX, wave * MOTION.floatHeight + mouseY);
 
-      if (!REDUCE_MOTION) {
-        item.driftAngle += Math.sin(time * 0.3 + item.floatPhase) * MOTION.driftWander * dt;
-        item.offset.x += Math.cos(item.driftAngle) * MOTION.driftSpeed * dt;
-        item.offset.y += Math.sin(item.driftAngle) * MOTION.driftSpeed * dt;
+      // 2. תנועה: זריקה (מאטה בהדרגה) + נדידה איטית בחלל, שלא נעצרת אף פעם.
+      // בזמן מעבר בין תצוגות האובייקט בדרך הביתה, אז עוד לא נודד
+      if (item !== held && !item.travel) {
+        item.offset.addScaledVector(item.velocity, dt);
+        item.velocity.multiplyScalar(Math.exp(-MOTION.throwSlowdown * dt));
+
+        if (!REDUCE_MOTION) {
+          item.driftAngle += Math.sin(time * 0.3 + item.floatPhase) * MOTION.driftWander * dt;
+          item.offset.x += Math.cos(item.driftAngle) * MOTION.driftSpeed * dt;
+          item.offset.y += Math.sin(item.driftAngle) * MOTION.driftSpeed * dt;
+        }
       }
+      // 3. סיבוב: חוזר לזווית המנוחה
+      springBack(item.spin, item.spinVelocity, dt, 'x');
+      springBack(item.spin, item.spinVelocity, dt, 'y');
+
+      // 4. "הרמה": האובייקט שמחזיקים מתקרב קצת למסך
+      const liftTarget = item === held ? MOTION.liftWhenHeld : 0;
+      item.lift += (liftTarget - item.lift) * (1 - Math.exp(-10 * dt));
+
+      // מחברים הכול למיקום ולזווית הסופיים
+      target = {
+        x: item.home.x + (item.offset.x + item.extra.x) * scale,
+        y: item.home.y - (item.offset.y + item.extra.y) * scale,
+        z: item.lift * scale,
+        rx: item.tilt[0] + item.spin.x + item.mouseTilt.y * MOTION.mouseTilt,
+        ry: item.tilt[1] + item.spin.y + item.mouseTilt.x * MOTION.mouseTilt + sway * MOTION.floatSway,
+        rz: item.tilt[2] + wave * MOTION.floatTurn,
+        size: item.playfulSize,
+      };
+    } else {
+      // Classic View ו-About: במקום שלו, מרחף קלות. מסתובב כשנוגעים בו, ומתקרב כשהעכבר עליו
+      springBack(item.spin, item.spinVelocity, dt, 'x');
+      springBack(item.spin, item.spinVelocity, dt, 'y');
+      const liftTarget = item === hovered || item === turning ? IDLE.hoverLift : 0;
+      item.lift += (liftTarget - item.lift) * (1 - Math.exp(-8 * dt));
+
+      const place = heroToWorld(onConveyor ? conveyorPlace(item) : item.calmPlaces[view]);
+      target = {
+        x: place.x,
+        y: place.y + wave * IDLE.floatHeight * scale,
+        z: item.lift * scale,
+        rx: item.tilt[0] + item.spin.x + item.mouseTilt.y * IDLE.mouseTilt,
+        ry: item.tilt[1] + item.spin.y + item.mouseTilt.x * IDLE.mouseTilt + sway * IDLE.floatSway,
+        rz: item.tilt[2] + wave * IDLE.floatTurn,
+        size: item.calmSizes[view],
+      };
     }
-    // 3. סיבוב: חוזר לזווית המנוחה
-    springBack(item.spin, item.spinVelocity, dt, 'x');
-    springBack(item.spin, item.spinVelocity, dt, 'y');
 
-    // 4. "הרמה": האובייקט שמחזיקים מתקרב קצת למסך
-    const liftTarget = item === held ? MOTION.liftWhenHeld : 0;
-    item.lift += (liftTarget - item.lift) * (1 - Math.exp(-10 * dt));
-
-    // מחברים הכול למיקום ולזווית הסופיים
-    object.position.set(
-      item.home.x + (item.offset.x + item.extra.x) * scale,
-      item.home.y - (item.offset.y + item.extra.y) * scale,
-      item.lift * scale,
-    );
-    object.rotation.set(
-      item.tilt[0] + item.spin.x + item.mouseTilt.y * MOTION.mouseTilt,
-      item.tilt[1] + item.spin.y + item.mouseTilt.x * MOTION.mouseTilt + floatSway,
-      item.tilt[2] + floatTurn,
-    );
+    // בזמן מעבר בין תצוגות: בדרך מהמקום הקודם למקום החדש
+    const pose = item.travel ? travel(item, target, dt) : target;
+    item.pose = pose;
+    object.position.set(pose.x, pose.y, pose.z);
+    object.rotation.set(pose.rx, pose.ry, pose.rz);
+    object.scale.setScalar(pose.size);
     measure(item);
   }
 
-  // התנגשויות וקצוות. חוזרים על זה כמה פעמים, כי הזזה של אחד יכולה לדחוף אחר
-  for (let round = 0; round < 3; round++) {
-    for (let i = 0; i < OBJECTS.length; i++) {
-      for (let j = i + 1; j < OBJECTS.length; j++) collide(OBJECTS[i], OBJECTS[j]);
+  // התנגשויות וקצוות (רק בתצוגה המשחקית, ורק לאובייקטים שכבר הגיעו).
+  // חוזרים על זה כמה פעמים, כי הזזה של אחד יכולה לדחוף אחר
+  if (playful) {
+    const settled = OBJECTS.filter((item) => !item.travel);
+    for (let round = 0; round < 3; round++) {
+      for (let i = 0; i < settled.length; i++) {
+        for (let j = i + 1; j < settled.length; j++) collide(settled[i], settled[j]);
+      }
+      for (const item of settled) keepInside(item);  // גם האובייקט שמחזיקים לא יוצא מהמסך
     }
-    for (const item of OBJECTS) keepInside(item);  // גם האובייקט שמחזיקים לא יוצא מהמסך
   }
 
   placeLabel();  // הטקסט זז יחד עם האובייקט שלו
