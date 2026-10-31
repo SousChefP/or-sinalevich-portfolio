@@ -263,7 +263,7 @@ img {
   -webkit-touch-callout: none;  /* באייפון: לחיצה ממושכת לא פותחת תפריט */
 }
 
-/* כל הקישורים: שחורים, בלי קו תחתון */
+/* כל הקישורים: שחורים. בהובר מופיע קו תחתון שמתחיל מהאמצע ומתפשט לצדדים */
 .hero-link {
   position: absolute;
   font-size: var(--hero-link-size);
@@ -274,8 +274,32 @@ img {
   z-index: 1;
 }
 
-.hero-link:hover {
+/* הקו התחתון בהובר: הקו הרגיל של הדפדפן, שמתגלה מהאמצע החוצה.
+   מעל הטקסט יושב עותק שקוף שלו (::after) שרואים בו רק את הקו התחתון,
+   והעותק נחשף מהאמצע לצדדים (clip-path). את הטקסט של העותק מעדכן hover-line.js */
+.hero-link-line {
+  position: relative;
+}
+
+.hero-link:not(.hero-link-two-lines)::after,
+.hero-link-line::after {
+  content: attr(data-text);
+  content: attr(data-text) / "";  /* קוראי מסך לא מקריאים את העותק */
+  position: absolute;
+  top: 0;
+  left: 0;
+  color: transparent;
   text-decoration: underline;
+  text-decoration-color: var(--color-black);
+  white-space: nowrap;
+  pointer-events: none;
+  clip-path: inset(0 50%);        /* מוסתר: נשאר רק פס ברוחב 0 באמצע */
+  transition: clip-path 0.3s ease;
+}
+
+.hero-link:hover::after,
+.hero-link:hover .hero-link-line::after {
+  clip-path: inset(0 0);          /* בהובר: נחשף עד הקצוות */
 }
 
 /* כפתורים (About, Classic View) נראים בדיוק כמו הקישורים */
@@ -501,7 +525,9 @@ button.hero-link {
   .hero .classic-item,
   .hero.is-classic .classic-item,
   .hero .about-part,
-  .hero.is-about .about-part {
+  .hero.is-about .about-part,
+  .hero .hero-link::after,
+  .hero .hero-link-line::after {
     transition: none;
   }
 }

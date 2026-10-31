@@ -19,6 +19,7 @@ process/index.html       ← הכתובת /process
 styles.css               ← גיליון הסגנונות היחיד באתר
 hero.js                  ← האובייקטים התלת-ממדיים בהירו, והמעבר בין התצוגות: Classic View (‎/#classic) ו-About me (‎/#about)
 copy-email.js            ← העתקת כתובת המייל בלחיצה (במחשב)
+hover-line.js            ← הקו התחתון שמתגלה מהאמצע בהובר על הקישורים בהירו
 images/                  ← כל התמונות
 3d objects/              ← האובייקטים התלת-ממדיים להירו
 ```

@@ -31,10 +31,11 @@
 
     <!-- קישורים במחשב: למעלה יצירת קשר, למטה עמודים -->
     <nav class="hero-nav hero-nav-desktop">
-      <a class="hero-link hero-link-instagram" href="https://www.instagram.com/orsi.221/" target="_blank" rel="noopener">Instagram<br>[orsi.221]</a>
-      <a class="hero-link hero-link-linkedin" href="https://www.linkedin.com/in/orsinalevich/" target="_blank" rel="noopener">LinkedIn<br>[Connect]</a>
+      <!-- קישורים בשתי שורות: כל שורה מקבלת קו משלה בהובר (hero-link-line) -->
+      <a class="hero-link hero-link-two-lines hero-link-instagram" href="https://www.instagram.com/orsi.221/" target="_blank" rel="noopener"><span class="hero-link-line">Instagram</span><br><span class="hero-link-line">[orsi.221]</span></a>
+      <a class="hero-link hero-link-two-lines hero-link-linkedin" href="https://www.linkedin.com/in/orsinalevich/" target="_blank" rel="noopener"><span class="hero-link-line">LinkedIn</span><br><span class="hero-link-line">[Connect]</span></a>
       <!-- במחשב: לחיצה מעתיקה את כתובת המייל (copy-email.js) -->
-      <a class="hero-link hero-link-email" href="mailto:orsinalevich@gmail.com" data-copy-email>E-Mail<br><span class="copy-email-feedback" aria-live="polite">[Say Hi]</span></a>
+      <a class="hero-link hero-link-two-lines hero-link-email" href="mailto:orsinalevich@gmail.com" data-copy-email><span class="hero-link-line">E-Mail</span><br><span class="hero-link-line copy-email-feedback" aria-live="polite">[Say Hi]</span></a>
       <!-- פותח את About me, ושם הופך ל-[Go Back] (hero.js) -->
       <button class="hero-link hero-link-about" type="button" data-about-toggle>[About me]</button>
       <!-- מחליף בין התצוגה המשחקית ל-Classic View (hero.js) -->
@@ -95,6 +96,7 @@
   </main>
 
   <script src="copy-email.js"></script>
+  <script src="hover-line.js"></script>
   <script type="module" src="hero.js"></script>
 
 </body>
