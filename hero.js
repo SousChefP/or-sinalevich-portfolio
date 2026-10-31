@@ -36,7 +36,7 @@ const OBJECTS = [
     name: 'REACH',
     create: createReach,
     tilt: [0.25, -0.4, 0.12],    // נראה קצת מלמעלה ומימין, עולה ימינה
-    label: 'Product, UX.UI Design, Branding',  // הטקסט שמופיע בהובר / בלחיצה ממושכת
+    label: 'Product Design, UX/UI, Branding',  // הטקסט שמופיע בהובר / בלחיצה ממושכת (כמו הכותרת ב-Classic View)
     desktop: [899, 134, 358, 180],
     mobile: [213, 83, 151, 76],
     classicDesktop: [37, 392, 309, 156],
@@ -49,7 +49,7 @@ const OBJECTS = [
     name: 'talk about it',
     create: createTalkAboutIt,
     tilt: [-0.22, 0.45, -0.14],  // זווית המנוחה (x, y, z). לכל אובייקט זווית אחרת
-    label: null,                 // עוד אין טקסט
+    label: 'Web Design, Brand Identity',
     desktop: [132, 61, 369, 231],
     mobile: [28, 122, 156, 97],
     classicDesktop: [396, 378, 290, 182],
@@ -62,7 +62,7 @@ const OBJECTS = [
     name: 'small spaces',
     create: createSmallSpaces,
     tilt: [-0.35, -0.2, 0.06],   // נראה מלמטה, פונה קצת שמאלה
-    label: null,                 // עוד אין טקסט
+    label: 'Illustration for Digital Products',
     desktop: [177, 477, 436, 233],
     mobile: [209, 416, 184, 98],
     classicDesktop: [721, 378, 344, 184],
@@ -75,7 +75,7 @@ const OBJECTS = [
     name: 'euka tea',
     create: createEukaTea,
     tilt: [0.12, 0.6, -0.22],    // מסובב הרבה ימינה ונוטה למטה
-    label: null,                 // עוד אין טקסט
+    label: 'Branding & Packaging Design',
     desktop: [889, 477, 311, 246],
     mobile: [35, 520, 131, 104],
     classicDesktop: [1115, 360, 257, 204],
@@ -360,6 +360,7 @@ let lastClient = { x: 0, y: 0 };       // המיקום האחרון של העכ�
 // --- הטקסט שמופיע ליד אובייקט ---
 // במחשב: כשהעכבר מעל האובייקט. בטלפון: בלחיצה ממושכת עליו.
 const label = document.querySelector('.hero-object-label');
+const labelText = label.querySelector('.hero-object-label-text');  // השורות עם הרקע השחור
 let labelItem = null;      // האובייקט שהטקסט שלו מוצג עכשיו
 let labelBlocked = null;   // אחרי לחיצה / גרירה / זריקה: הטקסט של האובייקט הזה לא חוזר עד שהעכבר עוזב אותו
 let longPressTimer = null;
@@ -368,7 +369,7 @@ let labelHideTimer = null;
 function showLabel(item) {
   clearTimeout(labelHideTimer);
   if (!item || !item.label) { hideLabel(); return; }
-  if (labelItem !== item) label.textContent = item.label;
+  if (labelItem !== item) labelText.textContent = item.label;
   labelItem = item;
   label.classList.add('is-visible');
 }
@@ -384,8 +385,9 @@ function placeLabel() {
   const { right, bottom, top } = labelItem.bounds;
   const width = label.offsetWidth;
   const height = label.offsetHeight;
-  let x = right - 135 * scale;
-  let y = bottom + 5 * scale;
+  const textSize = parseFloat(getComputedStyle(label).fontSize);  // 18px בפיגמה; בטלפון קטן יותר
+  let x = right - (98 / 18) * textSize;  // המרחק מהאובייקט קטן יחד עם הטקסט
+  let y = bottom + (7 / 18) * textSize;
   if (y + height > heroScreen.height) y = top - height - 5 * scale;  // אין מקום למטה: מעל האובייקט
   x = THREE.MathUtils.clamp(x, 8, heroScreen.width - width - 8);
   label.style.transform = `translate(${x}px, ${y}px)`;
