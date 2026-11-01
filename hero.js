@@ -572,11 +572,23 @@ hero.addEventListener('click', (event) => {
 // ניעור הטלפון: האובייקטים עפים לכיוון ההפוך לתנועה (כמו דברים בקופסה שמנערים)
 // ==========================================
 let lastShake = 0;
+let lastGravity = null;  // הקריאה הקודמת של החיישן (עם כוח המשיכה), לטלפונים שלא נותנים תאוצה בלעדיו
+
+// התאוצה של הטלפון (x, y) בלי כוח המשיכה. יש טלפונים שלא נותנים אותה,
+// ואז משתמשים בשינוי בין שתי קריאות של החיישן הרגיל: ניעור = שינוי חד
+function shakeOf(event) {
+  const a = event.acceleration;
+  if (a && a.x !== null) return { x: a.x, y: a.y };
+  const g = event.accelerationIncludingGravity;
+  if (!g || g.x === null) return null;
+  const change = lastGravity ? { x: g.x - lastGravity.x, y: g.y - lastGravity.y } : { x: 0, y: 0 };
+  lastGravity = { x: g.x, y: g.y };
+  return change;
+}
 
 function onDeviceMotion(event) {
-  if (view !== 'playful') return;
-  const a = event.acceleration;  // התאוצה בלי כוח המשיכה
-  if (!a || a.x === null) return;
+  const a = shakeOf(event);
+  if (!a || view !== 'playful') return;
   const strength = Math.hypot(a.x, a.y);
   if (strength < MOTION.shakeThreshold || event.timeStamp - lastShake < 250) return;
   lastShake = event.timeStamp;
@@ -594,15 +606,19 @@ function onDeviceMotion(event) {
   }
 }
 
-// רק במכשירים עם מסך מגע. באייפון צריך לבקש רשות, וזה אפשרי רק אחרי נגיעה:
-// בנגיעה הראשונה במסך מופיעה השאלה של אייפון, ואם מאשרים הניעור מתחיל לעבוד
+// רק במכשירים עם מסך מגע. באייפון צריך לבקש רשות, וזה אפשרי רק אחרי לחיצה:
+// בכל לחיצה מנסים, עד שמתקבלת תשובה (אישור או סירוב). גלילה לא נחשבת לחיצה, ואז מנסים בלחיצה הבאה
 if (window.DeviceMotionEvent && window.matchMedia('(pointer: coarse)').matches) {
   if (typeof DeviceMotionEvent.requestPermission === 'function') {
-    window.addEventListener('touchend', () => {
+    const askPermission = () => {
       DeviceMotionEvent.requestPermission()
-        .then((answer) => { if (answer === 'granted') window.addEventListener('devicemotion', onDeviceMotion); })
-        .catch(() => {});  // לא אישרו: האתר עובד כרגיל, בלי ניעור
-    }, { once: true });
+        .then((answer) => {
+          window.removeEventListener('touchend', askPermission);  // יש תשובה: לא שואלים שוב
+          if (answer === 'granted') window.addEventListener('devicemotion', onDeviceMotion);
+        })
+        .catch(() => {});  // לא נחשב לחיצה: מנסים שוב בנגיעה הבאה
+    };
+    window.addEventListener('touchend', askPermission);
   } else {
     window.addEventListener('devicemotion', onDeviceMotion);  // אנדרואיד: בלי לשאול
   }
