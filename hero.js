@@ -38,8 +38,8 @@ const OBJECTS = [
     create: createReach,
     tilt: [0.25, -0.4, 0.12],    // נראה קצת מלמעלה ומימין, עולה ימינה
     label: 'Product Design, UX/UI, Branding',  // הטקסט שמופיע בהובר ובזמן שמחזיקים את האובייקט (כמו הכותרת ב-Classic View)
-    desktop: [899, 134, 358, 180],
-    mobile: [213, 83, 151, 76],
+    desktop: [1027, 85, 358, 180],  // מתחילים קרוב לפינות, כדי לא להסתיר את הכותרת
+    mobile: [210, 63, 151, 76],
     classicDesktop: [37, 392, 309, 156],
     classicMobile: [36, 464, 321, 161],
     aboutDesktop: [1180, 132, 231, 117],
@@ -52,8 +52,8 @@ const OBJECTS = [
     create: createTalkAboutIt,
     tilt: [-0.22, 0.45, -0.14],  // זווית המנוחה (x, y, z). לכל אובייקט זווית אחרת
     label: 'Web Design, Brand Identity',
-    desktop: [132, 61, 369, 231],
-    mobile: [28, 122, 156, 97],
+    desktop: [56, 91, 369, 231],
+    mobile: [27, 64, 156, 97],
     classicDesktop: [396, 378, 290, 182],
     classicMobile: [31, 799, 331, 207],
     aboutDesktop: [118, 568, 284, 178],
@@ -66,8 +66,8 @@ const OBJECTS = [
     create: createSmallSpaces,
     tilt: [-0.35, -0.2, 0.06],   // נראה מלמטה, פונה קצת שמאלה
     label: 'Illustration for Digital Products',
-    desktop: [177, 477, 436, 233],
-    mobile: [209, 416, 184, 98],
+    desktop: [64, 507, 436, 233],
+    mobile: [178, 499, 184, 98],
     classicDesktop: [721, 378, 344, 184],
     classicMobile: [16, 1204, 360, 192],
     aboutDesktop: [29, 128, 281, 150],
@@ -80,8 +80,8 @@ const OBJECTS = [
     create: createEukaTea,
     tilt: [0.12, 0.6, -0.22],    // מסובב הרבה ימינה ונוטה למטה
     label: 'Branding & Packaging Design',
-    desktop: [889, 477, 311, 246],
-    mobile: [35, 520, 131, 104],
+    desktop: [1080, 493, 311, 246],
+    mobile: [27, 544, 131, 104],
     classicDesktop: [1115, 360, 257, 204],
     classicMobile: [52, 1572, 287, 227],
     aboutDesktop: [1175, 551, 200, 159],
