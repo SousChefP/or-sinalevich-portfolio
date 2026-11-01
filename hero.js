@@ -34,6 +34,7 @@ const FRAMES = {
 const OBJECTS = [
   {
     name: 'REACH',
+    page: 'projects/reach/',   // עמוד הפרויקט: לחיצה על האובייקט פותחת אותו
     create: createReach,
     tilt: [0.25, -0.4, 0.12],    // נראה קצת מלמעלה ומימין, עולה ימינה
     label: 'Product Design, UX/UI, Branding',  // הטקסט שמופיע בהובר ובזמן שמחזיקים את האובייקט (כמו הכותרת ב-Classic View)
@@ -47,6 +48,7 @@ const OBJECTS = [
   },
   {
     name: 'talk about it',
+    page: 'projects/talk-about-it/',   // עמוד הפרויקט: לחיצה על האובייקט פותחת אותו
     create: createTalkAboutIt,
     tilt: [-0.22, 0.45, -0.14],  // זווית המנוחה (x, y, z). לכל אובייקט זווית אחרת
     label: 'Web Design, Brand Identity',
@@ -60,6 +62,7 @@ const OBJECTS = [
   },
   {
     name: 'small spaces',
+    page: 'projects/small-spaces/',   // עמוד הפרויקט: לחיצה על האובייקט פותחת אותו
     create: createSmallSpaces,
     tilt: [-0.35, -0.2, 0.06],   // נראה מלמטה, פונה קצת שמאלה
     label: 'Illustration for Digital Products',
@@ -73,6 +76,7 @@ const OBJECTS = [
   },
   {
     name: 'euka tea',
+    page: 'projects/euka-tea/',   // עמוד הפרויקט: לחיצה על האובייקט פותחת אותו
     create: createEukaTea,
     tilt: [0.12, 0.6, -0.22],    // מסובב הרבה ימינה ונוטה למטה
     label: 'Branding & Packaging Design',
@@ -102,7 +106,6 @@ const MOTION = {
   bounce: 0.85,          // כמה אובייקטים קופצים זה מזה בהתנגשות (0 = נעצרים, 1 = קופצים חזק)
   impactSpin: 0.008,     // כמה התנגשות מסובבת אותם
   dragSpin: 0.01,        // כמה סיבוב יוצרת גרירה
-  tapSpin: 23,           // כמה חזק נגיעה מסובבת
   returnSpring: 3.5,     // כמה חזק האובייקט נמשך חזרה לזווית המנוחה
   liftWhenHeld: 150,     // כמה האובייקט "מתקרב" למסך כשמחזיקים אותו
   tapMaxMove: 6,         // תזוזה מקסימלית (בפיקסלים) שעדיין נחשבת נגיעה ולא גרירה
@@ -360,6 +363,7 @@ let lastClient = { x: 0, y: 0 };       // המיקום האחרון של העכ�
 const label = document.querySelector('.hero-object-label');
 const labelText = label.querySelector('.hero-object-label-text');  // השורות עם הרקע השחור
 let labelItem = null;      // האובייקט שהטקסט שלו מוצג עכשיו
+let labelByTouch = false;  // הטקסט הופיע מנגיעה באצבע: אז הוא מעל האובייקט, כדי שהיד לא תסתיר אותו
 
 function showLabel(item) {
   if (!item || !item.label) { hideLabel(); return; }
@@ -373,7 +377,8 @@ function hideLabel() {
   label.classList.remove('is-visible');
 }
 
-// הטקסט צמוד לפינה הימנית-תחתונה של האובייקט (כמו בפיגמה), ונשאר בתוך המסך
+// הטקסט צמוד לפינה הימנית-תחתונה של האובייקט (כמו בפיגמה), ונשאר בתוך המסך.
+// בנגיעה באצבע: מעל האובייקט, כדי שהאצבע והיד לא יסתירו אותו
 function placeLabel() {
   if (!labelItem) return;
   const { right, bottom, top } = labelItem.bounds;
@@ -381,8 +386,11 @@ function placeLabel() {
   const height = label.offsetHeight;
   const textSize = parseFloat(getComputedStyle(label).fontSize);  // 18px בפיגמה; בטלפון קטן יותר
   let x = right - (98 / 18) * textSize;  // המרחק מהאובייקט קטן יחד עם הטקסט
-  let y = bottom + (7 / 18) * textSize;
-  if (y + height > heroScreen.height) y = top - height - 5 * scale;  // אין מקום למטה: מעל האובייקט
+  const above = top - height - (7 / 18) * textSize;
+  const below = bottom + (7 / 18) * textSize;
+  let y = labelByTouch ? above : below;
+  if (labelByTouch && y < 0) y = below;                             // אין מקום למעלה: מתחת
+  if (!labelByTouch && y + height > heroScreen.height) y = above;   // אין מקום למטה: מעל
   x = THREE.MathUtils.clamp(x, 8, heroScreen.width - width - 8);
   label.style.transform = `translate(${x}px, ${y}px)`;
 }
@@ -441,6 +449,7 @@ hero.addEventListener('pointerdown', (event) => {
   hero.style.cursor = 'grabbing';
 
   // הטקסט של האובייקט מופיע ונשאר כל עוד מחזיקים אותו (גם בגרירה), במחשב ובטלפון
+  labelByTouch = event.pointerType === 'touch';
   showLabel(item);
 });
 
@@ -452,8 +461,9 @@ function startTurning(event) {
   item.pressStart = { x: event.clientX, y: event.clientY, time: event.timeStamp };
   item.lastPointer = { x: event.clientX, y: event.clientY, time: event.timeStamp };
 
-  // בטלפון לא תופסים את האצבע, כדי שעדיין אפשר יהיה לגלול.
-  // האובייקט מגיב רק אם זו נגיעה קצרה (ראו release), לא כשמתחילים לגלול עליו
+  // בטלפון לא תופסים את האצבע, כדי שעדיין אפשר יהיה לגלול למעלה ולמטה.
+  // גרירה הצידה מסובבת את האובייקט במקום (touch-action: pan-y ב-styles.css),
+  // וכשהדפדפן מתחיל לגלול הוא שולח pointercancel והאובייקט משתחרר
   turningByTouch = event.pointerType === 'touch';
   if (!turningByTouch) {
     event.preventDefault();
@@ -471,8 +481,8 @@ hero.addEventListener('pointermove', (event) => {
   if (event.pointerType === 'mouse') pointerInside = true;
   lastClient = { x: event.clientX, y: event.clientY };
 
-  // ב-Classic View וב-About: גרירה עם העכבר מסובבת את האובייקט, והוא נשאר במקום
-  if (turning && event.pointerType !== 'touch') {
+  // ב-Classic View וב-About: גרירה (עכבר, או אצבע הצידה) מסובבת את האובייקט, והוא נשאר במקום
+  if (turning) {
     turning.spinVelocity.y += (event.clientX - turning.lastPointer.x) * IDLE.dragSpin / MOTION.weight;
     turning.spinVelocity.x += (event.clientY - turning.lastPointer.y) * IDLE.dragSpin / MOTION.weight;
     turning.lastPointer = { x: event.clientX, y: event.clientY, time: event.timeStamp };
@@ -501,21 +511,21 @@ hero.addEventListener('pointermove', (event) => {
   held.lastPointer = { x: event.clientX, y: event.clientY, time: event.timeStamp };
 });
 
-// נגיעה קצרה בלי תזוזה: מסובבת את האובייקט
+// נגיעה קצרה בלי תזוזה (לא גרירה)
 function isTap(item, event) {
   const moved = Math.hypot(event.clientX - item.pressStart.x, event.clientY - item.pressStart.y);
   const time = event.timeStamp - item.pressStart.time;
   return event.type !== 'pointercancel' && moved < MOTION.tapMaxMove && time < MOTION.tapMaxTime;
 }
 
-function tapSpin(item) {
-  const direction = Math.random() < 0.5 ? -1 : 1;
-  item.spinVelocity.y += (direction * MOTION.tapSpin) / MOTION.weight;
+// לחיצה על אובייקט (בלי לגרור): פותחת את עמוד הפרויקט שלו
+function openProject(item) {
+  window.location.href = item.page;
 }
 
 function release(event) {
   if (turning) {
-    if (isTap(turning, event)) tapSpin(turning);
+    if (isTap(turning, event)) openProject(turning);
     turning = null;
     hero.style.cursor = '';
     return;
@@ -525,7 +535,7 @@ function release(event) {
   if (event.pointerType === 'touch') mouse.set(0, 0);
   if (!held) return;
 
-  if (isTap(held, event)) tapSpin(held);
+  if (isTap(held, event)) openProject(held);
 
   held = null;
   hero.style.cursor = '';
@@ -929,7 +939,7 @@ function update() {
       // Classic View ו-About: במקום שלו, מרחף קלות. מסתובב כשנוגעים בו, ומתקרב כשהעכבר עליו
       springBack(item.spin, item.spinVelocity, dt, 'x');
       springBack(item.spin, item.spinVelocity, dt, 'y');
-      const liftTarget = item === hovered || (item === turning && !turningByTouch) ? IDLE.hoverLift : 0;
+      const liftTarget = item === hovered || item === turning ? IDLE.hoverLift : 0;
       item.lift += (liftTarget - item.lift) * (1 - Math.exp(-8 * dt));
 
       let placeOnHero = item.calmPlaces[view];

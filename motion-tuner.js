@@ -49,7 +49,6 @@ const HERO_CONTROLS = [
     group: 'גרירה ונגיעה',
     controls: [
       { key: 'dragSpin', label: 'סיבוב מגרירה', min: 0, max: 0.4, step: 0.01 },
-      { key: 'tapSpin', label: 'סיבוב מנגיעה', min: 0, max: 40, step: 1 },
       { key: 'returnSpring', label: 'חזרה לזווית המנוחה (קפיץ)', min: 0.5, max: 40, step: 0.5 },
       { key: 'liftWhenHeld', label: 'התקרבות למסך כשמחזיקים', min: 0, max: 150, step: 5 },
     ],

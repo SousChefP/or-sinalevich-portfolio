@@ -35,6 +35,8 @@
   /* בטלפון: כמה אזור הלחיצה של כפתור גדול מהטקסט שלו, לכל כיוון (כדי להגיע ל-44px) */
   --hero-tap-extra: 13px;
   --hero-contact-gap: 16px;                         /* בטלפון: הרווח בין Instagram, LinkedIn ו-E-Mail */
+  --project-parts-size: 20px;               /* בעמוד פרויקט: הרשימה "→ Mobile App" */
+  --project-parts-leading: 31px;            /* המרחק בין השורות ברשימה (בפיגמה) */
   --hero-label-size-mobile: 14px;                   /* הטקסט ליד אובייקט בטלפון: קטן יותר מבמחשב */
   --hero-label-pad-x: 0.28em;                       /* הטקסט בהובר: 5px מהצדדים בפיגמה (18px טקסט) */
   /* לוח הכיוונון לתנועה (motion-tuner.js, רק בכתובת עם ?tune) */
@@ -338,19 +340,22 @@ button.hero-link {
 }
 
 /* --- קישורים במחשב --- */
-.hero-nav-desktop .hero-link-instagram {
+.hero-nav-desktop .hero-link-instagram,
+.project-nav .hero-link-instagram {
   top: 25px;
   left: var(--hero-edge);
 }
 
-.hero-nav-desktop .hero-link-linkedin {
+.hero-nav-desktop .hero-link-linkedin,
+.project-nav .hero-link-linkedin {
   top: 25px;
   left: 50%;
   transform: translateX(-50%);
   text-align: center;  /* LinkedIn ו-[Connect] ממורכזים זה מעל זה */
 }
 
-.hero-nav-desktop .hero-link-email {
+.hero-nav-desktop .hero-link-email,
+.project-nav .hero-link-email {
   top: 25px;
   right: var(--hero-edge);
   text-align: right;
@@ -678,6 +683,12 @@ button.hero-link {
     min-height: 100svh;
   }
 
+  /* ב-Classic View וב-About: גוללים למעלה ולמטה כרגיל, וגרירה הצידה על אובייקט מסובבת אותו (hero.js) */
+  .hero.is-classic,
+  .hero.is-about {
+    touch-action: pan-y;
+  }
+
   /* האובייקטים מצוירים על כל אורך העמוד וגוללים יחד איתו, כדי שלא יפגרו אחרי הגלילה */
   .hero.is-classic .hero-objects {
     position: absolute;
@@ -748,6 +759,104 @@ button.hero-link {
 
   .about-cv {
     top: calc(50svh + (456 - 335) * var(--hero-scale));
+  }
+}
+
+/* ==========================================
+   עמוד פרויקט (projects/.../index.html): כרגע מקום שמור לתוכן.
+   כמו ההירו במחשב: פריים של 1440×823 שמוקטן לפי המסך (בטלפון עוד אין עיצוב)
+   ========================================== */
+.project {
+  --project-scale: min(calc(100vw / 1440), calc(100svh / 823));
+  position: relative;
+  height: 100svh;
+  overflow: hidden;
+  font-family: var(--font-hero-ui);
+}
+
+/* הפוטר: [All Projects] משמאל, [Next Project →] מימין, כמו הכפתורים בתחתית ההירו.
+   החץ "→" לא קיים בפונט Aldrich ומגיע מפונט אחר, שמגדיל את השורה: גובה שורה קבוע מונע את זה */
+.project-footer .hero-link {
+  line-height: var(--hero-link-size);
+}
+
+.project-all {
+  bottom: 21px;
+  left: var(--hero-edge);
+}
+
+.project-next {
+  bottom: 21px;
+  right: var(--hero-edge);
+}
+
+/* מה יש בפרויקט: "→ Mobile App" וכו' */
+.project-parts {
+  position: absolute;
+  top: calc(50% + (254 - 411.5) * var(--project-scale));
+  left: calc(var(--hero-edge) + 1px);
+  list-style: none;
+  font-size: var(--project-parts-size);
+  line-height: var(--project-parts-leading);
+}
+
+/* האובייקט: המלבן מהפיגמה (x, y, רוחב, גובה). project-object.js מצייר בו את האובייקט */
+.project-object {
+  position: absolute;
+  left: calc(50% + (var(--x) - 720) * var(--project-scale));
+  top: calc(50% + (var(--y) - 411.5) * var(--project-scale));
+  width: calc(var(--w) * var(--project-scale));
+  height: calc(var(--h) * var(--project-scale));
+}
+
+/* הציור גדול מהמלבן (כמו CANVAS_GROW ב-project-object.js), כדי שהאובייקט לא ייחתך כשהוא זז */
+.project-object canvas {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+}
+
+.project-object-reach         { --x: 580; --y: 185; --w: 280; --h: 141; }
+.project-object-talk-about-it { --x: 575; --y: 163; --w: 290; --h: 182; }
+.project-object-small-spaces  { --x: 501; --y: 121; --w: 344; --h: 184; }
+.project-object-euka-tea      { --x: 591; --y: 152; --w: 257; --h: 204; }
+
+/* --- עמוד פרויקט בטלפון (פריים של 393×670, בפיגמה: Mobile / Reach) --- */
+@media (max-width: 767px) {
+  .project {
+    --project-scale: min(calc(100vw / 393), calc(100svh / 670));
+  }
+
+  /* בטלפון אין למעלה קישורי יצירת קשר: במקומם הפוטר עולה למעלה */
+  .project-nav {
+    display: none;
+  }
+
+  .project-all {
+    top: 25px;
+    bottom: auto;
+  }
+
+  .project-next {
+    top: 25px;
+    bottom: auto;
+  }
+
+  .project-parts {
+    top: calc(320 * var(--project-scale));
+    left: calc(25 * var(--project-scale));
+  }
+
+  /* האובייקט: אותו מלבן לכל הפרויקטים (בפיגמה יש עיצוב רק ל-REACH), ממורכז לרוחב */
+  .project .project-object {
+    --x: 58;
+    --y: 100;
+    --w: 278;
+    --h: 140;
+    left: calc(50% + (var(--x) - 196.5) * var(--project-scale));
+    top: calc(var(--y) * var(--project-scale));
   }
 }
 

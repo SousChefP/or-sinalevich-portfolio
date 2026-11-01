@@ -16,6 +16,8 @@
 index.html               ← עמוד הבית (הכתובת /)
 coming-soon/index.html   ← הכתובת /coming-soon
 process/index.html       ← הכתובת /process
+projects/<name>/index.html ← עמודי הפרויקטים: /projects/reach, talk-about-it, small-spaces, euka-tea
+project-object.js        ← האובייקט התלת-ממדי בעמוד פרויקט (לחיצה עליו מחזירה להירו)
 styles.css               ← גיליון הסגנונות היחיד באתר
 hero.js                  ← האובייקטים התלת-ממדיים בהירו, והמעבר בין התצוגות: Classic View (‎/#classic) ו-About me (‎/#about)
 copy-email.js            ← העתקת כתובת המייל בלחיצה (במחשב)
