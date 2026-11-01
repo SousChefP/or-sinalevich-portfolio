@@ -208,4 +208,8 @@ function restoreSaved(values) {
     const saved = JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}');
     for (const [key, value] of Object.entries(saved)) {
       if (key in values) values[key] = value;
-  
+    }
+  } catch {
+    // אין ערכים שמורים
+  }
+}

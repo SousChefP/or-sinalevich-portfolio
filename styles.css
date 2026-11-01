@@ -805,4 +805,6 @@ button.hero-link {
   border: 1px solid var(--color-black);
   background: var(--color-white);
   color: var(--color-black);
-  
+  font: inherit;
+  cursor: pointer;
+}
