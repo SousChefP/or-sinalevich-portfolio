@@ -108,6 +108,9 @@ const MOTION = {
   dragSpin: 0.01,        // כמה סיבוב יוצרת גרירה
   returnSpring: 3.5,     // כמה חזק האובייקט נמשך חזרה לזווית המנוחה
   liftWhenHeld: 150,     // כמה האובייקט "מתקרב" למסך כשמחזיקים אותו
+  shakeThreshold: 12,    // בטלפון: כמה חזק צריך לנער (מטר לשנייה בריבוע) כדי שהאובייקטים יזוזו
+  shakePush: 450,        // כמה חזק ניעור זורק את האובייקטים (פיקסלים לשנייה)
+  shakeSpin: 6,          // כמה ניעור מסובב אותם
   tapMaxMove: 6,         // תזוזה מקסימלית (בפיקסלים) שעדיין נחשבת נגיעה ולא גרירה
   tapMaxTime: 300,       // זמן מקסימלי (במילישניות) שעדיין נחשב נגיעה
 };
@@ -564,6 +567,46 @@ hero.addEventListener('click', (event) => {
     suppressClick = false;
   }
 }, true);
+
+// ==========================================
+// ניעור הטלפון: האובייקטים עפים לכיוון ההפוך לתנועה (כמו דברים בקופסה שמנערים)
+// ==========================================
+let lastShake = 0;
+
+function onDeviceMotion(event) {
+  if (view !== 'playful') return;
+  const a = event.acceleration;  // התאוצה בלי כוח המשיכה
+  if (!a || a.x === null) return;
+  const strength = Math.hypot(a.x, a.y);
+  if (strength < MOTION.shakeThreshold || event.timeStamp - lastShake < 250) return;
+  lastShake = event.timeStamp;
+
+  // הכיוון: הפוך לתנועת הטלפון (במסך y למטה, ובחיישן y למעלה), ועוד קצת אקראיות לכל אובייקט
+  const power = Math.min(strength / MOTION.shakeThreshold, 2.5);
+  for (const item of OBJECTS) {
+    if (item === held || item.travel) continue;
+    const angle = Math.atan2(a.y, -a.x) + (Math.random() - 0.5) * 1.2;
+    const push = MOTION.shakePush * power * (0.7 + Math.random() * 0.6) / MOTION.weight;
+    item.velocity.x += Math.cos(angle) * push;
+    item.velocity.y += Math.sin(angle) * push;
+    item.spinVelocity.x += (Math.random() - 0.5) * 2 * MOTION.shakeSpin * power / MOTION.weight;
+    item.spinVelocity.y += (Math.random() - 0.5) * 2 * MOTION.shakeSpin * power / MOTION.weight;
+  }
+}
+
+// רק במכשירים עם מסך מגע. באייפון צריך לבקש רשות, וזה אפשרי רק אחרי נגיעה:
+// בנגיעה הראשונה במסך מופיעה השאלה של אייפון, ואם מאשרים הניעור מתחיל לעבוד
+if (window.DeviceMotionEvent && window.matchMedia('(pointer: coarse)').matches) {
+  if (typeof DeviceMotionEvent.requestPermission === 'function') {
+    window.addEventListener('touchend', () => {
+      DeviceMotionEvent.requestPermission()
+        .then((answer) => { if (answer === 'granted') window.addEventListener('devicemotion', onDeviceMotion); })
+        .catch(() => {});  // לא אישרו: האתר עובד כרגיל, בלי ניעור
+    }, { once: true });
+  } else {
+    window.addEventListener('devicemotion', onDeviceMotion);  // אנדרואיד: בלי לשאול
+  }
+}
 
 // ==========================================
 // התנועה: מחושבת מחדש בכל פריים
