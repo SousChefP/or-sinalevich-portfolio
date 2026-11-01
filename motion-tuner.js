@@ -1,6 +1,6 @@
 // ==========================================
 // לוח כיוונון לתנועה של האובייקטים (כלי עבודה, לא חלק מהאתר).
-// נפתח כשהאתר רץ על המחשב (http://localhost:8000), או בכתובת שמסתיימת ב-?tune
+// נפתח רק בכתובת שמסתיימת ב-?tune, למשל http://localhost:8000/?tune
 // כל שינוי בסליידר משפיע מיד. "העתק ערכים" מעתיק את כל המספרים, כדי להדביק בצ'אט.
 // ==========================================
 
@@ -158,11 +158,14 @@ function createRow({ key, label, min, max, step }, values) {
     values[key] = Number(slider.value);
     number.value = slider.value;
   });
+  // מספר שהוקלד: נכנס לתוקף רק אם הוא בטווח של הסליידר.
+  // מספר לא תקין (למשל 0 במשקל) שובר את החישוב, והאובייקטים נעלמים
   number.addEventListener('input', () => {
-    if (number.value === '') return;  // באמצע הקלדה
+    if (!isInRange(number.value, min, max)) return;  // ריק, באמצע הקלדה או מחוץ לטווח
     values[key] = Number(number.value);
     slider.value = number.value;
   });
+  number.addEventListener('change', refresh);  // בסוף ההקלדה: מציגים את הערך שבאמת בשימוש
   refresh();
 
   element.append(name, slider, number);
@@ -203,11 +206,18 @@ function save(values, original) {
   }
 }
 
+function isInRange(value, min, max) {
+  return value !== '' && value !== null && Number.isFinite(Number(value)) && Number(value) >= min && Number(value) <= max;
+}
+
+// רק ערכים תקינים: של סליידר שקיים, ובטווח שלו
 function restoreSaved(values) {
+  const controls = HERO_CONTROLS.flatMap((group) => group.controls);
   try {
     const saved = JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}');
     for (const [key, value] of Object.entries(saved)) {
-      if (key in values) values[key] = value;
+      const control = controls.find((c) => c.key === key);
+      if (control && isInRange(value, control.min, control.max)) values[key] = Number(value);
     }
   } catch {
     // אין ערכים שמורים

@@ -27,7 +27,7 @@ import { createEukaTea } from './3d objects/euka-tea-object/euka-tea-object.js';
 // ב-Classic View בטלפון הפריים ארוך (393×2028), וגוללים בו. לכן שם המיקום נמדד מלמעלה.
 const FRAMES = {
   desktop: { width: 1440, height: 823, objectSize: 1.25, calmSize: 1 },  // objectSize: פי כמה גדול מהפיגמה
-  mobile: { width: 393, height: 670, objectSize: 1.25, calmSize: 1 },    // calmSize: ב-Classic View וב-About
+  mobile: { width: 393, height: 670, objectSize: 1.4, calmSize: 1 },    // calmSize: ב-Classic View וב-About
 };
 
 // הסדר כאן הוא הסדר בשורה של Classic View (משמאל לימין / מלמעלה למטה)
@@ -36,7 +36,7 @@ const OBJECTS = [
     name: 'REACH',
     create: createReach,
     tilt: [0.25, -0.4, 0.12],    // נראה קצת מלמעלה ומימין, עולה ימינה
-    label: 'Product Design, UX/UI, Branding',  // הטקסט שמופיע בהובר / בלחיצה ממושכת (כמו הכותרת ב-Classic View)
+    label: 'Product Design, UX/UI, Branding',  // הטקסט שמופיע בהובר ובזמן שמחזיקים את האובייקט (כמו הכותרת ב-Classic View)
     desktop: [899, 134, 358, 180],
     mobile: [213, 83, 151, 76],
     classicDesktop: [37, 392, 309, 156],
@@ -88,14 +88,14 @@ const OBJECTS = [
 
 // --- ההתנהגות בתצוגה המשחקית: כל המספרים שאפשר לכוונן (בלוח הכיוונון, motion-tuner.js). זהה במחשב ובטלפון ---
 const MOTION = {
-  weight: 2.1,           // משקל, זהה לכל האובייקטים: כבד = זז ומסתובב פחות ונרגע מהר יותר
-  driftSpeed: 11,        // כמה פיקסלים בשנייה האובייקט נודד בחלל כל הזמן
-  driftWander: 0.9,      // כמה מהר כיוון הנדידה משתנה
+  weight: 0.9,           // משקל, זהה לכל האובייקטים: כבד = זז ומסתובב פחות ונרגע מהר יותר
+  driftSpeed: 25,        // כמה פיקסלים בשנייה האובייקט נודד בחלל כל הזמן
+  driftWander: 1.45,     // כמה מהר כיוון הנדידה משתנה
   floatHeight: 11,       // כמה פיקסלים האובייקט עולה ויורד בריחוף
   floatTurn: 0.04,       // כמה הוא מתנדנד בזמן הריחוף (ברדיאנים)
   floatSway: 0.26,       // כמה הוא מסתובב הלוך ושוב מצד לצד (ברדיאנים)
-  floatSpeed: 0.25,      // כמה ריחופים בשנייה, בערך
-  mouseTilt: 0.44,       // כמה הוא נוטה לכיוון העכבר (ברדיאנים)
+  floatSpeed: 0.4,       // כמה ריחופים בשנייה, בערך
+  mouseTilt: 0.08,       // כמה הוא נוטה לכיוון העכבר (ברדיאנים)
   mouseShift: 5,         // כמה פיקסלים הוא זז לכיוון העכבר
   mouseSmooth: 9,        // כמה מהר הוא מגיב לעכבר (גבוה = מהר)
   throwSlowdown: 2.1,    // כמה מהר זריקה נעצרת (גבוה = נעצר מהר)
@@ -107,8 +107,6 @@ const MOTION = {
   liftWhenHeld: 150,     // כמה האובייקט "מתקרב" למסך כשמחזיקים אותו
   tapMaxMove: 6,         // תזוזה מקסימלית (בפיקסלים) שעדיין נחשבת נגיעה ולא גרירה
   tapMaxTime: 300,       // זמן מקסימלי (במילישניות) שעדיין נחשב נגיעה
-  longPressTime: 450,    // כמה זמן (במילישניות) מחזיקים אצבע כדי שהטקסט יופיע בטלפון
-  labelStayTime: 1500,   // כמה זמן הטקסט נשאר אחרי שמרימים את האצבע
 };
 
 // --- Classic View: ריחוף שקט במקום ---
@@ -358,16 +356,12 @@ let pointerInside = false;             // העכבר נמצא מעל ההירו 
 let lastClient = { x: 0, y: 0 };       // המיקום האחרון של העכבר במסך
 
 // --- הטקסט שמופיע ליד אובייקט ---
-// במחשב: כשהעכבר מעל האובייקט. בטלפון: בלחיצה ממושכת עליו.
+// במחשב: כשהעכבר מעל האובייקט וכל עוד מחזיקים אותו. בטלפון: כל עוד האצבע עליו.
 const label = document.querySelector('.hero-object-label');
 const labelText = label.querySelector('.hero-object-label-text');  // השורות עם הרקע השחור
 let labelItem = null;      // האובייקט שהטקסט שלו מוצג עכשיו
-let labelBlocked = null;   // אחרי לחיצה / גרירה / זריקה: הטקסט של האובייקט הזה לא חוזר עד שהעכבר עוזב אותו
-let longPressTimer = null;
-let labelHideTimer = null;
 
 function showLabel(item) {
-  clearTimeout(labelHideTimer);
   if (!item || !item.label) { hideLabel(); return; }
   if (labelItem !== item) labelText.textContent = item.label;
   labelItem = item;
@@ -446,17 +440,8 @@ hero.addEventListener('pointerdown', (event) => {
   item.pressStart = { x: event.clientX, y: event.clientY, time: event.timeStamp };
   hero.style.cursor = 'grabbing';
 
-  // משחקים באובייקט: הטקסט נעלם כדי לא להפריע
-  if (event.pointerType !== 'touch') {
-    hideLabel();
-    labelBlocked = item;
-  }
-
-  // בטלפון: אם האצבע נשארת על האובייקט בלי לזוז, הטקסט שלו מופיע
-  if (event.pointerType === 'touch') {
-    clearTimeout(longPressTimer);
-    longPressTimer = setTimeout(() => showLabel(item), MOTION.longPressTime);
-  }
+  // הטקסט של האובייקט מופיע ונשאר כל עוד מחזיקים אותו (גם בגרירה), במחשב ובטלפון
+  showLabel(item);
 });
 
 // ב-Classic View וב-About: לחיצה על אובייקט מתחילה לסובב אותו במקום
@@ -495,13 +480,6 @@ hero.addEventListener('pointermove', (event) => {
 
   if (!held) return;
 
-  // אם האצבע זזה, זו גרירה ולא לחיצה ממושכת
-  const movedSincePress = Math.hypot(event.clientX - held.pressStart.x, event.clientY - held.pressStart.y);
-  if (movedSincePress > MOTION.tapMaxMove) {
-    clearTimeout(longPressTimer);
-    if (labelItem === held) hideLabel();  // גוררים: הטקסט נעלם
-    labelBlocked = held;
-  }
 
   // גרירה: האובייקט הולך אחרי העכבר
   const pointer = toWorld(event.clientX, event.clientY);
@@ -552,12 +530,8 @@ function release(event) {
   held = null;
   hero.style.cursor = '';
 
-  // בטלפון: הטקסט נשאר עוד רגע אחרי שמרימים את האצבע, ואז נעלם
-  clearTimeout(longPressTimer);
-  if (event.pointerType === 'touch') {
-    labelBlocked = null;
-    if (labelItem) labelHideTimer = setTimeout(hideLabel, MOTION.labelStayTime);
-  }
+  // בטלפון: כשהאצבע משתחררת הטקסט נעלם. במחשב הוא נשאר אם העכבר עדיין על האובייקט (הובר)
+  if (event.pointerType === 'touch') hideLabel();
 }
 
 hero.addEventListener('pointerup', release);
@@ -896,8 +870,7 @@ function update() {
     hero.style.cursor = hovered ? 'grab' : '';
   }
   if (playful && pointerInside && !held) {
-    if (hovered !== labelBlocked) labelBlocked = null;  // העכבר עזב את האובייקט ששיחקו בו
-    if (hovered && hovered !== labelBlocked) showLabel(hovered);
+    if (hovered) showLabel(hovered);
     else hideLabel();
   }
 
@@ -1009,8 +982,7 @@ function update() {
 update();
 
 // לוח הכיוונון לתנועה: כלי עבודה, לא חלק מהאתר.
-// נפתח כשהאתר רץ על המחשב (localhost), או בכל כתובת שמסתיימת ב-?tune
-const onMyComputer = ['localhost', '127.0.0.1'].includes(location.hostname);
-if (onMyComputer || new URLSearchParams(location.search).has('tune')) {
+// מוסתר. נפתח רק בכתובת שמסתיימת ב-?tune (למשל localhost:8000/?tune)
+if (new URLSearchParams(location.search).has('tune')) {
   import('./motion-tuner.js').then(({ openTuner }) => openTuner(MOTION));
 }
