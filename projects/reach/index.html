@@ -25,28 +25,56 @@
 </head>
 <body class="page-light">
 
-  <!-- עמוד פרויקט: REACH. כרגע מקום שמור לתוכן (placeholder) -->
-  <main class="project">
+  <!-- עמוד הפרויקט REACH (case study) -->
+  <main class="case">
 
-    <!-- למעלה: יצירת קשר, כמו בהירו -->
-    <nav class="hero-nav project-nav">
+    <!-- הפס העליון: יצירת קשר על רקע לבן. נשאר למעלה גם כשגוללים -->
+    <nav class="hero-nav case-bar">
       <a class="hero-link hero-link-two-lines hero-link-instagram" href="https://www.instagram.com/orsi.221/" target="_blank" rel="noopener"><span class="hero-link-line">Instagram</span><br><span class="hero-link-line">[orsi.221]</span></a>
       <a class="hero-link hero-link-two-lines hero-link-linkedin" href="https://www.linkedin.com/in/orsinalevich/" target="_blank" rel="noopener"><span class="hero-link-line">LinkedIn</span><br><span class="hero-link-line">[Connect]</span></a>
       <a class="hero-link hero-link-two-lines hero-link-email" href="mailto:orsinalevich@gmail.com" data-copy-email><span class="hero-link-line">E-Mail</span><br><span class="hero-link-line copy-email-feedback" aria-live="polite">[Say Hi]</span></a>
+      <!-- בטלפון: במקום יצירת הקשר, הפרויקט הבא -->
+      <a class="hero-link case-bar-next" href="../talk-about-it/">[Next Project →]</a>
     </nav>
 
-    <!-- מה יש בפרויקט -->
-    <ul class="project-parts">
-      <li>→ Mobile App</li>
-      <li>→ Landing Page [Web]</li>
-      <li>→ Brand Identity</li>
-    </ul>
+    <!-- הפתיחה: שם הפרויקט, התפקיד שלי, ומה הפרויקט -->
+    <header class="case-intro">
+      <h1 class="case-title">REACH</h1>
 
-    <!-- האובייקט של הפרויקט (project-object.js). לחיצה עליו מחזירה להירו -->
-    <a class="project-object project-object-reach" href="../../" data-object="reach" aria-label="Back to home"></a>
+      <h2 class="case-label case-role-label">My Role</h2>
+      <p class="case-text case-roles">Product Design<br>UX/UI<br>Branding</p>
+
+      <p class="case-text case-summary">An AI-powered training app that builds Personalized MoonBoard workouts for professional bouldering climbers based on their goals &amp; body sensations.</p>
+      <p class="case-text case-credits">“It’s a Startup!” course, Bezalel, 2025<br>in collaboration with Itay Ben Mayor</p>
+
+      <!-- האובייקט של הפרויקט (project-object.js): אפשר לסובב ולשחק בו, ולחיצה מחזירה להירו -->
+      <a class="project-object case-object" href="../../" data-object="reach" aria-label="Back to home"></a>
+    </header>
+
+    <!-- הסרטון הגדול: מתנגן לבד, בלי קול, בלופ -->
+    <video class="case-media case-video-wide" src="media/intro.mp4" autoplay muted loop playsinline preload="auto"></video>
+
+    <!-- הבעיה -->
+    <section class="case-row">
+      <h2 class="case-label">The Problem</h2>
+      <p class="case-text case-row-text">Unlike running or weightlifting, Bouldering has no established training methods. One climber I interviewed had hit a plateau, and was unsure what to do beyond trying other climbing routes. He knew the MoonBoard could be helpful, but not how to use it to reach his personal goals.</p>
+    </section>
+
+    <!-- שלושה מסכים מהאפליקציה על רקע שחור: סרטון משמאל, ושתי תמונות -->
+    <div class="case-media case-phones">
+      <video class="case-phone case-phone-left" src="media/phone-home.mp4" autoplay muted loop playsinline preload="auto"></video>
+      <img class="case-phone case-phone-middle" src="media/phone-moonboard.jpg" alt="The Moon Board screen of the Reach app">
+      <img class="case-phone case-phone-right" src="media/phone-workout-card.png" alt="A workout card in the Reach app">
+    </div>
+
+    <!-- החלטה 1 -->
+    <section class="case-row">
+      <h2 class="case-label">Decision 1</h2>
+      <p class="case-text case-row-text">Most training apps are built to record and log workouts. We started there too, designing around recording and self-filming. But for climbing, that wasn’t enough. We wanted Reach to not just track progress, but create it. Reach generates each workout, learns the climber over time, and uses what they log about their body to shape the next one.</p>
+    </section>
 
     <!-- הפוטר: כל הפרויקטים (Classic View בעמוד הבית) והפרויקט הבא -->
-    <nav class="hero-nav project-footer">
+    <nav class="hero-nav case-footer">
       <a class="hero-link project-all" href="../../#classic">[All Projects]</a>
       <a class="hero-link project-next" href="../talk-about-it/">[Next Project →]</a>
     </nav>

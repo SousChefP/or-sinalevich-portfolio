@@ -1,7 +1,8 @@
 // ==========================================
 // האובייקט התלת-ממדי בעמוד פרויקט.
 // מרחף בשקט במקום, נוטה קצת לכיוון העכבר ומתקרב כשהעכבר עליו.
-// הוא בתוך קישור (project-object ב-HTML), אז לחיצה עליו מחזירה להירו.
+// אפשר לסובב אותו בגרירה (הוא לא זז ממקומו), ולחיצה קצרה מחזירה להירו,
+// לתצוגה שממנה הגיעו (hero.js שומר אותה כשפותחים פרויקט).
 // איזה אובייקט: לפי data-object בקישור (reach, talk-about-it, small-spaces, euka-tea)
 // ==========================================
 
@@ -29,10 +30,10 @@ const IDLE = {
   floatSway: 0.08,       // כמה הוא מסתובב הלוך ושוב
   mouseTilt: 0.12,       // כמה הוא נוטה לכיוון העכבר
   hoverLift: 25,         // כמה הוא "מתקרב" למסך כשהעכבר עליו
+  dragSpin: 0.15,        // כמה גרירה מסובבת אותו
+  returnSpring: 3.5,     // כמה חזק הוא חוזר לזווית המנוחה אחרי סיבוב
+  tapMaxMove: 6,         // תזוזה מקסימלית (בפיקסלים) שעדיין נחשבת לחיצה ולא גרירה
 };
-
-// הציור גדול מהמלבן של האובייקט, כדי שהאובייקט לא ייחתך כשהוא מרחף ונוטה
-const CANVAS_GROW = 1.6;
 
 const REDUCE_MOTION = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
@@ -43,7 +44,10 @@ const item = OBJECTS[link.dataset.object];
 const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });  // alpha: רקע שקוף
 renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 renderer.toneMapping = THREE.ACESFilmicToneMapping;
-link.appendChild(renderer.domElement);
+// הציור מכסה את כל המסך (שקוף, ולא תופס לחיצות), כדי שהאובייקט אף פעם לא ייחתך.
+// המקום והגודל של האובייקט נלקחים מהקישור (project-object), שבו גם תופסים את הלחיצות
+renderer.domElement.classList.add('project-object-canvas');
+document.body.appendChild(renderer.domElement);
 
 const scene = new THREE.Scene();
 const pmrem = new THREE.PMREMGenerator(renderer);
@@ -63,19 +67,15 @@ scene.add(object);
 // הגודל שלו בזווית המנוחה, לפני הקטנה (נמדד פעם אחת)
 object.updateMatrixWorld(true);
 const baseSize = new THREE.Box3().setFromObject(object, true).getSize(new THREE.Vector3());
-let size = 1;
 
-// הציור והמצלמה לפי גודל המלבן: יחידה אחת בעולם התלת-ממדי = פיקסל אחד במסך
+// הציור והמצלמה לפי גודל המסך: יחידה אחת בעולם התלת-ממדי = פיקסל אחד במסך
 function layout() {
-  const width = link.clientWidth;
-  const height = link.clientHeight;
-  renderer.setSize(width * CANVAS_GROW, height * CANVAS_GROW);
-  camera.aspect = width / height;
-  camera.position.z = (height * CANVAS_GROW / 2) / Math.tan(THREE.MathUtils.degToRad(camera.fov / 2));
+  renderer.setSize(window.innerWidth, window.innerHeight);
+  camera.aspect = window.innerWidth / window.innerHeight;
+  camera.position.z = (window.innerHeight / 2) / Math.tan(THREE.MathUtils.degToRad(camera.fov / 2));
   camera.updateProjectionMatrix();
-  size = Math.min(width / baseSize.x, height / baseSize.y);  // ממלא את המלבן בלי לחרוג ממנו
 }
-new ResizeObserver(layout).observe(link);
+window.addEventListener('resize', layout);
 
 // --- העכבר ---
 const mouse = new THREE.Vector2();       // איפה העכבר, מ-‎-1 עד 1
@@ -83,11 +83,58 @@ const mouseTilt = new THREE.Vector2();   // ההטיה הנוכחית (נרגע�
 let hovered = false;
 let lift = 0;
 
+// --- חזרה להירו: לתצוגה שממנה הגיעו (המשחקית, Classic View או About) ---
+let heroView = 'playful';
+try {
+  heroView = sessionStorage.getItem('heroView') || 'playful';
+} catch {
+  // בלי שמירה: חוזרים לתצוגה המשחקית
+}
+if (heroView !== 'playful') link.href = `${link.getAttribute('href')}#${heroView}`;
+
+// --- סיבוב בגרירה ---
+const spin = new THREE.Vector2();          // סיבוב נוסף על זווית המנוחה (x, y)
+const spinVelocity = new THREE.Vector2();  // מהירות הסיבוב
+let press = null;                          // איפה התחילה הלחיצה, ואיפה האצבע / העכבר עכשיו
+
+link.addEventListener('dragstart', (event) => event.preventDefault());  // בלי "לגרור את הקישור"
+
+link.addEventListener('pointerdown', (event) => {
+  press = { startX: event.clientX, startY: event.clientY, x: event.clientX, y: event.clientY, moved: false };
+  link.setPointerCapture(event.pointerId);
+});
+
 window.addEventListener('pointermove', (event) => {
   mouse.set((event.clientX / window.innerWidth) * 2 - 1, (event.clientY / window.innerHeight) * 2 - 1);
+  if (!press) return;
+  spinVelocity.y += (event.clientX - press.x) * IDLE.dragSpin;
+  spinVelocity.x += (event.clientY - press.y) * IDLE.dragSpin;
+  press.x = event.clientX;
+  press.y = event.clientY;
+  if (Math.hypot(event.clientX - press.startX, event.clientY - press.startY) > IDLE.tapMaxMove) press.moved = true;
 });
+
+const endPress = () => { setTimeout(() => { press = null; }); };  // אחרי ה-click, כדי שיֵדע אם גררו
+link.addEventListener('pointerup', endPress);
+link.addEventListener('pointercancel', endPress);
+
+// גרירה היא משחק, לא לחיצה: הקישור לא נפתח
+link.addEventListener('click', (event) => {
+  if (press && press.moved) event.preventDefault();
+});
+
 link.addEventListener('pointerenter', (event) => { if (event.pointerType === 'mouse') hovered = true; });
 link.addEventListener('pointerleave', () => { hovered = false; });
+
+// הסיבוב נמשך חזרה לזווית המנוחה, כמו קפיץ (ואחרי סיבוב שלם משלים לסיבוב הקרוב)
+function springBack(axis, dt) {
+  const fullTurn = Math.PI * 2;
+  const rest = Math.round(spin[axis] / fullTurn) * fullTurn;
+  const stiffness = IDLE.returnSpring;
+  const friction = 1.2 * Math.sqrt(stiffness);
+  spinVelocity[axis] += (-(spin[axis] - rest) * stiffness - spinVelocity[axis] * friction) * dt;
+  spin[axis] += spinVelocity[axis] * dt;
+}
 
 // --- כל פריים ---
 const clock = new THREE.Clock();
@@ -100,12 +147,21 @@ function update() {
   const wave = REDUCE_MOTION ? 0 : Math.sin(time * IDLE.floatSpeed * Math.PI + floatPhase);
   const sway = REDUCE_MOTION ? 0 : Math.sin(time * 0.37 + floatPhase * 2);
   mouseTilt.lerp(mouse, 1 - Math.exp(-4 * dt));
-  lift += ((hovered ? IDLE.hoverLift : 0) - lift) * (1 - Math.exp(-8 * dt));
+  lift += ((hovered || press ? IDLE.hoverLift : 0) - lift) * (1 - Math.exp(-8 * dt));
+  springBack('x', dt);
+  springBack('y', dt);
 
-  object.position.set(0, wave * IDLE.floatHeight, lift);
+  // המקום והגודל: מרכז הקישור על המסך (גם כשגוללים), והאובייקט ממלא את המלבן שלו
+  const box = link.getBoundingClientRect();
+  const size = Math.min(box.width / baseSize.x, box.height / baseSize.y);
+  object.position.set(
+    box.left + box.width / 2 - window.innerWidth / 2,
+    window.innerHeight / 2 - (box.top + box.height / 2) + wave * IDLE.floatHeight,
+    lift,
+  );
   object.rotation.set(
-    item.tilt[0] + mouseTilt.y * IDLE.mouseTilt,
-    item.tilt[1] + mouseTilt.x * IDLE.mouseTilt + sway * IDLE.floatSway,
+    item.tilt[0] + spin.x + mouseTilt.y * IDLE.mouseTilt,
+    item.tilt[1] + spin.y + mouseTilt.x * IDLE.mouseTilt + sway * IDLE.floatSway,
     item.tilt[2] + wave * IDLE.floatTurn,
   );
   object.scale.setScalar(size);

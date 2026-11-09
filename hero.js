@@ -521,8 +521,14 @@ function isTap(item, event) {
   return event.type !== 'pointercancel' && moved < MOTION.tapMaxMove && time < MOTION.tapMaxTime;
 }
 
-// לחיצה על אובייקט (בלי לגרור): פותחת את עמוד הפרויקט שלו
+// לחיצה על אובייקט (בלי לגרור): פותחת את עמוד הפרויקט שלו.
+// שומרים מאיזו תצוגה באו, כדי שהאובייקט בעמוד הפרויקט יחזיר בדיוק לשם (project-object.js)
 function openProject(item) {
+  try {
+    sessionStorage.setItem('heroView', view);
+  } catch {
+    // בלי שמירה (למשל בחלון פרטי): החזרה תהיה לתצוגה המשחקית
+  }
   window.location.href = item.page;
 }
 
