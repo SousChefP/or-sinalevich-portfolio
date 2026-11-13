@@ -1572,11 +1572,6 @@ button.hero-link {
   transform: none;
 }
 
-/* שתי פסקאות: שורה ריקה ביניהן */
-.study-chapter-text p + p {
-  margin-top: calc(var(--study-leading) * 1em);
-}
-
 @media (prefers-reduced-motion: reduce) {
   .study-chapter-body,
   .study-chapter-text {
