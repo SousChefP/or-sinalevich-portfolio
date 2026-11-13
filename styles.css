@@ -105,6 +105,19 @@
   --study-footer-shift: 10px;               /* הקבוצה 5 פיקסלים שמאלה מהמרכז, כמו בפיגמה */
   --study-footer-text-top: 263px;           /* מלמעלה עד הכותרות */
   --study-contact-top: 448px;               /* מלמעלה עד יצירת הקשר בתחתית הפוטר */
+  /* עמוד 404: פריים של 1440×781 במחשב ו-393×670 בטלפון, שגדל וקטן לפי המסך */
+  --not-found-scale: min(calc(100vw / 1440), calc(100svh / 781));
+  --not-found-size: 600;                    /* "404" */
+  --not-found-leading: 100;
+  --not-found-x: -27.5;                     /* "404" קצת שמאלה מהמרכז */
+  --not-found-y: -64.5;                     /* השורה של "404" ביחס לאמצע הגובה */
+  --not-found-subtitle-size: 36;            /* "This page Was Not Found" */
+  --not-found-subtitle-leading: 100px;
+  --not-found-subtitle-width: max-content;  /* במחשב בשורה אחת */
+  --not-found-subtitle-x: 0;
+  --not-found-subtitle-y: 165.5;            /* מרכז השורה ביחס לאמצע הגובה */
+  --not-found-home-y: 265.5;                /* [Go Back Home] ביחס לאמצע הגובה */
+  --not-found-home-x: 0;
   --study-footer-about-top: 9px;            /* מהכותרת עד המשפט */
   --project-parts-size: 20px;               /* בעמוד פרויקט: הרשימה "→ Mobile App" */
   --project-parts-leading: 31px;            /* המרחק בין השורות ברשימה (בפיגמה) */
@@ -1772,4 +1785,87 @@ button.hero-link {
 .study-contact-instagram {
   right: var(--study-margin);
   text-align: right;
+}
+
+/* ==========================================
+   עמוד 404 (404.html): "404" ענק, קישור הביתה, ומילה מכרום שמרחפת מעליהם (not-found.js).
+   הכל ממוקם ביחס לאמצע המסך, בפיקסלים של הפריים בפיגמה כפול not-found-scale
+   ========================================== */
+.not-found-page {
+  overflow: hidden;
+  touch-action: none;   /* בטלפון: גרירת המילה לא גוללת ולא מגדילה את העמוד */
+  user-select: none;
+}
+
+.not-found {
+  position: relative;
+  height: 100svh;
+}
+
+.not-found-title {
+  position: absolute;
+  left: calc(50% + var(--not-found-x) * var(--not-found-scale));
+  top: calc(50% + var(--not-found-y) * var(--not-found-scale));
+  transform: translate(-50%, -50%);
+  font-family: var(--font-hero-name);
+  font-size: calc(var(--not-found-size) * var(--not-found-scale));
+  font-style: italic;
+  font-weight: var(--font-weight-regular);
+  line-height: calc(var(--not-found-leading) * var(--not-found-scale));
+  white-space: nowrap;
+}
+
+.not-found-subtitle {
+  position: absolute;
+  left: calc(50% + var(--not-found-subtitle-x) * var(--not-found-scale));
+  top: calc(50% + var(--not-found-subtitle-y) * var(--not-found-scale));
+  width: var(--not-found-subtitle-width);
+  transform: translate(-50%, -50%);
+  font-family: var(--font-hero-name);
+  font-size: calc(var(--not-found-subtitle-size) * var(--not-found-scale));
+  font-style: italic;
+  line-height: var(--not-found-subtitle-leading);
+  text-align: center;
+}
+
+.not-found-home {
+  left: calc(50% + var(--not-found-home-x) * var(--not-found-scale));
+  top: calc(50% + var(--not-found-home-y) * var(--not-found-scale));
+  transform: translateX(-50%);
+  font-family: var(--font-hero-ui);
+  font-size: var(--study-ui-size);
+}
+
+/* המילה מצוירת מעל הכל, אבל הלחיצות עוברות דרך הציור (not-found.js בודק אם לחצו על המילה) */
+.not-found-canvas {
+  position: fixed;
+  inset: 0;
+  z-index: 5;
+  pointer-events: none;
+}
+
+/* הסמן: יד פתוחה מעל המילה, וסגורה כשמחזיקים אותה */
+.not-found-page.is-over-word {
+  cursor: grab;
+}
+
+.not-found-page.is-holding-word {
+  cursor: grabbing;
+}
+
+/* --- בטלפון: הפריים של 393×670 --- */
+@media (max-width: 767px) {
+  :root {
+    --not-found-scale: min(calc(100vw / 393), calc(100svh / 670));
+    --not-found-size: 250;
+    --not-found-x: -10.9;
+    --not-found-y: -134;
+    --not-found-subtitle-size: 26;
+    --not-found-subtitle-leading: 1.1;
+    --not-found-subtitle-width: calc(140 * var(--not-found-scale));  /* בטלפון בשתי שורות */
+    --not-found-subtitle-x: 0.5;
+    --not-found-subtitle-y: -2;
+    --not-found-home-y: 165;
+    --not-found-home-x: 0.5;
+  }
 }

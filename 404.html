@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <!-- מתאים את העמוד לרוחב המסך בטלפון ובטאבלט -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>404 – Or Sinalevich</title>
+
+  <!-- הפונטים מהפיגמה, מ-Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Aldrich&family=Cal+Sans&family=Crimson+Text:ital@0;1&display=swap">
+
+  <!-- העמוד הזה מופיע בכל כתובת שלא קיימת (גם /a/b/c), אז כל הנתיבים מתחילים מהשורש: "/" -->
+  <link rel="stylesheet" href="/styles.css">
+
+  <!-- three.js למילה התלת-ממדית (כמו בעמוד הבית) -->
+  <script type="importmap">
+    {
+      "imports": {
+        "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
+        "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"
+      }
+    }
+  </script>
+</head>
+<body class="page-light not-found-page">
+
+  <!-- עמוד 404: המספר הגדול, המשפט שמתחתיו, קישור הביתה, ומילה מכרום שמרחפת ומתחלפת בכל פגיעה בקצה (not-found.js) -->
+  <main class="not-found">
+    <h1 class="not-found-title">404</h1>
+    <p class="not-found-subtitle">This page Was Not Found</p>
+    <a class="hero-link not-found-home" href="/">[Go Back Home]</a>
+  </main>
+
+  <script src="/hover-line.js"></script>
+  <script type="module" src="/not-found.js"></script>
+
+</body>
+</html>

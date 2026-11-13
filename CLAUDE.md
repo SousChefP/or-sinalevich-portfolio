@@ -15,6 +15,8 @@
 ```
 index.html               ← עמוד הבית (הכתובת /)
 coming-soon/index.html   ← הכתובת /coming-soon
+404.html                 ← עמוד 404: מופיע בכל כתובת שלא קיימת (Vercel). כל הנתיבים בו מתחילים ב-"/"
+not-found.js             ← המילה מכרום בעמוד 404: מרחפת, נזרקת, ומתחלפת בכל פגיעה בקצה המסך
 process/index.html       ← הכתובת /process
 projects/<name>/index.html ← עמודי הפרויקטים: /projects/reach, talk-about-it, small-spaces, euka-tea
 project-object.js        ← האובייקט התלת-ממדי בעמוד פרויקט (לחיצה עליו מחזירה להירו)
@@ -26,7 +28,7 @@ hover-line.js            ← הקו התחתון שמתגלה מהאמצע בה�
 motion-tuner.js          ← לוח כיוונון לתנועה של האובייקטים (כלי עבודה: נפתח רק ב-/?tune)
 images/                  ← כל התמונות
 fonts/                   ← פונטים מקומיים (ABC Gravity ו-Reckless, לטקסט מעל סרטון ה-Impact)
-3d objects/              ← האובייקטים התלת-ממדיים להירו
+3d objects/              ← האובייקטים התלת-ממדיים להירו, ומילי הכרום לעמוד 404 (3d objects/404 page)
 ```
 - כל עמוד חוץ מעמוד הבית נמצא בתיקייה משלו, בקובץ index.html. כך הכתובת שלו נקייה (/process ולא /process.html).
 - בעמודים שבתוך תיקייה, הנתיבים לקבצים משותפים מתחילים ב-`../` (למשל `../styles.css`, `../images/...`).
