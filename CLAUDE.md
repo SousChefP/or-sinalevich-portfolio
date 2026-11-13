@@ -18,12 +18,14 @@ coming-soon/index.html   ← הכתובת /coming-soon
 process/index.html       ← הכתובת /process
 projects/<name>/index.html ← עמודי הפרויקטים: /projects/reach, talk-about-it, small-spaces, euka-tea
 project-object.js        ← האובייקט התלת-ממדי בעמוד פרויקט (לחיצה עליו מחזירה להירו)
+case-study.js            ← בעמוד פרויקט במחשב: הטקסט של הקייס סטאדי מתחלף לפי הדימוי שעל המסך
 styles.css               ← גיליון הסגנונות היחיד באתר
 hero.js                  ← האובייקטים התלת-ממדיים בהירו, והמעבר בין התצוגות: Classic View (‎/#classic) ו-About me (‎/#about)
 copy-email.js            ← העתקת כתובת המייל בלחיצה (במחשב)
 hover-line.js            ← הקו התחתון שמתגלה מהאמצע בהובר על הקישורים בהירו
 motion-tuner.js          ← לוח כיוונון לתנועה של האובייקטים (כלי עבודה: נפתח רק ב-/?tune)
 images/                  ← כל התמונות
+fonts/                   ← פונטים מקומיים (ABC Gravity ו-Reckless, לטקסט מעל סרטון ה-Impact)
 3d objects/              ← האובייקטים התלת-ממדיים להירו
 ```
 - כל עמוד חוץ מעמוד הבית נמצא בתיקייה משלו, בקובץ index.html. כך הכתובת שלו נקייה (/process ולא /process.html).

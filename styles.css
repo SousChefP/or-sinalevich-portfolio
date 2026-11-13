@@ -1,6 +1,19 @@
 /* ==========================================
    משתנים: הצבעים, הפונטים והריווחים מהפיגמה
    ========================================== */
+/* פונטים מקומיים (fonts/): רק לטקסט מעל סרטון המטפס בעמוד REACH */
+@font-face {
+  font-family: "ABC Gravity";
+  src: url("fonts/ABCGravity-Normal-Trial.otf") format("opentype");
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Reckless Standard S";
+  src: url("fonts/RecklessStandardS-TRIAL-Regular.ttf") format("truetype");
+  font-display: swap;
+}
+
 :root {
   /* צבעים */
   --color-black: #000000;
@@ -44,6 +57,55 @@
   --case-column: 552px;                     /* רוחב טור הטקסט מימין */
   --case-gap: 72px;                         /* הרווח בין החלקים בעמוד */
   --case-bar-height: 74px;                  /* הפס העליון הלבן */
+  /* עמוד פרויקט חדש במחשב (study): הגדלים מהפיגמה, בפיקסלים קבועים */
+  --study-ui-size: 16px;                    /* הקישורים בפס העליון (UI) */
+  --study-bar-height: 45px;                 /* הפס העליון הלבן */
+  --study-bar-text-top: 16px;               /* הקישורים בפס: 16 מלמעלה */
+  --study-margin: 29px;                     /* השוליים בצדדים */
+  --study-heading-size: 30px;               /* Desktop Heading */
+  --study-body-size: 20px;                  /* Desktop Body */
+  --study-leading: 1.1;                     /* גובה השורה של שניהם */
+  --study-display-size: 60px;               /* "Reach" בקייס סטאדי (קטן מהפיגמה, כדי שהטקסט ייכנס למסך) */
+  --study-display-leading: 60px;
+  --study-header-top: 41px;                 /* מהפס עד "Overview:" */
+  --study-top-height: 300px;                /* מ-"Overview:" עד "My Role:" */
+  --study-object-top: 14px;                 /* האובייקט מתחיל קצת מתחת ל-"Overview:" */
+  --study-object-width: 470px;
+  --study-object-shift: 42px;               /* האובייקט קצת שמאלה ממרכז החלק שלו */
+  --study-overview-width: 446px;            /* הטור של הסקירה מימין */
+  --study-overview-gap: 11px;               /* מ-"Overview:" עד הטקסט */
+  --study-role-gap: 3px;                    /* מ-"My Role:" עד התפקידים */
+  --study-paragraph-gap: 27px;              /* בין הסקירה לשורת הקורס */
+  --study-cover-gap: 34px;                  /* מהתפקידים עד התמונה */
+  --study-cover-shade: rgba(78, 78, 78, 0.36);  /* שכבה אפורה שקופה מעל התמונה */
+  /* הקייס סטאדי */
+  --study-text-column: 410px;               /* רוחב טור הטקסט משמאל */
+  --study-columns-gap: 57px;                /* בין הטקסט לדימויים */
+  --study-media-gap: 20px;                  /* בין הדימויים */
+  --study-title-top: 42px;                  /* מתחת לפס העליון עד "Reach" */
+  --study-links-gap: 8px;                   /* מ-"Reach" עד הקישורים */
+  --study-link-spacing: 22px;               /* בין App flow ל-landing page */
+  --study-chapters-top: 40px;               /* מהקישורים עד הכותרת הראשונה */
+  --study-chapter-gap: 9px;                 /* בין כותרות החלקים */
+  --study-chapter-text-top: 17px;           /* מהכותרת עד הטקסט שלה */
+  --study-chapter-text-bottom: 27px;        /* מהטקסט עד הכותרת הבאה (36 פחות הרווח שבין כותרות) */
+  --study-chapter-time: 0.5s;               /* כמה זמן לוקח לטקסט להתחלף */
+  --study-chapter-shift: 24px;              /* כמה הטקסט זז למעלה / למטה כשהוא מתחלף */
+  --study-panel: #F2F2F2;                   /* הרקע האפור מאחורי המסכים */
+  --study-panel-video: #EFEFEF;             /* הרקע מאחורי סרטון הטיימר */
+  --study-impact-dark: rgba(0, 0, 0, 0.27);       /* שכבה כהה מעל סרטון המטפס */
+  --study-impact-tint: rgba(254, 81, 71, 0.21);   /* שכבה אדומה מעל סרטון המטפס */
+  --study-impact-red: #FE5147;              /* הטקסט האדום מעל הסרטון */
+  --study-impact-leading: 1.07;
+  --font-impact-title: "ABC Gravity", sans-serif;
+  --font-impact-text: "Reckless Standard S", serif;
+  /* הפוטר: הפרויקטים האחרים */
+  --study-footer-height: 496px;             /* גובה הפוטר (הפריים בפיגמה) */
+  --study-footer-width: 1128px;             /* רוחב שלושת הפרויקטים יחד */
+  --study-footer-shift: 10px;               /* הקבוצה 5 פיקסלים שמאלה מהמרכז, כמו בפיגמה */
+  --study-footer-text-top: 263px;           /* מלמעלה עד הכותרות */
+  --study-contact-top: 448px;               /* מלמעלה עד יצירת הקשר בתחתית הפוטר */
+  --study-footer-about-top: 9px;            /* מהכותרת עד המשפט */
   --project-parts-size: 20px;               /* בעמוד פרויקט: הרשימה "→ Mobile App" */
   --project-parts-leading: 31px;            /* המרחק בין השורות ברשימה (בפיגמה) */
   --hero-label-size-mobile: 14px;                   /* הטקסט ליד אובייקט בטלפון: קטן יותר מבמחשב */
@@ -1244,4 +1306,470 @@ button.hero-link {
   color: var(--color-black);
   font: inherit;
   cursor: pointer;
+}
+
+
+/* ==========================================
+   עמוד פרויקט חדש במחשב (study), למשל projects/reach.
+   הגדלים והריווחים קבועים כמו בפיגמה (פריים ברוחב 1440). התמונות והסרטונים נמתחים לרוחב המסך.
+   בטלפון בינתיים מוצג העמוד הקודם (.case), עד שיהיה עיצוב לטלפון
+   ========================================== */
+.study {
+  padding-top: var(--study-bar-height);
+}
+
+/* במחשב לא רואים את העמוד הקודם, ובטלפון לא רואים את החדש */
+@media (min-width: 768px) {
+  .case {
+    display: none;
+  }
+
+  /* האובייקט נגלל מתחת לפס העליון, ולא מעליו */
+  body:has(.study) .project-object-canvas {
+    z-index: 9;
+  }
+}
+
+@media (max-width: 767px) {
+  .study {
+    display: none;
+  }
+}
+
+/* --- הפס העליון: לבן, ונשאר למעלה לאורך כל העמוד --- */
+.study-bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: var(--study-bar-height);
+  background: var(--color-white);
+  font-family: var(--font-hero-ui);
+  z-index: 10;
+}
+
+/* החץ "→" מגיע מפונט אחר ומגדיל את השורה: גובה שורה קבוע מונע את זה */
+.study-bar .hero-link {
+  top: var(--study-bar-text-top);
+  font-size: var(--study-ui-size);
+  line-height: var(--study-ui-size);
+}
+
+.study-back {
+  left: var(--study-margin);
+}
+
+.study-next {
+  right: var(--study-margin);
+}
+
+/* --- סגנונות הטקסט בעמוד --- */
+/* כותרת קטנה: "Overview:", "My Role:" (Desktop Body) */
+.study-label,
+.study-body-text {
+  font-family: var(--font-hero-name);
+  font-size: var(--study-body-size);
+  font-weight: var(--font-weight-regular);
+  line-height: var(--study-leading);
+}
+
+/* Desktop Heading */
+.study-heading-text {
+  font-family: var(--font-hero-display);
+  font-size: var(--study-heading-size);
+  font-weight: var(--font-weight-regular);
+  line-height: var(--study-leading);
+}
+
+/* --- 1. header --- */
+.study-header {
+  padding: var(--study-header-top) var(--study-margin) 0;
+}
+
+/* למעלה: האובייקט משמאל, והסקירה בטור מימין */
+.study-header-top {
+  display: flex;
+  align-items: flex-start;
+  height: var(--study-top-height);
+}
+
+/* החלק של האובייקט: כל מה שמשמאל לסקירה. האובייקט באמצע שלו (קצת שמאלה) */
+.study-object-area {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  padding-right: var(--study-object-shift);
+}
+
+/* האובייקט עצמו מצויר על הציור של project-object.js, במקום ובגודל של הקישור הזה */
+.study-object {
+  display: block;
+  width: 100%;
+  max-width: var(--study-object-width);
+  aspect-ratio: 470 / 236;
+  margin-top: var(--study-object-top);
+}
+
+.study-overview {
+  flex: none;
+  width: var(--study-overview-width);
+}
+
+.study-overview-text {
+  margin-top: var(--study-overview-gap);
+}
+
+.study-credits {
+  margin-top: var(--study-paragraph-gap);
+}
+
+/* התפקידים: בשורה אחת, מפוזרים לכל הרוחב */
+.study-roles {
+  display: flex;
+  justify-content: space-between;
+  margin-top: var(--study-role-gap);
+  list-style: none;
+}
+
+/* התמונה: לכל הרוחב חוץ מהשוליים, באותן פרופורציות כמו בפיגמה */
+.study-cover {
+  position: relative;
+  aspect-ratio: 1382 / 739;
+  margin-top: var(--study-cover-gap);
+  overflow: hidden;
+}
+
+/* רואים את החלק התחתון של התמונה, כמו בפיגמה */
+.study-cover-image {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center bottom;
+}
+
+/* שכבה אפורה שקופה מעל התמונה */
+.study-cover::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: var(--study-cover-shade);
+}
+
+/* הסרטון מעל התמונה ומעל השכבה האפורה. המקום והגודל באחוזים מהתמונה, כמו בפיגמה (881×553) */
+.study-cover-video {
+  position: absolute;
+  left: calc(248 / 1382 * 100%);
+  top: calc(97 / 739 * 100%);
+  width: calc(881 / 1382 * 100%);
+  aspect-ratio: 881 / 553;
+  object-fit: cover;
+  z-index: 1;
+}
+
+/* --- 2. הקייס סטאדי: טור טקסט משמאל, ודימויים מימין --- */
+.study-case {
+  display: grid;
+  grid-template-columns: var(--study-text-column) 1fr;
+  column-gap: var(--study-columns-gap);
+  align-items: start;
+  margin-top: var(--study-media-gap);
+  padding: 0 var(--study-margin);
+}
+
+/* הטקסט נשאר במקום מתחת לפס העליון, כל עוד הדימויים נגללים */
+.study-case-text {
+  position: sticky;
+  top: var(--study-bar-height);
+  padding-top: var(--study-title-top);
+}
+
+.study-title {
+  font-family: var(--font-hero-display);
+  font-size: var(--study-display-size);
+  font-weight: var(--font-weight-regular);
+  line-height: var(--study-display-leading);
+}
+
+.study-case-links {
+  display: flex;
+  gap: var(--study-link-spacing);
+  margin-top: var(--study-links-gap);
+}
+
+.study-text-link {
+  color: inherit;
+}
+
+.study-chapters {
+  margin-top: var(--study-chapters-top);
+  list-style: none;
+}
+
+.study-chapter + .study-chapter {
+  margin-top: var(--study-chapter-gap);
+}
+
+/* כותרת חלק: כפתור שנראה כמו טקסט */
+.study-chapter-title {
+  display: block;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: inherit;
+  font-family: var(--font-hero-display);
+  font-size: var(--study-body-size);
+  line-height: var(--study-leading);
+  text-align: left;
+  cursor: pointer;
+}
+
+/* בחלק הפעיל: נקודתיים אחרי הכותרת ("Insight:") */
+.study-chapter.is-active .study-chapter-title::after {
+  content: ":";
+}
+
+/* הטקסט של חלק: סגור, ונפתח כשהחלק פעיל (הגובה והריווח גדלים מ-0) */
+.study-chapter-body {
+  display: grid;
+  grid-template-rows: 0fr;
+  overflow: hidden;
+  transition: grid-template-rows var(--study-chapter-time) ease, padding var(--study-chapter-time) ease;
+}
+
+.study-chapter.is-active .study-chapter-body {
+  grid-template-rows: 1fr;
+  padding: var(--study-chapter-text-top) 0 var(--study-chapter-text-bottom);
+}
+
+/* כמו קרוסלה אנכית: טקסט שמתחלף יוצא למעלה או למטה, והחדש נכנס מהכיוון השני */
+.study-chapter-text {
+  min-height: 0;
+  opacity: 0;
+  transform: translateY(var(--study-chapter-shift));
+  transition: opacity var(--study-chapter-time) ease, transform var(--study-chapter-time) ease;
+}
+
+.study-chapter.is-before .study-chapter-text {
+  transform: translateY(calc(-1 * var(--study-chapter-shift)));
+}
+
+.study-chapter.is-active .study-chapter-text {
+  opacity: 1;
+  transform: none;
+}
+
+/* שתי פסקאות: שורה ריקה ביניהן */
+.study-chapter-text p + p {
+  margin-top: calc(var(--study-leading) * 1em);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .study-chapter-body,
+  .study-chapter-text {
+    transition: none;
+  }
+}
+
+/* --- הדימויים: אחד מתחת לשני, 20 פיקסלים ביניהם. הגדלים באחוזים מהפיגמה (טור של 915) --- */
+.study-case-media {
+  display: flex;
+  flex-direction: column;
+  gap: var(--study-media-gap);
+}
+
+.study-case-media video,
+.study-case-media img {
+  display: block;
+  object-fit: cover;
+}
+
+/* רקע אפור. מה שבתוכו ממוקם באחוזים, כמו בפיגמה */
+.study-panel {
+  position: relative;
+  background: var(--study-panel);
+}
+
+.study-panel-video {
+  background: var(--study-panel-video);
+}
+
+.study-in-panel {
+  position: absolute;
+}
+
+/* שני רקעים אפורים זה ליד זה */
+.study-pair {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--study-media-gap);
+}
+
+.study-panel-half {
+  aspect-ratio: 448 / 592;
+}
+
+/* Insight: שלושה מסכים באמצע (915×522, כל מסך 257×459, 50 ביניהם) */
+.study-insight {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: calc(50 / 915 * 100%);
+  aspect-ratio: 915 / 522;
+}
+
+.study-insight-phone {
+  width: calc(257 / 915 * 100%);
+  aspect-ratio: 257 / 459;
+}
+
+/* Idea: אתר הנחיתה (915×575), ושני מסכים */
+.study-idea-landing {
+  width: 100%;
+  aspect-ratio: 915 / 575;
+}
+
+.study-idea-workout { left: calc(122 / 448 * 100%); top: calc(96 / 592 * 100%); width: calc(207 / 448 * 100%); }
+.study-idea-session { left: calc(124 / 448 * 100%); top: calc(97 / 592 * 100%); width: calc(209 / 448 * 100%); }
+
+/* Application: שישה מסכים בשתי שורות (915×878) */
+.study-application {
+  aspect-ratio: 915 / 878;
+}
+
+.study-application-1 { left: calc(3 / 915 * 100%);   top: calc(23 / 878 * 100%);  width: calc(221 / 915 * 100%); }
+.study-application-2 { left: calc(237 / 915 * 100%); top: calc(23 / 878 * 100%);  width: calc(217 / 915 * 100%); }
+.study-application-3 { left: calc(472 / 915 * 100%); top: calc(23 / 878 * 100%);  width: calc(210 / 915 * 100%); }
+.study-application-4 { left: calc(237 / 915 * 100%); top: calc(459 / 878 * 100%); width: calc(214 / 915 * 100%); }
+.study-application-5 { left: calc(464 / 915 * 100%); top: calc(459 / 878 * 100%); width: calc(212 / 915 * 100%); }
+.study-application-6 { left: calc(696 / 915 * 100%); top: calc(459 / 878 * 100%); width: calc(216 / 915 * 100%); }
+
+/* הטיימר (סרטון, 223×397) והשעון (321×402) */
+.study-application-timer { left: calc(117 / 448 * 100%); top: calc(97 / 592 * 100%); width: calc(223 / 448 * 100%); aspect-ratio: 223 / 397; }
+.study-application-watch { left: calc(70 / 447 * 100%);  top: calc(97 / 592 * 100%); width: calc(321 / 447 * 100%); }
+
+/* Impact: סרטון המטפס (915×632) עם שתי שכבות צבע, וטקסט אדום מעליו.
+   הטקסט גדל וקטן יחד עם הסרטון (cqw: אחוז מרוחב הסרטון), כדי שיישב עליו בדיוק כמו בפיגמה */
+.study-impact {
+  position: relative;
+  aspect-ratio: 915 / 632;
+  overflow: hidden;
+  container-type: inline-size;
+}
+
+.study-impact::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(var(--study-impact-tint), var(--study-impact-tint)),
+              linear-gradient(var(--study-impact-dark), var(--study-impact-dark));
+}
+
+/* רואים את הצד הימני של הסרטון, כמו החיתוך בפיגמה */
+.study-impact-video {
+  width: 100%;
+  height: 100%;
+  object-position: right center;
+}
+
+.study-impact-title,
+.study-impact-text {
+  position: absolute;
+  z-index: 1;
+  color: var(--study-impact-red);
+  line-height: var(--study-impact-leading);
+}
+
+.study-impact-title {
+  left: calc(100 / 915 * 100%);
+  top: calc(27 / 632 * 100%);
+  width: calc(582 / 915 * 100%);
+  font-family: var(--font-impact-title);
+  font-size: calc(60 / 915 * 100cqw);
+  letter-spacing: -0.02em;
+  text-transform: capitalize;
+}
+
+/* השורה הראשונה מתחילה מתחת לכותרת, והשנייה קצת שמאלה (כמו בפיגמה) */
+.study-impact-text {
+  left: calc(30 / 915 * 100%);
+  top: calc(149 / 632 * 100%);
+  width: calc(481 / 915 * 100%);
+  font-family: var(--font-impact-text);
+  font-size: calc(18 / 915 * 100cqw);
+  text-indent: calc(70 / 915 * 100cqw);
+}
+
+/* --- 3. הפוטר: שלושת הפרויקטים האחרים בשורה, במרכז העמוד (פריים של 1440×496 בפיגמה).
+   המידות של כל פרויקט מהפיגמה: רוחב העמודה שלו, גודל האובייקט ומרחקו מלמעלה,
+   כמה הטקסט זז ימינה מהאובייקט, ורוחב הכותרת והמשפט (כדי שיישברו כמו בפיגמה) --- */
+.study-footer {
+  position: relative;
+  height: var(--study-footer-height);
+  padding: 0 var(--study-margin);
+}
+
+/* העמודות: ברוחב שלהן בפיגמה, ומצטמצמות יחד כשהמסך צר יותר */
+.study-footer-list {
+  display: grid;
+  grid-template-columns: minmax(0, 402fr) minmax(0, 462fr) minmax(min-content, 264fr);
+  max-width: var(--study-footer-width);
+  margin: 0 auto;
+  padding-right: var(--study-footer-shift);
+  box-sizing: content-box;
+  list-style: none;
+}
+
+.study-footer-talk         { --object-width: 282; --object-height: 177; --object-top: 70; --field-left: 24; --about-left: 22; --field-width: 206; --about-width: 238; }
+.study-footer-small-spaces { --object-width: 336; --object-height: 179; --object-top: 70; --field-left: 50; --about-left: 50; --field-width: 214; --about-width: 219; }
+.study-footer-euka         { --object-width: 250; --object-height: 198; --object-top: 53; --field-left: 8;  --about-left: 8;  --field-width: 256; --about-width: 219; }
+
+.study-footer-item {
+  position: relative;
+  padding-top: var(--study-footer-text-top);
+}
+
+/* האובייקט מצויר על הציור של project-object.js, במקום ובגודל של הקישור הזה */
+.study-footer-object {
+  position: absolute;
+  top: calc(var(--object-top) * 1px);
+  left: 0;
+  width: min(calc(var(--object-width) * 1px), 100%);
+  aspect-ratio: var(--object-width) / var(--object-height);
+}
+
+.study-footer-field {
+  max-width: calc(var(--field-width) * 1px);
+  margin-left: calc(var(--field-left) * 1px);
+}
+
+.study-footer-about {
+  max-width: calc(var(--about-width) * 1px);
+  margin-top: var(--study-footer-about-top);
+  margin-left: calc(var(--about-left) * 1px);
+}
+
+/* יצירת קשר בתחתית הפוטר: מייל משמאל, LinkedIn באמצע, Instagram מימין */
+.study-contact {
+  font-family: var(--font-hero-ui);
+}
+
+.study-contact .hero-link {
+  top: var(--study-contact-top);
+  font-size: var(--study-ui-size);
+}
+
+.study-contact-email {
+  left: var(--study-margin);
+}
+
+.study-contact-linkedin {
+  left: 50%;
+  transform: translateX(-50%);
+  text-align: center;
+}
+
+.study-contact-instagram {
+  right: var(--study-margin);
+  text-align: right;
 }
