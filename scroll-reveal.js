@@ -1,5 +1,6 @@
 // ==========================================
-// עמוד פרויקט בטלפון (case): כל חלק (.case-reveal) מופיע כשהוא נכנס למסך בגלילה.
+// עמוד פרויקט בטלפון (case): כל חלק (.case-reveal) מופיע כשהוא נכנס למסך בגלילה, בכל פעם מחדש.
+// (החלק העליון, עד הסקירה, מוצג מיד בלי תנועה: אין לו case-reveal)
 // אותו מעבר כמו הטקסט שמתחלף בקייס סטאדי במחשב: מתחיל שקוף וקצת למטה, ועולה למקום (styles.css).
 // בנוסף: הסרטונים נטענים רק כשמגיעים קרוב אליהם (data-src), כדי שהעמוד ייפתח מהר בטלפון
 // ==========================================
@@ -15,16 +16,24 @@
   if ('IntersectionObserver' in window) {
     page.classList.add('is-revealing');
 
-    // חלק מופיע כשהקצה העליון שלו עבר קצת מעל תחתית המסך, ונשאר גלוי
+    // חלק מופיע כשהקצה העליון שלו עבר קצת מעל תחתית המסך
     const revealObserver = new IntersectionObserver((entries) => {
       for (const entry of entries) {
-        if (!entry.isIntersecting) continue;
-        entry.target.classList.add('is-visible');
-        revealObserver.unobserve(entry.target);
+        if (entry.isIntersecting) entry.target.classList.add('is-visible');
       }
     }, { rootMargin: '0px 0px -8% 0px' });
 
-    parts.forEach((part) => revealObserver.observe(part));
+    // ונעלם רק כשהוא כבר לגמרי מחוץ למסך, כדי שבפעם הבאה שגוללים אליו הוא יופיע שוב
+    const hideObserver = new IntersectionObserver((entries) => {
+      for (const entry of entries) {
+        if (!entry.isIntersecting) entry.target.classList.remove('is-visible');
+      }
+    });
+
+    parts.forEach((part) => {
+      revealObserver.observe(part);
+      hideObserver.observe(part);
+    });
   }
 
   // --- טעינת הסרטונים: כשהם במרחק של בערך מסך אחד מהמסך ---

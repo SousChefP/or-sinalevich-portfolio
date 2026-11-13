@@ -31,6 +31,7 @@
      קטן או גדל לפי המסך כך שכל הפריים תמיד נכנס */
   --hero-scale: min(calc(100vw / 1440), calc(100svh / 781));
   --hero-link-size: 16px;                           /* UI בפיגמה */
+  --phone-button-size: 18px;                        /* כל הכפתורים בטלפון (ההירו, עמוד פרויקט, 404) */
   --hero-edge: 29px;                                /* מרחק הקישורים משולי המסך */
   --hero-link-top: 16px;                            /* במחשב: הקישורים למעלה, 16 מלמעלה */
   --hero-link-bottom: 16px;                         /* במחשב: הקישורים למטה, 16 מלמטה */
@@ -111,12 +112,13 @@
   --not-found-subtitle-y: 165.5;            /* מרכז השורה ביחס לאמצע הגובה */
   --not-found-home-y: 265.5;                /* [Go Back Home] ביחס לאמצע הגובה */
   --not-found-home-x: 0;
+  --not-found-home-size: var(--study-ui-size);  /* [Go Back Home] */
   --study-footer-about-top: 9px;            /* מהכותרת עד המשפט */
   /* עמוד פרויקט בטלפון (case): פריים ברוחב 393 בפיגמה. הטקסטים בגודל קבוע, הדימויים נמתחים לרוחב המסך */
   --case-margin: 18px;                      /* השוליים בצדדים */
   --case-bar-height: 53px;                  /* הפס העליון הלבן */
   --case-bar-text-top: 25px;                /* הקישורים בפס: 25 מלמעלה */
-  --case-ui-size: 16px;                     /* הקישורים בפס העליון (UI) */
+  --case-ui-size: var(--phone-button-size); /* הקישורים בפס העליון: כמו כל הכפתורים בטלפון */
   --case-text-size: 20px;                   /* כל הטקסטים (Text ו-Desktop Body בפיגמה) */
   --case-footer-text-size: 18px;            /* התחומים מתחת לאובייקטים בפוטר */
   --case-leading: 1.1;
@@ -707,7 +709,8 @@ button.hero-link {
   :root {
     --hero-scale: min(calc(100vw / 393), calc(100svh / 670));
     --hero-edge: 18px;
-    --hero-link-size: 16px;                         /* UI בפיגמה: כמו במחשב */
+    /* כל הכפתורים בטלפון: 18 (גדול יותר מבפיגמה, כדי שיהיה קל ללחוץ באצבע) */
+    --hero-link-size: var(--phone-button-size);
     --hero-contact-leading: 18px;                   /* גובה השורה של Instagram, LinkedIn, E-Mail (כמו בפיגמה) */
 
     /* בטלפון נשארים הערכים הקודמים של הטקסט (1.1 הוא למחשב) */
@@ -1864,7 +1867,7 @@ body:has(.study) .project-object-canvas {
   top: calc(50% + var(--not-found-home-y) * var(--not-found-scale));
   transform: translateX(-50%);
   font-family: var(--font-hero-ui);
-  font-size: var(--study-ui-size);
+  font-size: var(--not-found-home-size);
 }
 
 /* המילה מצוירת מעל הכל, אבל הלחיצות עוברות דרך הציור (not-found.js בודק אם לחצו על המילה) */
@@ -1898,5 +1901,6 @@ body:has(.study) .project-object-canvas {
     --not-found-subtitle-y: -2;
     --not-found-home-y: 165;
     --not-found-home-x: 0.5;
+    --not-found-home-size: var(--phone-button-size);
   }
 }
