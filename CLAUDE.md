@@ -20,6 +20,8 @@ not-found.js             ← המילה מכרום בעמוד 404: מרחפת, �
 process/index.html       ← הכתובת /process
 projects/<name>/index.html ← עמודי הפרויקטים: /projects/reach, talk-about-it, small-spaces, euka-tea
 project-object.js        ← האובייקט התלת-ממדי בעמוד פרויקט (לחיצה עליו מחזירה להירו)
+scroll-reveal.js         ← בעמוד פרויקט בטלפון: כל חלק מופיע בתנועה קטנה כשגוללים אליו, והסרטונים נטענים רק כשמגיעים אליהם
+footer-carousel.js       ← בעמוד פרויקט בטלפון: הפרויקטים בפוטר זזים בקרוסלה (ועוצרים כשנוגעים באובייקט)
 case-study.js            ← בעמוד פרויקט במחשב: הטקסט של הקייס סטאדי מתחלף לפי הדימוי שעל המסך
 styles.css               ← גיליון הסגנונות היחיד באתר
 hero.js                  ← האובייקטים התלת-ממדיים בהירו, והמעבר בין התצוגות: Classic View (‎/#classic) ו-About me (‎/#about)

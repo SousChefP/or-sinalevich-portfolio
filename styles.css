@@ -50,15 +50,6 @@
   /* בטלפון: כמה אזור הלחיצה של כפתור גדול מהטקסט שלו, לכל כיוון (כדי להגיע ל-44px) */
   --hero-tap-extra: 13px;
   --hero-contact-gap: 16px;                         /* בטלפון: הרווח בין Instagram, LinkedIn ו-E-Mail */
-  /* עמוד פרויקט מלא (case study): גדלים וריווחים קבועים, לא משתנים עם גודל המסך */
-  --case-title-size: 190px;                 /* "REACH" */
-  --case-title-leading: 100px;
-  --case-text-size: 30px;                   /* הטקסטים (Text בפיגמה) */
-  --case-text-leading: 1.1;
-  --case-margin: 29px;                      /* השוליים בצדדים */
-  --case-column: 552px;                     /* רוחב טור הטקסט מימין */
-  --case-gap: 72px;                         /* הרווח בין החלקים בעמוד */
-  --case-bar-height: 74px;                  /* הפס העליון הלבן */
   /* עמוד פרויקט חדש במחשב (study): הגדלים מהפיגמה, בפיקסלים קבועים */
   --study-ui-size: 16px;                    /* הקישורים בפס העליון (UI) */
   --study-bar-height: 45px;                 /* הפס העליון הלבן */
@@ -121,6 +112,38 @@
   --not-found-home-y: 265.5;                /* [Go Back Home] ביחס לאמצע הגובה */
   --not-found-home-x: 0;
   --study-footer-about-top: 9px;            /* מהכותרת עד המשפט */
+  /* עמוד פרויקט בטלפון (case): פריים ברוחב 393 בפיגמה. הטקסטים בגודל קבוע, הדימויים נמתחים לרוחב המסך */
+  --case-margin: 18px;                      /* השוליים בצדדים */
+  --case-bar-height: 53px;                  /* הפס העליון הלבן */
+  --case-bar-text-top: 25px;                /* הקישורים בפס: 25 מלמעלה */
+  --case-ui-size: 16px;                     /* הקישורים בפס העליון (UI) */
+  --case-contact-size: 18px;                /* יצירת הקשר בתחתית */
+  --case-text-size: 20px;                   /* כל הטקסטים (Text ו-Desktop Body בפיגמה) */
+  --case-footer-text-size: 18px;            /* התחומים מתחת לאובייקטים בפוטר */
+  --case-leading: 1.1;
+  --case-object-top: 25px;                  /* מהפס עד האובייקט */
+  --case-object-width: 254;                 /* האובייקט בהדר, בפיקסלים */
+  --case-object-height: 128;
+  --case-role-top: 41px;                    /* מהאובייקט עד "My Role:" */
+  --case-role-gap: 11px;                    /* מ-"My Role:" עד התפקידים */
+  --case-role-row-gap: 8px;                 /* בין שתי שורות התפקידים */
+  --case-role-column: 179px;                /* הטור השמאלי של התפקידים: הימני מתחיל באמצע המסך */
+  --case-cover-top: 34px;                   /* מהתפקידים עד הסרטון */
+  --case-text-width: 336px;                 /* הטקסט הרץ של כל חלק */
+  --case-title-gap: 13px;                   /* מהכותרת של חלק עד הטקסט שלו */
+  --case-credits-gap: 19px;                 /* מהסקירה עד שורת הקורס */
+  --case-links-top: 15px;                   /* משורת הקורס עד הקישורים */
+  --case-link-spacing: 22px;                /* בין App flow ל-landing page */
+  --case-block-gap: 40px;                   /* בין טקסט לדימוי */
+  --case-media-gap: 20px;                   /* בין שני דימויים */
+  --case-footer-gap: 47px;                  /* בין הפרויקטים בפוטר */
+  --case-footer-text-top: 8px;              /* מהאובייקט עד התחום שלו */
+  --case-contact-top: 51px;                 /* מהפרויקטים עד יצירת הקשר */
+  --case-contact-gap: 42px;                 /* בין הקישורים של יצירת הקשר */
+  --case-bottom: 21px;                      /* מתחת ליצירת הקשר */
+  /* התנועה בגלילה: אותו מעבר כמו בין הטקסטים בקייס סטאדי במחשב (study-chapter) */
+  --case-reveal-time: var(--study-chapter-time);
+  --case-reveal-shift: var(--study-chapter-shift);
   --project-parts-size: 20px;               /* בעמוד פרויקט: הרשימה "→ Mobile App" */
   --project-parts-leading: 31px;            /* המרחק בין השורות ברשימה (בפיגמה) */
   --hero-label-size-mobile: 14px;                   /* הטקסט ליד אובייקט בטלפון: קטן יותר מבמחשב */
@@ -869,8 +892,7 @@ button.hero-link {
 
 /* הפוטר: [All Projects] משמאל, [Next Project →] מימין, כמו הכפתורים בתחתית ההירו.
    החץ "→" לא קיים בפונט Aldrich ומגיע מפונט אחר, שמגדיל את השורה: גובה שורה קבוע מונע את זה */
-.project-footer .hero-link,
-.case-footer .hero-link {
+.project-footer .hero-link {
   line-height: var(--hero-link-size);
 }
 
@@ -958,302 +980,6 @@ button.hero-link {
 }
 
 /* ==========================================
-   עמוד פרויקט מלא (case study), למשל projects/reach.
-   כל הגדלים והריווחים בפיקסלים קבועים כמו בפיגמה (פריים ברוחב 1440).
-   רק התמונות והסרטונים נמתחים לרוחב המסך, ושומרים על הפרופורציות שלהם
-   ========================================== */
-.case {
-  position: relative;
-  font-family: var(--font-hero-ui);
-}
-
-/* הפס העליון: לבן, ונשאר למעלה בזמן גלילה */
-.case-bar {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: var(--case-bar-height);
-  background: var(--color-white);
-  z-index: 10;
-}
-
-/* הפרויקט הבא בפס העליון: רק בטלפון */
-.case-bar-next {
-  display: none;
-}
-
-.case-bar .hero-link-instagram {
-  top: 25px;
-  left: var(--hero-edge);
-}
-
-.case-bar .hero-link-linkedin {
-  top: 25px;
-  left: 50%;
-  transform: translateX(-50%);
-  text-align: center;
-}
-
-.case-bar .hero-link-email {
-  top: 25px;
-  right: var(--hero-edge);
-  text-align: right;
-}
-
-/* הפתיחה: כל החלקים במקום שלהם בפיגמה. הסרטון הגדול מתחיל ב-504 */
-.case-intro {
-  position: relative;
-  height: 504px;
-}
-
-.case-title {
-  position: absolute;
-  top: 112.5px;  /* בפיגמה: תיבה של 151 שמתחילה ב-87, והשורה (100) באמצע שלה */
-  left: 20px;
-  font-family: var(--font-hero-display);
-  font-size: var(--case-title-size);
-  font-weight: var(--font-weight-regular);
-  line-height: var(--case-title-leading);
-}
-
-/* כותרת קטנה: "My Role", "The Problem" */
-.case-label {
-  font-size: var(--hero-link-size);
-  font-weight: var(--font-weight-regular);
-  line-height: normal;
-}
-
-.case-text {
-  font-family: var(--font-hero-name);
-  font-size: var(--case-text-size);
-  line-height: var(--case-text-leading);
-}
-
-.case-role-label {
-  position: absolute;
-  top: 267px;
-  left: 28px;
-}
-
-.case-roles {
-  position: absolute;
-  top: 308px;
-  left: 28px;
-}
-
-/* הטור מימין: 552 רוחב, 52 מהקצה הימני */
-.case-summary,
-.case-credits {
-  position: absolute;
-  right: 52px;
-  width: var(--case-column);
-}
-
-.case-summary {
-  top: 91px;
-}
-
-.case-credits {
-  top: 256px;
-}
-
-/* האובייקט בפינה הימנית העליונה. נשאר במקום גם כשגוללים, כדי שתמיד אפשר יהיה לחזור להירו */
-.case .case-object {
-  position: fixed;
-  left: auto;
-  right: 32px;
-  top: 93px;
-  width: 111px;
-  height: 56px;
-  z-index: 12;
-}
-
-/* תמונות וסרטונים: לכל הרוחב חוץ מהשוליים */
-.case-media {
-  display: block;
-  width: calc(100% - 2 * var(--case-margin));
-  margin: 0 var(--case-margin);
-}
-
-.case-video-wide {
-  aspect-ratio: 1382 / 887;
-  object-fit: cover;
-}
-
-/* שורה: כותרת קטנה משמאל, טקסט בטור מימין */
-.case-row {
-  position: relative;
-  margin: var(--case-gap) 0;
-}
-
-.case-row .case-label {
-  position: absolute;
-  top: 6px;  /* בפיגמה הכותרת הקטנה 6 פיקסלים מתחת לראש הטקסט */
-  left: var(--case-margin);
-}
-
-.case-row-text {
-  width: var(--case-column);
-  margin-left: auto;
-  margin-right: 48px;
-}
-
-/* שלושת הטלפונים על רקע שחור. המקומות באחוזים, כדי שיגדלו יחד עם הרקע */
-.case-phones {
-  position: relative;
-  aspect-ratio: 1382 / 776;
-  background: var(--color-black);
-}
-
-.case-phone {
-  position: absolute;
-  top: calc(41 / 776 * 100%);
-  height: calc(689 / 776 * 100%);
-  object-fit: contain;
-}
-
-.case-phone-left   { left: calc(70.78 / 1382 * 100%);  width: calc(348.35 / 1382 * 100%); }
-.case-phone-middle { left: calc(511.8 / 1382 * 100%);  width: calc(357.43 / 1382 * 100%); }
-.case-phone-right  { left: calc(961.78 / 1382 * 100%); width: calc(348.35 / 1382 * 100%); }
-
-/* הפוטר בסוף העמוד: [All Projects] משמאל, [Next Project →] מימין */
-.case-footer {
-  position: relative;
-  height: 120px;
-}
-
-/* מסך צר מ-1300 (הכותרת והטור מימין כבר לא נכנסים זה ליד זה):
-   הכל בטור אחד, באותם גדלים. הכותרת קטנה רק כשהיא רחבה מהמסך */
-@media (max-width: 1300px) {
-  .case-intro {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    height: auto;
-    padding: 112.5px var(--case-margin) var(--case-gap) 20px;
-  }
-
-  .case-intro > * {
-    position: static;
-  }
-
-  .case-title {
-    font-size: min(var(--case-title-size), 27vw);
-    line-height: min(var(--case-title-leading), 14.2vw);
-    padding-right: 130px;  /* לא מתחת לאובייקט בפינה */
-  }
-
-  .case-summary,
-  .case-credits {
-    width: auto;
-    max-width: var(--case-column);
-    margin-top: 40px;
-    margin-left: 8px;  /* מיושר לשאר הטקסטים (28 מהקצה) */
-  }
-
-  .case-credits {
-    margin-top: 33px;  /* כמו בפיגמה בין שתי הפסקאות */
-  }
-
-  .case-role-label {
-    margin-top: 54.5px;  /* כמו בפיגמה: 267, מתחת לשורה של הכותרת שנגמרת ב-212.5 */
-    margin-left: 8px;
-  }
-
-  .case-roles {
-    margin-top: 23px;  /* כמו בפיגמה בין "My Role" לרשימה */
-    margin-left: 8px;
-  }
-
-  .case-row .case-label {
-    position: static;
-    margin: 0 var(--case-margin) 16px;
-  }
-
-  .case-row-text {
-    width: auto;
-    max-width: var(--case-column);
-    margin: 0 var(--case-margin);
-  }
-}
-
-/* --- בטלפון (פריים של 393, בפיגמה: Mobile / Reach) --- */
-@media (max-width: 767px) {
-  :root {
-    --case-text-size: 22px;
-    --case-margin: 18px;
-  }
-
-  /* הפס העליון: האובייקט משמאל והפרויקט הבא מימין, בלי יצירת קשר */
-  .case-bar {
-    height: 62px;
-  }
-
-  .case-bar .hero-link-two-lines {
-    display: none;
-  }
-
-  .case-bar-next {
-    display: block;
-    top: 25px;
-    right: var(--hero-edge);
-    line-height: var(--hero-link-size);  /* החץ מפונט אחר לא מגדיל את השורה */
-  }
-
-  .case .case-object {
-    left: 18px;
-    right: auto;
-    top: 16px;
-    width: 73px;
-    height: 37px;
-  }
-
-  .case-intro {
-    align-items: stretch;
-    padding: 59.5px var(--case-margin) 40px;
-  }
-
-  .case-title {
-    align-self: center;
-    padding-right: 0;
-    font-size: min(110px, 28vw);
-    line-height: 100px;
-  }
-
-  .case-role-label {
-    margin: 34.5px 0 0;
-  }
-
-  .case-roles {
-    margin: 9px 0 0;
-  }
-
-  .case-summary {
-    max-width: none;
-    margin: 27px 0 0;
-  }
-
-  .case-credits {
-    max-width: none;
-    margin: 14px 0 0;
-  }
-
-  /* שורה: הכותרת הקטנה מעל הטקסט */
-  .case-row {
-    margin: 43px 0 24px;
-  }
-
-  .case-row .case-label {
-    margin: 0 var(--case-margin) 7px;
-  }
-
-  .case-row-text {
-    max-width: none;
-  }
-}
-
-/* ==========================================
    לוח הכיוונון לתנועה: כלי עבודה, מופיע רק בכתובת עם ?tune
    ========================================== */
 .motion-tuner {
@@ -1334,22 +1060,22 @@ button.hero-link {
 /* ==========================================
    עמוד פרויקט חדש במחשב (study), למשל projects/reach.
    הגדלים והריווחים קבועים כמו בפיגמה (פריים ברוחב 1440). התמונות והסרטונים נמתחים לרוחב המסך.
-   בטלפון בינתיים מוצג העמוד הקודם (.case), עד שיהיה עיצוב לטלפון
+   בטלפון מוצג במקומו עמוד הטלפון (.case), שמופיע בהמשך הקובץ
    ========================================== */
 .study {
   padding-top: var(--study-bar-height);
 }
 
-/* במחשב לא רואים את העמוד הקודם, ובטלפון לא רואים את החדש */
+/* במחשב לא רואים את עמוד הטלפון, ובטלפון לא רואים את עמוד המחשב */
 @media (min-width: 768px) {
   .case {
     display: none;
   }
+}
 
-  /* האובייקט נגלל מתחת לפס העליון, ולא מעליו */
-  body:has(.study) .project-object-canvas {
-    z-index: 9;
-  }
+/* האובייקטים נגללים מתחת לפס העליון, ולא מעליו (במחשב ובטלפון) */
+body:has(.study) .project-object-canvas {
+  z-index: 9;
 }
 
 @media (max-width: 767px) {
@@ -1789,6 +1515,322 @@ button.hero-link {
 .study-contact-instagram {
   right: var(--study-margin);
   text-align: right;
+}
+
+/* ==========================================
+   עמוד פרויקט בטלפון (case), למשל projects/reach. בפיגמה: פריים ברוחב 393.
+   הכל בטור אחד: הטקסטים בגודל קבוע, הדימויים נמתחים לרוחב המסך ושומרים על הפרופורציות שלהם.
+   במחשב מוצג במקומו עמוד המחשב (.study)
+   ========================================== */
+.case {
+  padding-top: var(--case-bar-height);
+  overflow-x: clip;   /* הפוטר רחב מהמסך: מה שיוצא מהצדדים נחתך */
+}
+
+/* --- הפס העליון: לבן, ונשאר למעלה לאורך כל העמוד --- */
+.case-bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: var(--case-bar-height);
+  background: var(--color-white);
+  font-family: var(--font-hero-ui);
+  z-index: 10;
+}
+
+/* החץ "→" מגיע מפונט אחר ומגדיל את השורה: גובה שורה קבוע מונע את זה */
+.case-bar .hero-link {
+  top: var(--case-bar-text-top);
+  font-size: var(--case-ui-size);
+  line-height: var(--case-ui-size);
+}
+
+.case-back {
+  left: var(--case-margin);
+}
+
+.case-next {
+  right: var(--case-margin);
+}
+
+/* --- סגנונות הטקסט בעמוד --- */
+/* Desktop Body בפיגמה: "My Role:", "Overview:" והטקסט הרץ */
+.case-body-text {
+  font-family: var(--font-hero-name);
+  font-size: var(--case-text-size);
+  font-weight: var(--font-weight-regular);
+  line-height: var(--case-leading);
+}
+
+/* Text בפיגמה: התפקידים, הסקירה וכותרות החלקים */
+.case-heading-text {
+  font-family: var(--font-hero-display);
+  font-size: var(--case-text-size);
+  font-weight: var(--font-weight-regular);
+  line-height: var(--case-leading);
+}
+
+/* כל החלקים בעמוד: באותם שוליים מהצדדים */
+.case-header,
+.case-section {
+  padding: 0 var(--case-margin);
+}
+
+/* --- 1. header --- */
+/* האובייקט של הפרויקט (project-object.js מצייר אותו כאן), באמצע */
+/* (בתוך הזרימה של העמוד, ולא במיקום הקבוע של .project-object) */
+.case .case-object,
+.case .case-footer-object {
+  position: relative;
+  top: auto;
+  left: auto;
+}
+
+.case .case-object {
+  display: block;
+  width: min(calc(var(--case-object-width) * 1px), 100%);
+  aspect-ratio: var(--case-object-width) / var(--case-object-height);
+  margin: var(--case-object-top) auto 0;
+}
+
+.case-role-label {
+  margin-top: var(--case-role-top);
+}
+
+/* התפקידים בשני טורים: הימני מתחיל באמצע המסך */
+.case-roles {
+  display: grid;
+  grid-template-columns: var(--case-role-column) auto;
+  row-gap: var(--case-role-row-gap);
+  margin-top: var(--case-role-gap);
+  list-style: none;
+}
+
+/* סרטון אתר הנחיתה מתחת לתפקידים (בגודל של case-wide) */
+.case-cover {
+  margin-top: var(--case-cover-top);
+}
+
+/* --- טקסט באמצע: כותרת ומתחתיה הטקסט (Overview, Insight, Idea, Application) --- */
+.case-text-block {
+  margin: var(--case-block-gap) auto;
+  text-align: center;
+}
+
+.case-text-block > * + * {
+  margin-top: var(--case-title-gap);
+}
+
+/* הטקסט הרץ של כל חלק: טור קצת צר יותר, באמצע */
+.case-running-text {
+  max-width: var(--case-text-width);
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* שתי פסקאות: שורה ריקה ביניהן */
+.case-running-text p + p {
+  margin-top: calc(var(--case-leading) * 1em);
+}
+
+/* שורת הקורס והקישורים: קרוב יותר לסקירה */
+.case-overview {
+  margin-bottom: 0;
+}
+
+.case-credits {
+  margin-top: var(--case-credits-gap);
+}
+
+.case-links {
+  display: flex;
+  justify-content: center;
+  gap: var(--case-link-spacing);
+  margin-top: var(--case-links-top);
+}
+
+.case-text-link {
+  color: inherit;
+}
+
+/* --- הדימויים: לרוחב העמוד, 20 פיקסלים ביניהם --- */
+.case-media + .case-media {
+  margin-top: var(--case-media-gap);
+}
+
+.case-wide {
+  display: block;
+  width: 100%;
+  aspect-ratio: 357 / 224;
+  object-fit: cover;
+}
+
+/* רקע אפור עם מסכים עליו. הגודל של הרקע (panel-w, panel-h) והמקום של כל מסך (x, y, w, h)
+   בפיקסלים של הפיגמה, והם נמתחים יחד עם רוחב המסך */
+.case-panel {
+  position: relative;
+  aspect-ratio: var(--panel-w) / var(--panel-h);
+  background: var(--study-panel);
+}
+
+.case-panel-video {
+  background: var(--study-panel-video);
+}
+
+.case-in-panel {
+  position: absolute;
+  left: calc(var(--x) / var(--panel-w) * 100%);
+  top: calc(var(--y) / var(--panel-h) * 100%);
+  width: calc(var(--w) / var(--panel-w) * 100%);
+  aspect-ratio: var(--w) / var(--h);
+  object-fit: cover;
+}
+
+.case-insight      { --panel-w: 357; --panel-h: 258; }
+.case-idea-session { --panel-w: 357; --panel-h: 471.6; }
+.case-idea-workout { --panel-w: 357; --panel-h: 471.6; }
+.case-application  { --panel-w: 357; --panel-h: 476; }
+.case-watch        { --panel-w: 357; --panel-h: 473; }
+.case-timer        { --panel-w: 357; --panel-h: 471; }
+
+/* המקום והגודל של כל מסך על הרקע שלו (בפיקסלים של הפיגמה) */
+.case-insight-1           { --x: 8.58; --y: 40; --w: 100.38; --h: 178.89; }
+.case-insight-2           { --x: 128.36; --y: 40; --w: 100.38; --h: 178.89; }
+.case-insight-3           { --x: 248.14; --y: 40; --w: 100.38; --h: 178.89; }
+.case-idea-session-image  { --x: 98.78; --y: 77.27; --w: 166.53; --h: 316.19; }
+.case-idea-workout-image  { --x: 97.19; --y: 76.47; --w: 164.85; --h: 316.35; }
+.case-application-1       { --x: 16; --y: 40; --w: 105.08; --h: 189.14; }
+.case-application-2       { --x: 127.37; --y: 40; --w: 103.29; --h: 188.94; }
+.case-application-3       { --x: 239.21; --y: 40; --w: 99.94; --h: 188.96; }
+.case-application-4       { --x: 16.95; --y: 247.48; --w: 101.84; --h: 188.98; }
+.case-application-5       { --x: 126.89; --y: 247.51; --w: 100.94; --h: 188.87; }
+.case-application-6       { --x: 237.86; --y: 247.38; --w: 102.73; --h: 189.08; }
+.case-watch-image         { --x: 55.93; --y: 77.5; --w: 256.59; --h: 321.05; }
+.case-timer-video         { --x: 93.3; --y: 77.05; --w: 177.47; --h: 316.28; }
+
+/* --- Impact: סרטון המטפס, עם שכבה כהה ושכבה אדומה, והכותרת האדומה מעליו --- */
+.case-impact {
+  position: relative;
+  aspect-ratio: 357 / 246.7;
+  margin-top: var(--case-block-gap);
+  overflow: hidden;
+}
+
+.case-impact::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(var(--study-impact-tint), var(--study-impact-tint)),
+              linear-gradient(var(--study-impact-dark), var(--study-impact-dark));
+}
+
+.case-impact-video {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.case-impact-title {
+  position: absolute;
+  top: calc(12.5 / 246.7 * 100%);
+  left: calc(12 / 357 * 100%);
+  width: calc(215.23 / 357 * 100%);
+  height: auto;
+  z-index: 1;
+}
+
+/* --- 3. הפוטר: שלושת הפרויקטים האחרים בשורה רחבה מהמסך (נחתכת בצדדים) שזזה בקרוסלה, ויצירת קשר --- */
+.case-footer {
+  margin-top: var(--case-block-gap);
+}
+
+.case-footer-list {
+  display: flex;
+  justify-content: center;
+  gap: var(--case-footer-gap);
+  list-style: none;
+}
+
+/* בקרוסלה (footer-carousel.js): השורה מתחילה משמאל ונעה כולה עם transform */
+.case-footer-list.is-moving {
+  justify-content: flex-start;
+  width: max-content;
+  will-change: transform;
+}
+
+/* כל פרויקט: האובייקט (התחתית של כולם באותו גובה), ומתחתיו התחום */
+.case-footer-item {
+  flex: none;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: calc(var(--item-width) * 1px);
+}
+
+.case-footer-object-area {
+  display: flex;
+  align-items: flex-end;
+  height: 97px;   /* האובייקט הגבוה ביותר (euka tea) */
+}
+
+/* האובייקט מצויר על הציור של project-object.js, במקום ובגודל של הקישור הזה */
+.case-footer-object {
+  display: block;
+  width: calc(var(--object-width) * 1px);
+  height: calc(var(--object-height) * 1px);
+}
+
+.case-footer-field {
+  max-width: calc(var(--field-width) * 1px);
+  margin-top: var(--case-footer-text-top);
+  font-family: var(--font-hero-display);
+  font-size: var(--case-footer-text-size);
+  font-weight: var(--font-weight-regular);
+  line-height: var(--case-leading);
+  text-align: center;
+}
+
+.case-footer-euka         { --item-width: 145; --object-width: 123; --object-height: 97; --field-width: 145; }
+.case-footer-talk         { --item-width: 145; --object-width: 145; --object-height: 91; --field-width: 145; }
+.case-footer-small-spaces { --item-width: 174; --object-width: 174; --object-height: 93; --field-width: 137; }
+
+/* יצירת קשר בתחתית: מייל, Instagram ו-LinkedIn בשורה באמצע */
+.case-contact {
+  display: flex;
+  justify-content: center;
+  gap: var(--case-contact-gap);
+  margin-top: var(--case-contact-top);
+  padding-bottom: var(--case-bottom);
+  font-family: var(--font-hero-ui);
+}
+
+.case-contact .hero-link {
+  position: relative;
+  font-size: var(--case-contact-size);
+}
+
+/* --- התנועה בגלילה: כל חלק מופיע כשהוא נכנס למסך, כמו הטקסט שמתחלף במחשב.
+   מתחיל שקוף וקצת למטה, ועולה למקום. רק כשהסקריפט פועל (scroll-reveal.js מוסיף is-revealing),
+   כדי שבלי הסקריפט הכל פשוט יוצג --- */
+.case.is-revealing .case-reveal {
+  opacity: 0;
+  transform: translateY(var(--case-reveal-shift));
+  transition: opacity var(--case-reveal-time) ease, transform var(--case-reveal-time) ease;
+}
+
+.case.is-revealing .case-reveal.is-visible {
+  opacity: 1;
+  transform: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .case.is-revealing .case-reveal {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
 }
 
 /* ==========================================

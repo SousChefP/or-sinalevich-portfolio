@@ -172,7 +172,9 @@ function update() {
 
     // המקום והגודל: המלבן של הקישור על המסך (גם כשגוללים). מוסתר או רחוק מהמסך: לא מציירים
     const box = link.getBoundingClientRect();
-    object.visible = box.width > 0 && box.bottom > -box.height && box.top < window.innerHeight + box.height;
+    // (גם מהצדדים: למשל העותקים בקרוסלה בפוטר בטלפון, שיוצאים מהמסך)
+    object.visible = box.width > 0 && box.bottom > -box.height && box.top < window.innerHeight + box.height
+      && box.right > -box.width && box.left < window.innerWidth + box.width;
     if (!object.visible) continue;
 
     const wave = REDUCE_MOTION ? 0 : Math.sin(time * IDLE.floatSpeed * Math.PI + state.floatPhase);

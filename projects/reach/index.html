@@ -66,7 +66,7 @@
       </div>
     </header>
 
-    <!-- (הסרטונים בעמוד הזה נטענים רק במחשב: media ב-source. בטלפון מוצג עכשיו העמוד הקודם) -->
+    <!-- (הסרטונים של עמוד המחשב נטענים רק במחשב: media ב-source) -->
 
     <!-- 2. הקייס סטאדי: משמאל הטקסט (נשאר במקום), מימין הדימויים בגלילה רציפה.
          כשדימוי של חלק אחר מגיע למסך, הטקסט מתחלף לחלק שלו (case-study.js).
@@ -193,66 +193,151 @@
   </main>
 
   <!-- ==========================================
-       בטלפון (בינתיים): עמוד הפרויקט הקודם, עד שיהיה עיצוב לטלפון
+       בטלפון: עמוד הפרויקט בטור אחד (case). כל חלק מופיע בתנועה קטנה כשגוללים אליו (scroll-reveal.js).
+       הסרטונים נטענים רק כשמגיעים קרוב אליהם (data-src), ורק בטלפון
        ========================================== -->
   <main class="case">
 
-    <!-- הפס העליון: יצירת קשר על רקע לבן. נשאר למעלה גם כשגוללים -->
-    <nav class="hero-nav case-bar">
-      <a class="hero-link hero-link-two-lines hero-link-instagram" href="https://www.instagram.com/orsi.221/" target="_blank" rel="noopener"><span class="hero-link-line">Instagram</span><br><span class="hero-link-line">[orsi.221]</span></a>
-      <a class="hero-link hero-link-two-lines hero-link-linkedin" href="https://www.linkedin.com/in/orsinalevich/" target="_blank" rel="noopener"><span class="hero-link-line">LinkedIn</span><br><span class="hero-link-line">[Connect]</span></a>
-      <a class="hero-link hero-link-two-lines hero-link-email" href="mailto:orsinalevich@gmail.com" data-copy-email><span class="hero-link-line">E-Mail</span><br><span class="hero-link-line copy-email-feedback" aria-live="polite">[Say Hi]</span></a>
-      <!-- בטלפון: במקום יצירת הקשר, הפרויקט הבא -->
-      <a class="hero-link case-bar-next" href="../talk-about-it/">[Next Project →]</a>
+    <!-- הפס העליון: נשאר למעלה לאורך כל העמוד -->
+    <nav class="case-bar">
+      <a class="hero-link case-back" href="../../" data-back-to-hero>[Go Back]</a>
+      <a class="hero-link case-next" href="../talk-about-it/">[Next Project→]</a>
     </nav>
 
-    <!-- הפתיחה: שם הפרויקט, התפקיד שלי, ומה הפרויקט -->
-    <header class="case-intro">
-      <h1 class="case-title">REACH</h1>
-
-      <h2 class="case-label case-role-label">My Role</h2>
-      <p class="case-text case-roles">Product Design<br>UX/UI<br>Branding</p>
-
-      <p class="case-text case-summary">An AI-powered training app that builds Personalized MoonBoard workouts for professional bouldering climbers based on their goals &amp; body sensations.</p>
-      <p class="case-text case-credits">“It’s a Startup!” course, Bezalel, 2025<br>in collaboration with Itay Ben Mayor</p>
-
+    <!-- 1. header: האובייקט, התפקיד שלי, סרטון, הסקירה -->
+    <header class="case-header">
       <!-- האובייקט של הפרויקט (project-object.js): אפשר לסובב ולשחק בו, ולחיצה מחזירה להירו -->
       <a class="project-object case-object" href="../../" data-object="reach" data-back-to-hero aria-label="Back to home"></a>
+
+      <div class="case-reveal">
+        <h2 class="case-body-text case-role-label">My Role:</h2>
+        <ul class="case-heading-text case-roles">
+          <li>Product Design</li>
+          <li>Visual Identity</li>
+          <li>Web Design</li>
+          <li>UX/UI</li>
+        </ul>
+      </div>
+
+      <!-- סרטון של אתר הנחיתה, באותו גודל כמו סרטון דף הנחיתה בהמשך -->
+      <video class="case-wide case-cover case-reveal" data-src="media/header-site.mp4" autoplay muted loop playsinline></video>
+
+      <div class="case-text-block case-overview case-reveal">
+        <h2 class="case-body-text">Overview:</h2>
+        <p class="case-heading-text">An AI-powered training app that builds Personalized MoonBoard workouts for professional climbers based on their goals &amp; Physical condition.</p>
+      </div>
+
+      <div class="case-text-block case-credits case-reveal">
+        <p class="case-body-text">Made during “It’s a Startup!” course, Bezalel, 2025, in collaboration with Itay Ben Mayor</p>
+        <p class="case-links">
+          <a class="case-body-text case-text-link" href="https://www.figma.com/proto/R73i9JpylicWTg7amkjWy7/reach-wireframes?node-id=0-1&amp;t=8TsK69Tg9A0f7oGs-1" target="_blank" rel="noopener">App flow</a>
+          <a class="case-body-text case-text-link" href="https://www.figma.com/proto/qJ6jzXA5gPhDDvu5jCOoer/reach-landing-page?node-id=0-1&amp;t=ilvqeNy41PkG8NuV-1" target="_blank" rel="noopener">landing page</a>
+        </p>
+      </div>
     </header>
 
-    <!-- הסרטון הגדול: מתנגן לבד, בלי קול, בלופ. נטען רק בטלפון (media), כדי שבמחשב לא יורד לשווא -->
-    <video class="case-media case-video-wide" autoplay muted loop playsinline preload="auto"><source src="media/intro.mp4" media="(max-width: 767px)"></video>
+    <!-- 2. הקייס סטאדי: הדימויים, וביניהם הטקסט של כל חלק -->
+    <div class="case-section">
 
-    <!-- הבעיה -->
-    <section class="case-row">
-      <h2 class="case-label">The Problem</h2>
-      <p class="case-text case-row-text">Unlike running or weightlifting, Bouldering has no established training methods. One climber I interviewed had hit a plateau, and was unsure what to do beyond trying other climbing routes. He knew the MoonBoard could be helpful, but not how to use it to reach his personal goals.</p>
-    </section>
+      <!-- Insight: שלושה מסכים מהאפליקציה על רקע אפור -->
+      <div class="case-media case-panel case-insight case-reveal">
+        <video class="case-in-panel case-insight-1" data-src="media/insight-1.mp4" autoplay muted loop playsinline></video>
+        <video class="case-in-panel case-insight-2" data-src="media/insight-2.mp4" autoplay muted loop playsinline></video>
+        <video class="case-in-panel case-insight-3" data-src="media/insight-3.mp4" autoplay muted loop playsinline></video>
+      </div>
 
-    <!-- שלושה מסכים מהאפליקציה על רקע שחור: סרטון משמאל, ושתי תמונות -->
-    <div class="case-media case-phones">
-      <video class="case-phone case-phone-left" autoplay muted loop playsinline preload="auto"><source src="media/phone-home.mp4" media="(max-width: 767px)"></video>
-      <img class="case-phone case-phone-middle" src="media/phone-moonboard.jpg" alt="The Moon Board screen of the Reach app">
-      <img class="case-phone case-phone-right" src="media/phone-workout-card.png" alt="A workout card in the Reach app">
+      <section class="case-text-block case-reveal">
+        <h2 class="case-heading-text">Insight</h2>
+        <p class="case-body-text case-running-text">Unlike running or weightlifting, climbing has few established training methods. One climber we interviewed knew that tools like the MoonBoard could help him get past a plateau, but not how to use them or how to avoid complex tendon and joint injuries while doing so. Existing apps only track workouts passively and can’t accommodate goals or recurring injuries prevalent among climbers.</p>
+      </section>
+
+      <!-- Idea: אתר הנחיתה, ומתחתיו שני מסכים -->
+      <video class="case-media case-wide case-reveal" data-src="media/idea-landing.mp4" autoplay muted loop playsinline></video>
+      <div class="case-media case-panel case-idea-session case-reveal">
+        <img class="case-in-panel case-idea-session-image" src="media/idea-session.png" alt="A MoonBoard session with a rest timer in the Reach app" loading="lazy">
+      </div>
+      <div class="case-media case-panel case-idea-workout case-reveal">
+        <img class="case-in-panel case-idea-workout-image" src="media/idea-workout.png" alt="A suggested Power Endurance workout in the Reach app" loading="lazy">
+      </div>
+
+      <section class="case-text-block case-reveal">
+        <h2 class="case-heading-text">Idea</h2>
+        <p class="case-body-text case-running-text">We decided Reach shouldn’t be another workout tracker, and begun to think of it as a personal trainer. Our research showed us what makes a trainer valuable for progress: building a workout around a climber's goal, guiding the session as it happens, and adjusting a plan based on the climber’s physical state through knowledge &amp; understanding of the sport’s injuries.</p>
+      </section>
+
+      <!-- Application: שישה מסכים של מפת הגוף, השעון, והטיימר -->
+      <div class="case-media case-panel case-application case-reveal">
+        <img class="case-in-panel case-application-1" src="media/application-1.png" alt="The body map check-in screen" loading="lazy">
+        <img class="case-in-panel case-application-2" src="media/application-2.png" alt="Marking pain in the left palm on the body map" loading="lazy">
+        <img class="case-in-panel case-application-3" src="media/application-3.png" alt="The body map with the left palm marked" loading="lazy">
+        <img class="case-in-panel case-application-4" src="media/application-4.png" alt="Reflecting on a session: how does your body feel?" loading="lazy">
+        <img class="case-in-panel case-application-5" src="media/application-5.png" alt="A completed workout summary" loading="lazy">
+        <img class="case-in-panel case-application-6" src="media/application-6.png" alt="The home screen after a session: recovery matters" loading="lazy">
+      </div>
+      <div class="case-media case-panel case-watch case-reveal">
+        <img class="case-in-panel case-watch-image" src="media/application-watch.png" alt="The Reach session on a smart watch" loading="lazy">
+      </div>
+      <div class="case-media case-panel case-panel-video case-timer case-reveal">
+        <video class="case-in-panel case-timer-video" data-src="media/application-timer.mp4" autoplay muted loop playsinline></video>
+      </div>
+
+      <section class="case-text-block case-reveal">
+        <h2 class="case-heading-text">Application</h2>
+        <div class="case-body-text case-running-text">
+          <p>We designed a loop of suggested workouts, in-session guidance, and constant reflection. We created a “body map” that lets climbers intuitively mark strain or fatigue, to overcome the injury knowledge gap. Reach generates MoonBoard workouts based on climber’s goals, and adjusts based on their constant body map input.</p>
+          <p>But then, we realized we hadn’t yet considered the climbers being on the wall, with both hands on the holds and palms covered in chalk. That set a new rule: the app can't get in the way of the climb. So we made sure an earphone reads out the coordinates, the active session timer is readable from afar, and designed a smart watch integration.</p>
+        </div>
+      </section>
+
+      <!-- Impact: סרטון של מטפס, עם שכבות צבע והכותרת מעליו -->
+      <div class="case-impact case-reveal">
+        <video class="case-impact-video" data-src="media/impact-climber.mp4" autoplay muted loop playsinline></video>
+        <img class="case-impact-title" src="media/impact-title-phone.svg" alt="Take control of how you climb. If you care about longevity, performance consistency, and understanding your body, reach is for you.">
+      </div>
     </div>
 
-    <!-- החלטה 1 -->
-    <section class="case-row">
-      <h2 class="case-label">Decision 1</h2>
-      <p class="case-text case-row-text">Most training apps are built to record and log workouts. We started there too, designing around recording and self-filming. But for climbing, that wasn’t enough. We wanted Reach to not just track progress, but create it. Reach generates each workout, learns the climber over time, and uses what they log about their body to shape the next one.</p>
-    </section>
+    <!-- 3. הפוטר: שלושת הפרויקטים האחרים, זזים בקרוסלה (footer-carousel.js).
+         אפשר לסובב ולשחק עם האובייקטים, ולחיצה פותחת את הפרויקט (project-object.js) -->
+    <footer class="case-footer">
+      <div class="case-footer-carousel case-reveal">
+      <ul class="case-footer-list">
+        <li class="case-footer-item case-footer-euka">
+          <div class="case-footer-object-area">
+            <a class="project-object case-footer-object" href="../euka-tea/" data-object="euka-tea" aria-label="Euka Tea project"></a>
+          </div>
+          <h2 class="case-footer-field">Branding &amp; Packaging Design</h2>
+        </li>
+        <li class="case-footer-item case-footer-talk">
+          <div class="case-footer-object-area">
+            <a class="project-object case-footer-object" href="../talk-about-it/" data-object="talk-about-it" aria-label="Talk About It project"></a>
+          </div>
+          <h2 class="case-footer-field">Web Design, Brand Identity</h2>
+        </li>
+        <li class="case-footer-item case-footer-small-spaces">
+          <div class="case-footer-object-area">
+            <a class="project-object case-footer-object" href="../small-spaces/" data-object="small-spaces" aria-label="Small Spaces project"></a>
+          </div>
+          <h2 class="case-footer-field">Illustration for Digital Products</h2>
+        </li>
+      </ul>
+      </div>
 
-    <!-- הפוטר: כל הפרויקטים (Classic View בעמוד הבית) והפרויקט הבא -->
-    <nav class="hero-nav case-footer">
-      <a class="hero-link project-all" href="../../#classic">[All Projects]</a>
-      <a class="hero-link project-next" href="../talk-about-it/">[Next Project →]</a>
-    </nav>
+      <!-- יצירת קשר: מייל (לחיצה מעתיקה את הכתובת, copy-email.js), Instagram ו-LinkedIn -->
+      <nav class="case-contact">
+        <a class="hero-link" href="mailto:orsinalevich@gmail.com" data-copy-email><span class="copy-email-feedback" aria-live="polite">[E-Mail]</span></a>
+        <a class="hero-link" href="https://www.instagram.com/orsi.221/" target="_blank" rel="noopener">[Instagram]</a>
+        <a class="hero-link" href="https://www.linkedin.com/in/orsinalevich/" target="_blank" rel="noopener">[LinkedIn]</a>
+      </nav>
+    </footer>
 
   </main>
 
   <script src="../../copy-email.js"></script>
   <script src="../../hover-line.js"></script>
   <script src="../../case-study.js"></script>
+  <script src="../../scroll-reveal.js"></script>
+  <!-- לפני project-object.js: הקרוסלה משכפלת את הפרויקטים בפוטר, ואז מציירים אובייקט לכל אחד -->
+  <script src="../../footer-carousel.js"></script>
   <script type="module" src="../../project-object.js"></script>
 
 </body>
