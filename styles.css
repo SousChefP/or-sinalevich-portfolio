@@ -117,7 +117,6 @@
   --case-bar-height: 53px;                  /* הפס העליון הלבן */
   --case-bar-text-top: 25px;                /* הקישורים בפס: 25 מלמעלה */
   --case-ui-size: 16px;                     /* הקישורים בפס העליון (UI) */
-  --case-contact-size: 18px;                /* יצירת הקשר בתחתית */
   --case-text-size: 20px;                   /* כל הטקסטים (Text ו-Desktop Body בפיגמה) */
   --case-footer-text-size: 18px;            /* התחומים מתחת לאובייקטים בפוטר */
   --case-leading: 1.1;
@@ -138,9 +137,7 @@
   --case-media-gap: 20px;                   /* בין שני דימויים */
   --case-footer-gap: 47px;                  /* בין הפרויקטים בפוטר */
   --case-footer-text-top: 8px;              /* מהאובייקט עד התחום שלו */
-  --case-contact-top: 51px;                 /* מהפרויקטים עד יצירת הקשר */
-  --case-contact-gap: 42px;                 /* בין הקישורים של יצירת הקשר */
-  --case-bottom: 21px;                      /* מתחת ליצירת הקשר */
+  --case-bottom: 40px;                      /* מתחת לפרויקטים בפוטר, בסוף העמוד */
   /* התנועה בגלילה: אותו מעבר כמו בין הטקסטים בקייס סטאדי במחשב (study-chapter) */
   --case-reveal-time: var(--study-chapter-time);
   --case-reveal-shift: var(--study-chapter-shift);
@@ -709,10 +706,11 @@ button.hero-link {
 @media (max-width: 767px) {
   :root {
     --hero-scale: min(calc(100vw / 393), calc(100svh / 670));
-    --hero-edge: 17px;
-    --hero-link-size: 18px;
+    --hero-edge: 18px;
+    --hero-link-size: 16px;                         /* UI בפיגמה: כמו במחשב */
+    --hero-contact-leading: 18px;                   /* גובה השורה של Instagram, LinkedIn, E-Mail (כמו בפיגמה) */
 
-    /* בטלפון נשארים הערכים הקודמים (העיצוב החדש של 16px ו-1.1 הוא למחשב) */
+    /* בטלפון נשארים הערכים הקודמים של הטקסט (1.1 הוא למחשב) */
     --type-lead-leading: 1.2;
     --type-heading-leading: 1.2;
     --type-body: 22;
@@ -770,6 +768,7 @@ button.hero-link {
 
   .hero-contact-list .hero-link {
     position: relative;  /* כדי שהקו בהובר ואזור הלחיצה יהיו צמודים לקישור */
+    line-height: var(--hero-contact-leading);
   }
 
   /* אזור לחיצה גדול יותר מהטקסט, שקוף: אצבע לא צריכה לפגוע בדיוק באותיות.
@@ -1741,9 +1740,10 @@ body:has(.study) .project-object-canvas {
   z-index: 1;
 }
 
-/* --- 3. הפוטר: שלושת הפרויקטים האחרים בשורה רחבה מהמסך (נחתכת בצדדים) שזזה בקרוסלה, ויצירת קשר --- */
+/* --- 3. הפוטר: שלושת הפרויקטים האחרים בשורה רחבה מהמסך (נחתכת בצדדים) שזזה בקרוסלה --- */
 .case-footer {
   margin-top: var(--case-block-gap);
+  padding-bottom: var(--case-bottom);
 }
 
 .case-footer-list {
@@ -1795,21 +1795,6 @@ body:has(.study) .project-object-canvas {
 .case-footer-euka         { --item-width: 145; --object-width: 123; --object-height: 97; --field-width: 145; }
 .case-footer-talk         { --item-width: 145; --object-width: 145; --object-height: 91; --field-width: 145; }
 .case-footer-small-spaces { --item-width: 174; --object-width: 174; --object-height: 93; --field-width: 137; }
-
-/* יצירת קשר בתחתית: מייל, Instagram ו-LinkedIn בשורה באמצע */
-.case-contact {
-  display: flex;
-  justify-content: center;
-  gap: var(--case-contact-gap);
-  margin-top: var(--case-contact-top);
-  padding-bottom: var(--case-bottom);
-  font-family: var(--font-hero-ui);
-}
-
-.case-contact .hero-link {
-  position: relative;
-  font-size: var(--case-contact-size);
-}
 
 /* --- התנועה בגלילה: כל חלק מופיע כשהוא נכנס למסך, כמו הטקסט שמתחלף במחשב.
    מתחיל שקוף וקצת למטה, ועולה למקום. רק כשהסקריפט פועל (scroll-reveal.js מוסיף is-revealing),
