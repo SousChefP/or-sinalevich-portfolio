@@ -26,7 +26,7 @@ import { createEukaTea } from './3d objects/euka-tea-object/euka-tea-object.js';
 // האובייקט מוקטן או מוגדל כך שימלא את המלבן הזה, ואז מוגדל עוד לפי objectSize.
 // ב-Classic View בטלפון הפריים ארוך (393×2028), וגוללים בו. לכן שם המיקום נמדד מלמעלה.
 const FRAMES = {
-  desktop: { width: 1440, height: 823, objectSize: 1.25, calmSize: 1 },  // objectSize: פי כמה גדול מהפיגמה
+  desktop: { width: 1440, height: 781, objectSize: 1.25, calmSize: 1 },  // objectSize: פי כמה גדול מהפיגמה
   mobile: { width: 393, height: 670, objectSize: 1.4, calmSize: 1 },    // calmSize: ב-Classic View וב-About
 };
 
@@ -38,9 +38,9 @@ const OBJECTS = [
     create: createReach,
     tilt: [0.25, -0.4, 0.12],    // נראה קצת מלמעלה ומימין, עולה ימינה
     label: 'Product Design, UX/UI, Branding',  // הטקסט שמופיע בהובר ובזמן שמחזיקים את האובייקט (כמו הכותרת ב-Classic View)
-    desktop: [1027, 85, 358, 180],  // מתחילים קרוב לפינות, כדי לא להסתיר את הכותרת
+    desktop: [1027, 64, 358, 180],  // מתחילים קרוב לפינות, כדי לא להסתיר את הכותרת
     mobile: [210, 63, 151, 76],
-    classicDesktop: [37, 392, 309, 156],
+    classicDesktop: [37, 419, 301, 151],
     classicMobile: [36, 464, 321, 161],
     aboutDesktop: [1180, 132, 231, 117],
     aboutMobile: [330, 570, 111, 56],
@@ -52,9 +52,9 @@ const OBJECTS = [
     create: createTalkAboutIt,
     tilt: [-0.22, 0.45, -0.14],  // זווית המנוחה (x, y, z). לכל אובייקט זווית אחרת
     label: 'Web Design, Brand Identity',
-    desktop: [56, 91, 369, 231],
+    desktop: [20, 70, 369, 231],
     mobile: [27, 64, 156, 97],
-    classicDesktop: [396, 378, 290, 182],
+    classicDesktop: [399, 405, 282, 177],
     classicMobile: [31, 799, 331, 207],
     aboutDesktop: [118, 568, 284, 178],
     aboutMobile: [-50, 549, 114, 71],  // חלק מהאובייקט מחוץ למסך, כמו בפיגמה
@@ -66,9 +66,9 @@ const OBJECTS = [
     create: createSmallSpaces,
     tilt: [-0.35, -0.2, 0.06],   // נראה מלמטה, פונה קצת שמאלה
     label: 'Illustration for Digital Products',
-    desktop: [64, 507, 436, 233],
+    desktop: [64, 465, 436, 233],  // הפריים נהיה נמוך יותר (781): אותו מרחק מהתחתית
     mobile: [178, 499, 184, 98],
-    classicDesktop: [721, 378, 344, 184],
+    classicDesktop: [724, 405, 334, 179],
     classicMobile: [16, 1204, 360, 192],
     aboutDesktop: [29, 128, 281, 150],
     aboutMobile: [179, 553, 136, 73],
@@ -80,9 +80,9 @@ const OBJECTS = [
     create: createEukaTea,
     tilt: [0.12, 0.6, -0.22],    // מסובב הרבה ימינה ונוטה למטה
     label: 'Branding & Packaging Design',
-    desktop: [1080, 493, 311, 246],
+    desktop: [1080, 451, 311, 246],  // הפריים נהיה נמוך יותר (781): אותו מרחק מהתחתית
     mobile: [27, 544, 131, 104],
-    classicDesktop: [1115, 360, 257, 204],
+    classicDesktop: [1119, 388, 250, 198],
     classicMobile: [52, 1572, 287, 227],
     aboutDesktop: [1175, 551, 200, 159],
     aboutMobile: [69, 553, 96, 77],

@@ -27,11 +27,13 @@
   --font-hero-display: "Cal Sans", sans-serif;      /* "Hi, I’m" ותחומי העיסוק */
   --font-hero-name: "Crimson Text", serif;          /* "Orsi", באיטליק */
 
-  /* ההירו: מידת קנה מידה. פיקסל אחד בפריים של פיגמה (1440×823 במחשב),
+  /* ההירו: מידת קנה מידה. פיקסל אחד בפריים של פיגמה (1440×781 במחשב),
      קטן או גדל לפי המסך כך שכל הפריים תמיד נכנס */
-  --hero-scale: min(calc(100vw / 1440), calc(100svh / 823));
-  --hero-link-size: 18px;
-  --hero-edge: 28px;                                /* מרחק הקישורים משולי המסך */
+  --hero-scale: min(calc(100vw / 1440), calc(100svh / 781));
+  --hero-link-size: 16px;                           /* UI בפיגמה */
+  --hero-edge: 29px;                                /* מרחק הקישורים משולי המסך */
+  --hero-link-top: 16px;                            /* במחשב: הקישורים למעלה, 16 מלמעלה */
+  --hero-link-bottom: 16px;                         /* במחשב: הקישורים למטה, 16 מלמטה */
   /* גודל מינימלי לטקסט שקטן יחד עם המסך, כדי שיישאר קריא (במסך מלא לא משנה כלום) */
   --hero-text-min: 16px;                            /* טקסט לקריאה: תיאורים, About */
   --hero-heading-min: 18px;                         /* התחומים ב-Classic View */
@@ -40,11 +42,11 @@
   --type-display: 130;                      /* הכותרת "Hi, I’m Orsi" */
   --type-display-leading: 100px;            /* גובה שורה קבוע, לא משתנה עם גודל המסך */
   --type-lead: 40;                          /* הטקסט ב-About me */
-  --type-lead-leading: 1.2;
-  --type-heading: 26;                       /* התחומים ב-Classic View */
-  --type-heading-leading: 1.2;
-  --type-body: 22;                          /* המשפט על כל פרויקט */
-  --type-body-leading: normal;
+  --type-lead-leading: 1.1;
+  --type-heading: 30;                       /* התחומים ב-Classic View */
+  --type-heading-leading: 1.1;
+  --type-body: 20;                          /* המשפט על כל פרויקט */
+  --type-body-leading: 1.1;
   /* בטלפון: כמה אזור הלחיצה של כפתור גדול מהטקסט שלו, לכל כיוון (כדי להגיע ל-44px) */
   --hero-tap-extra: 13px;
   --hero-contact-gap: 16px;                         /* בטלפון: הרווח בין Instagram, LinkedIn ו-E-Mail */
@@ -426,13 +428,14 @@ button.hero-link {
 /* --- קישורים במחשב --- */
 .hero-nav-desktop .hero-link-instagram,
 .project-nav .hero-link-instagram {
-  top: 25px;
-  left: var(--hero-edge);
+  top: var(--hero-link-top);
+  right: var(--hero-edge);
+  text-align: right;
 }
 
 .hero-nav-desktop .hero-link-linkedin,
 .project-nav .hero-link-linkedin {
-  top: 25px;
+  top: var(--hero-link-top);
   left: 50%;
   transform: translateX(-50%);
   text-align: center;  /* LinkedIn ו-[Connect] ממורכזים זה מעל זה */
@@ -440,18 +443,17 @@ button.hero-link {
 
 .hero-nav-desktop .hero-link-email,
 .project-nav .hero-link-email {
-  top: 25px;
-  right: var(--hero-edge);
-  text-align: right;
+  top: var(--hero-link-top);
+  left: var(--hero-edge);
 }
 
 .hero-nav-desktop .hero-link-about {
-  bottom: 21px;
+  bottom: var(--hero-link-bottom);
   left: var(--hero-edge);
 }
 
 .hero-nav-desktop .hero-link-view {
-  bottom: 21px;
+  bottom: var(--hero-link-bottom);
   right: var(--hero-edge);
 }
 
@@ -463,7 +465,7 @@ button.hero-link {
 /* הכותרת: במרכז המסך, בשתי שורות. בכל תצוגה היא בגודל ובגובה אחרים, ועוברת ביניהם ברכות */
 .hero-title {
   position: absolute;
-  top: calc(50% - 174.5 * var(--hero-scale));
+  top: calc(50% - 153.5 * var(--hero-scale));  /* 237 בפריים */
   left: 50%;
   transform: translateX(-50%);
   font-family: var(--font-hero-display);
@@ -549,7 +551,7 @@ button.hero-link {
 
 /* הכותרת עולה למעלה */
 .hero.is-classic .hero-title {
-  top: calc(50% - 291.5 * var(--hero-scale));
+  top: calc(50% - 270.5 * var(--hero-scale));  /* 120 בפריים */
 }
 
 .classic-list {
@@ -568,7 +570,7 @@ button.hero-link {
   --spread: min(max(var(--hero-scale), calc(100vw / 1440)), calc(var(--hero-scale) * 1.3));
   position: absolute;
   left: calc(50% + (var(--center) - 720) * var(--spread) + (var(--x) - var(--center)) * var(--hero-scale));
-  top: calc(50% + (var(--y) - 411.5) * var(--hero-scale));
+  top: calc(50% + (var(--y) - 390.5) * var(--hero-scale));
 
   /* בתצוגה המשחקית: מוסתר */
   opacity: 0;
@@ -587,10 +589,10 @@ button.hero-link {
               visibility 0s var(--delay);
 }
 
-.classic-item-reach        { --center: 191.5;  --x: 29;   --y: 600; --field-width: 221; --about-width: 220; --delay: 0.9s; }
-.classic-item-talk         { --center: 542;    --x: 383;  --y: 600; --field-width: 206; --about-width: 264; --delay: 0.98s; }
-.classic-item-small-spaces { --center: 893;    --x: 736;  --y: 600; --field-width: 214; --about-width: 212; --delay: 1.06s; }
-.classic-item-euka         { --center: 1243.5; --x: 1088; --y: 600; --field-width: 236; --about-width: 299; --delay: 1.14s; }
+.classic-item-reach        { --center: 187.5; --x: 68;   --y: 598; --field-width: 221; --about-width: 198; --delay: 0.9s; }
+.classic-item-talk         { --center: 540;   --x: 423;  --y: 598; --field-width: 206; --about-width: 238; --delay: 0.98s; }
+.classic-item-small-spaces { --center: 891;   --x: 774;  --y: 598; --field-width: 214; --about-width: 219; --delay: 1.06s; }
+.classic-item-euka         { --center: 1244;  --x: 1127; --y: 598; --field-width: 256; --about-width: 219; --delay: 1.14s; }
 
 /* התחום: "Product Design, UX/UI, Branding" */
 /* הרוחב נמדד לפי גודל הטקסט (em), כדי שהשורות יישברו כמו בפיגמה גם כשהטקסט בגודל המינימלי */
@@ -605,7 +607,7 @@ button.hero-link {
 /* המשפט על הפרויקט */
 .classic-about {
   width: calc(var(--about-width) / var(--type-body) * 1em);
-  margin-top: calc(10.6 * var(--hero-scale));
+  margin-top: calc(9 * var(--hero-scale));
   font-family: var(--font-hero-name);
   font-size: max(var(--hero-text-min), calc(var(--type-body) * var(--hero-scale)));
   line-height: var(--type-body-leading);
@@ -616,7 +618,7 @@ button.hero-link {
    hero.js מוסיף ל-.hero את המחלקה is-about
    ========================================== */
 .hero.is-about .hero-title {
-  top: calc(50% - 166.5 * var(--hero-scale));
+  top: calc(50% - 151.5 * var(--hero-scale));  /* 239 בפריים */
 }
 
 /* ב-About אין מעבר ל-Classic View (וגם לא קישורי יצירת הקשר בטלפון) */
@@ -651,8 +653,8 @@ button.hero-link {
 
 .about-text {
   --delay: 0.6s;
-  top: calc(50% + (371 - 411.5) * var(--hero-scale));
-  width: calc(968 / 40 * 1em);
+  top: calc(50% + (365 - 390.5) * var(--hero-scale));
+  width: calc(910 / 40 * 1em);
   font-family: var(--font-hero-name);
   font-size: max(var(--hero-text-min), calc(var(--type-lead) * var(--hero-scale)));
   line-height: var(--type-lead-leading);
@@ -661,7 +663,7 @@ button.hero-link {
 
 .about-cv {
   --delay: 0.75s;
-  top: calc(50% + (639 - 411.5) * var(--hero-scale));
+  top: calc(50% + (594 - 390.5) * var(--hero-scale));
 }
 
 /* מי שביקש פחות תנועה בהגדרות המכשיר: המעבר מיידי */
@@ -685,6 +687,13 @@ button.hero-link {
   :root {
     --hero-scale: min(calc(100vw / 393), calc(100svh / 670));
     --hero-edge: 17px;
+    --hero-link-size: 18px;
+
+    /* בטלפון נשארים הערכים הקודמים (העיצוב החדש של 16px ו-1.1 הוא למחשב) */
+    --type-lead-leading: 1.2;
+    --type-heading-leading: 1.2;
+    --type-body: 22;
+    --type-body-leading: normal;
 
     /* סגנונות הטקסט בטלפון (Phone ... בפיגמה) */
     --type-display: 60;
