@@ -1198,12 +1198,13 @@ body:has(.study) .project-object-canvas {
   object-position: center bottom;
 }
 
-/* שכבה אפורה שקופה מעל התמונה */
+/* שכבה אפורה ושכבה אדומה, שקופות, מעל התמונה */
 .study-cover::after {
   content: "";
   position: absolute;
   inset: 0;
-  background: var(--study-cover-shade);
+  background: linear-gradient(var(--study-impact-tint), var(--study-impact-tint)),
+              linear-gradient(var(--study-cover-shade), var(--study-cover-shade));
 }
 
 /* הסרטון מעל התמונה ומעל השכבה האפורה. המקום והגודל באחוזים מהתמונה, כמו בפיגמה (881×553) */
@@ -1377,17 +1378,17 @@ body:has(.study) .project-object-canvas {
 .study-idea-workout { left: calc(122 / 448 * 100%); top: calc(96 / 592 * 100%); width: calc(207 / 448 * 100%); }
 .study-idea-session { left: calc(124 / 448 * 100%); top: calc(97 / 592 * 100%); width: calc(209 / 448 * 100%); }
 
-/* Application: שישה מסכים בשתי שורות (915×878) */
+/* Application: שישה מסכים בשתי שורות של שלושה (915×1193) */
 .study-application {
-  aspect-ratio: 915 / 878;
+  aspect-ratio: 915 / 1193;
 }
 
-.study-application-1 { left: calc(3 / 915 * 100%);   top: calc(23 / 878 * 100%);  width: calc(221 / 915 * 100%); }
-.study-application-2 { left: calc(237 / 915 * 100%); top: calc(23 / 878 * 100%);  width: calc(217 / 915 * 100%); }
-.study-application-3 { left: calc(472 / 915 * 100%); top: calc(23 / 878 * 100%);  width: calc(210 / 915 * 100%); }
-.study-application-4 { left: calc(237 / 915 * 100%); top: calc(459 / 878 * 100%); width: calc(214 / 915 * 100%); }
-.study-application-5 { left: calc(464 / 915 * 100%); top: calc(459 / 878 * 100%); width: calc(212 / 915 * 100%); }
-.study-application-6 { left: calc(696 / 915 * 100%); top: calc(459 / 878 * 100%); width: calc(216 / 915 * 100%); }
+.study-application-1 { left: calc(38 / 915 * 100%);     top: calc(78 / 1193 * 100%);     width: calc(272.54 / 915 * 100%); }
+.study-application-2 { left: calc(327.16 / 915 * 100%); top: calc(78 / 1193 * 100%);     width: calc(268.17 / 915 * 100%); }
+.study-application-3 { left: calc(617.59 / 915 * 100%); top: calc(78 / 1193 * 100%);     width: calc(259.46 / 915 * 100%); }
+.study-application-4 { left: calc(40.18 / 915 * 100%);  top: calc(625.42 / 1193 * 100%); width: calc(264.37 / 915 * 100%); }
+.study-application-5 { left: calc(324.69 / 915 * 100%); top: calc(625.42 / 1193 * 100%); width: calc(262.08 / 915 * 100%); }
+.study-application-6 { left: calc(612.74 / 915 * 100%); top: calc(625.42 / 1193 * 100%); width: calc(266.55 / 915 * 100%); }
 
 /* הטיימר (סרטון, 223×397) והשעון (321×402) */
 .study-application-timer { left: calc(117 / 448 * 100%); top: calc(97 / 592 * 100%); width: calc(223 / 448 * 100%); aspect-ratio: 223 / 397; }
