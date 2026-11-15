@@ -137,7 +137,7 @@
   --case-link-spacing: 22px;                /* בין App flow ל-landing page */
   --case-block-gap: 40px;                   /* בין טקסט לדימוי */
   --case-media-gap: 20px;                   /* בין שני דימויים */
-  --case-footer-gap: 47px;                  /* בין הפרויקטים בפוטר */
+  --case-footer-gap: 47px;                  /* בין הפרויקטים בפוטר (כמו בפיגמה). כשהקרוסלה זזה, footer-carousel.js מחשב רווח לפי רוחב המסך */
   --case-footer-text-top: 8px;              /* מהאובייקט עד התחום שלו */
   --case-bottom: 40px;                      /* מתחת לפרויקטים בפוטר, בסוף העמוד */
   /* התנועה בגלילה: אותו מעבר כמו בין הטקסטים בקייס סטאדי במחשב (study-chapter) */

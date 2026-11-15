@@ -1,6 +1,7 @@
 // ==========================================
 // הפוטר בעמוד פרויקט בטלפון: שלושת הפרויקטים זזים לאט שמאלה בקרוסלה אינסופית.
 // - כדי שהשורה לא תיגמר, משכפלים את הפרויקטים כמה פעמים (לפני ש-project-object.js מצייר את האובייקטים)
+// - הרווח בין הפרויקטים מחושב לפי רוחב המסך: ברגע שאובייקט יוצא מצד אחד, העותק שלו מתחיל להיכנס מהצד השני
 // - כשנוגעים באובייקט (כדי לסובב אותו), הקרוסלה עוצרת בעדינות, וממשיכה כשעוזבים
 // ==========================================
 
@@ -8,7 +9,8 @@
   const list = document.querySelector('.case-footer-list');
   if (!list) return;
 
-  const SPEED = 30;         // פיקסלים לשנייה
+  const SPEED = 60;         // פיקסלים לשנייה
+  const MIN_GAP = 16;       // הרווח הכי קטן בין פרויקטים (במסך צר מאוד)
   const EASE = 4;           // כמה מהר הקרוסלה עוצרת וממשיכה (גדול יותר = מהר יותר)
   const COPIES = 4;         // כמה פעמים השורה מופיעה: מספיק כדי למלא גם מסך רחב של 767
 
@@ -32,6 +34,15 @@
   let start = 0;  // המקום ההתחלתי: העותק השני באמצע המסך, כמו בפיגמה
 
   function measure() {
+    // הרווח: סיבוב אחד (שלושת הפרויקטים והרווחים) = רוחב המסך + רוחב של פרויקט ממוצע.
+    // כך פרויקט שיצא לגמרי משמאל מתחיל בדיוק אז להיכנס מימין
+    const screenWidth = list.parentElement.clientWidth;
+    if (screenWidth) {
+      const widths = originals.map((item) => item.offsetWidth);
+      const total = widths.reduce((sum, width) => sum + width, 0);
+      const gap = (screenWidth + total / widths.length - total) / widths.length;
+      list.style.gap = `${Math.max(MIN_GAP, gap)}px`;
+    }
     period = list.children[originals.length].offsetLeft - list.children[0].offsetLeft;
     const rowWidth = period - parseFloat(getComputedStyle(list).columnGap);
     start = (list.parentElement.clientWidth - rowWidth) / 2 - period;
