@@ -40,7 +40,7 @@ const OBJECTS = [
     label: 'Product Design, UX/UI, Branding',  // הטקסט שמופיע בהובר ובזמן שמחזיקים את האובייקט (כמו הכותרת ב-Classic View)
     desktop: [1027, 64, 358, 180],  // מתחילים קרוב לפינות, כדי לא להסתיר את הכותרת
     mobile: [210, 63, 151, 76],
-    classicDesktop: [37, 419, 301, 151],
+    classicDesktop: [37, 388, 301, 151],
     classicMobile: [36, 464, 321, 161],
     aboutDesktop: [1180, 132, 231, 117],
     aboutMobile: [330, 570, 111, 56],
@@ -54,7 +54,7 @@ const OBJECTS = [
     label: 'Web Design, Brand Identity',
     desktop: [20, 70, 369, 231],
     mobile: [27, 64, 156, 97],
-    classicDesktop: [399, 405, 282, 177],
+    classicDesktop: [399, 374, 282, 177],
     classicMobile: [31, 799, 331, 207],
     aboutDesktop: [118, 568, 284, 178],
     aboutMobile: [-50, 549, 114, 71],  // חלק מהאובייקט מחוץ למסך, כמו בפיגמה
@@ -68,7 +68,7 @@ const OBJECTS = [
     label: 'Illustration for Digital Products',
     desktop: [64, 465, 436, 233],  // הפריים נהיה נמוך יותר (781): אותו מרחק מהתחתית
     mobile: [178, 499, 184, 98],
-    classicDesktop: [724, 405, 334, 179],
+    classicDesktop: [724, 374, 334, 179],
     classicMobile: [16, 1204, 360, 192],
     aboutDesktop: [29, 128, 281, 150],
     aboutMobile: [179, 553, 136, 73],
@@ -82,7 +82,7 @@ const OBJECTS = [
     label: 'Branding & Packaging Design',
     desktop: [1080, 451, 311, 246],  // הפריים נהיה נמוך יותר (781): אותו מרחק מהתחתית
     mobile: [27, 544, 131, 104],
-    classicDesktop: [1119, 388, 250, 198],
+    classicDesktop: [1119, 357, 250, 198],
     classicMobile: [52, 1572, 287, 227],
     aboutDesktop: [1175, 551, 200, 159],
     aboutMobile: [69, 553, 96, 77],
@@ -280,9 +280,11 @@ function layout() {
     item.calmPlaces = {};
     item.calmSizes = {};
     item.calmSizes.classic = fit(item, cw, ch) * frame.calmSize;
+    // במחשב, במסך גבוה מהפריים: יורדים שישית מהגובה הנוסף, יחד עם הטקסט (--hero-extra ב-CSS)
+    const extraHeight = mobile ? 0 : Math.max(0, heroScreen.height - frame.height * scale);
     item.calmPlaces.classic = new THREE.Vector2(
       heroScreen.width / 2 + (cx + cw / 2 - frame.width / 2) * spread,
-      heroScreen.height / 2 + (cy + ch / 2 - frame.height / 2) * scale,
+      heroScreen.height / 2 + (cy + ch / 2 - frame.height / 2) * scale + extraHeight / 6,
     );
     if (mobile) {
       // בטלפון: מודדים כמה מקום האובייקט תופס על המסך (בזווית ובגודל שלו),
@@ -833,7 +835,8 @@ function setView(nextView, animate = true) {
     button.textContent = mainView === 'classic' ? '[Playful View]' : '[Classic View]';
   }
   for (const button of aboutButtons) {
-    button.textContent = view === 'about' ? '[Go Back]' : button.dataset.label;
+    // ב-About: הכפתור מחזיר אחורה (במחשב [Back Home], בטלפון [Go Back])
+    button.textContent = view === 'about' ? (button.dataset.backLabel || '[Go Back]') : button.dataset.label;
   }
 
   // משחררים את מה שמחזיקים ומסתירים את הטקסט

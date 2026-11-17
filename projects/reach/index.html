@@ -32,7 +32,7 @@
 
     <!-- הפס העליון: נשאר למעלה לאורך כל העמוד -->
     <nav class="study-bar">
-      <a class="hero-link study-back" href="../../" data-back-to-hero>[Go Back]</a>
+      <a class="hero-link study-back" href="../../" data-back-to-hero>[Hi, I’m Orsi]</a>
       <a class="hero-link study-next" href="../talk-about-it/">[Next Project →]</a>
     </nav>
 
@@ -200,8 +200,8 @@
 
     <!-- הפס העליון: נשאר למעלה לאורך כל העמוד -->
     <nav class="case-bar">
-      <a class="hero-link case-back" href="../../" data-back-to-hero>[Go Back]</a>
-      <a class="hero-link case-next" href="../talk-about-it/">[Next Project→]</a>
+      <a class="hero-link case-back" href="../../" data-back-to-hero>[Hi, I’m Orsi]</a>
+      <a class="hero-link case-next" href="../talk-about-it/">[Next →]</a>
     </nav>
 
     <!-- 1. header: האובייקט, התפקיד שלי, סרטון, הסקירה -->
@@ -236,7 +236,8 @@
       </div>
     </header>
 
-    <!-- 2. הקייס סטאדי: הדימויים, וביניהם הטקסט של כל חלק -->
+    <!-- 2. הקייס סטאדי: הדימויים, וביניהם הטקסט של כל חלק.
+         כל טקסט: שם החלק ("Insight:"), משפט מרכזי (case-lead), ומתחתיו ההסבר -->
     <div class="case-section">
 
       <!-- Insight: שלושה מסכים מהאפליקציה על רקע אפור -->
@@ -247,25 +248,28 @@
       </div>
 
       <section class="case-text-block case-reveal">
-        <h2 class="case-heading-text">Insight</h2>
-        <p class="case-body-text case-running-text">Unlike running or weightlifting, climbing has few established training methods. One climber we interviewed knew that tools like the MoonBoard could help him get past a plateau, but not how to use them or how to avoid complex tendon and joint injuries while doing so. Existing apps only track workouts passively and can’t accommodate goals or recurring injuries prevalent among climbers.</p>
+        <h2 class="case-body-text">Insight:</h2>
+        <p class="case-heading-text case-lead">Unlike running or weightlifting, climbing has few to no established training methods.</p>
+        <p class="case-body-text case-running-text">One climber we interviewed knew that tools like the MoonBoard could help him get past a plateau, but not how to use them or how to avoid complex tendon and joint injuries while doing so. Existing apps only track workouts passively and can’t accommodate goals or recurring injuries prevalent among climbers.</p>
       </section>
 
-      <!-- Idea: אתר הנחיתה, ומתחתיו שני מסכים -->
+      <!-- Idea: אתר הנחיתה ומסך האימון, הטקסט, ואחריו מסך ההצעה -->
       <video class="case-media case-wide case-reveal" data-src="media/idea-landing.mp4" autoplay muted loop playsinline></video>
       <div class="case-media case-panel case-idea-session case-reveal">
         <img class="case-in-panel case-idea-session-image" src="media/idea-session.png" alt="A MoonBoard session with a rest timer in the Reach app" loading="lazy">
       </div>
+
+      <section class="case-text-block case-reveal">
+        <h2 class="case-body-text">Idea:</h2>
+        <p class="case-heading-text case-lead">We decided Reach shouldn’t be another workout tracker, and begun to think of it as a personal trainer</p>
+        <p class="case-body-text case-running-text">Our research showed us what makes a trainer valuable for progress: building a workout around a climber's goal, guiding the session as it happens, and adjusting a plan based on the climber’s physical state through knowledge &amp; understanding of the sport’s injuries.</p>
+      </section>
+
       <div class="case-media case-panel case-idea-workout case-reveal">
         <img class="case-in-panel case-idea-workout-image" src="media/idea-workout.png" alt="A suggested Power Endurance workout in the Reach app" loading="lazy">
       </div>
 
-      <section class="case-text-block case-reveal">
-        <h2 class="case-heading-text">Idea</h2>
-        <p class="case-body-text case-running-text">We decided Reach shouldn’t be another workout tracker, and begun to think of it as a personal trainer. Our research showed us what makes a trainer valuable for progress: building a workout around a climber's goal, guiding the session as it happens, and adjusting a plan based on the climber’s physical state through knowledge &amp; understanding of the sport’s injuries.</p>
-      </section>
-
-      <!-- Application: שישה מסכים של מפת הגוף, השעון, והטיימר -->
+      <!-- Application: שישה מסכים של מפת הגוף, הטקסט, ואחריו השעון והטיימר -->
       <div class="case-media case-panel case-application case-reveal">
         <img class="case-in-panel case-application-1" src="media/application-1.png" alt="The body map check-in screen" loading="lazy">
         <img class="case-in-panel case-application-2" src="media/application-2.png" alt="Marking pain in the left palm on the body map" loading="lazy">
@@ -274,6 +278,16 @@
         <img class="case-in-panel case-application-5" src="media/application-5.png" alt="A completed workout summary" loading="lazy">
         <img class="case-in-panel case-application-6" src="media/application-6.png" alt="The home screen after a session: recovery matters" loading="lazy">
       </div>
+
+      <section class="case-text-block case-reveal">
+        <h2 class="case-body-text">Application:</h2>
+        <p class="case-heading-text case-lead">We designed a loop of suggested workouts, in-session guidance, and constant reflection</p>
+        <div class="case-body-text case-running-text">
+          <p>We created a “body map” that lets climbers intuitively mark strain or fatigue, to overcome the injury knowledge gap. Reach generates MoonBoard workouts based on climber’s goals, and adjusts based on their constant body map input.</p>
+          <p>But then, we realized we hadn’t yet considered the climbers being on the wall, with both hands on the holds and palms covered in chalk. That set a new rule: the app can't get in the way of the climb. So we made sure an earphone reads out the coordinates, the active session timer is readable from afar, and designed a smart watch integration.</p>
+        </div>
+      </section>
+
       <div class="case-media case-panel case-watch case-reveal">
         <img class="case-in-panel case-watch-image" src="media/application-watch.png" alt="The Reach session on a smart watch" loading="lazy">
       </div>
@@ -282,11 +296,9 @@
       </div>
 
       <section class="case-text-block case-reveal">
-        <h2 class="case-heading-text">Application</h2>
-        <div class="case-body-text case-running-text">
-          <p>We designed a loop of suggested workouts, in-session guidance, and constant reflection. We created a “body map” that lets climbers intuitively mark strain or fatigue, to overcome the injury knowledge gap. Reach generates MoonBoard workouts based on climber’s goals, and adjusts based on their constant body map input.</p>
-          <p>But then, we realized we hadn’t yet considered the climbers being on the wall, with both hands on the holds and palms covered in chalk. That set a new rule: the app can't get in the way of the climb. So we made sure an earphone reads out the coordinates, the active session timer is readable from afar, and designed a smart watch integration.</p>
-        </div>
+        <h2 class="case-body-text">Impact:</h2>
+        <p class="case-heading-text case-lead">Reach aims to make structured personalized training accessible to intermediate and professional climbers who currently have to guess their way forward</p>
+        <p class="case-body-text case-running-text">Reach overcomes the injury knowledge gap and makes logging body sensations intuitive and trackable. Hands-free guidance fits the real conditions of a climbing session, and because each session shapes the next, training becomes continuous and adaptive instead of a series of isolated sessions logged in an app.</p>
       </section>
 
       <!-- Impact: סרטון של מטפס, עם שכבות צבע והכותרת מעליו -->
@@ -299,6 +311,7 @@
     <!-- 3. הפוטר: שלושת הפרויקטים האחרים, זזים בקרוסלה (footer-carousel.js).
          אפשר לסובב ולשחק עם האובייקטים, ולחיצה פותחת את הפרויקט (project-object.js) -->
     <footer class="case-footer">
+      <h2 class="case-body-text case-footer-title case-reveal">Check These Out:</h2>
       <div class="case-footer-carousel case-reveal">
       <ul class="case-footer-list">
         <li class="case-footer-item case-footer-euka">
