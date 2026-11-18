@@ -9,7 +9,6 @@
   const chapters = [...document.querySelectorAll('.study-chapter')];
   const media = [...document.querySelectorAll('.study-case-media [data-chapter]')];
   const bar = document.querySelector('.study-bar');
-  if (!chapters.length || !media.length) return;
 
   const REDUCE_MOTION = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
@@ -57,6 +56,9 @@
     resizeWatcher.observe(textColumn);
     for (const chapter of chapters) resizeWatcher.observe(chapter);
   }
+
+  // בעמוד בלי חלקים (Small Spaces: טקסט About אחד) אין מה להחליף, ועוצרים כאן
+  if (!chapters.length || !media.length) return;
 
   // --- איזה חלק פעיל: של הדימוי האחרון שהקצה העליון שלו כבר עבר את אמצע המסך ---
   function update() {

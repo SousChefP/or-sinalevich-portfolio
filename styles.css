@@ -113,6 +113,18 @@
   --talk-case-role-top: 22px;               /* מהאובייקט עד "My Role:" */
   --talk-case-cover-top: 25px;              /* מהתפקידים עד הסרטון */
   --talk-case-video-radius: 3px;            /* הפינות המעוגלות של סרטון הציור הראשון ב-Application */
+  /* עמוד Small Spaces במחשב: מה ששונה מ-REACH */
+  --small-blue: #1377FC;                    /* הרקע הכחול מאחורי אתר הנחיתה בהדר */
+  --small-object-width: 509px;              /* האובייקט בהדר */
+  --small-object-ratio: 509 / 272;
+  --small-object-top: -15px;                /* האובייקט מתחיל 15 פיקסלים מעל "Overview:" */
+  --small-object-shift: 83px;               /* האובייקט שמאלה ממרכז החלק שלו */
+  /* עמוד Small Spaces בטלפון: מה ששונה מ-REACH */
+  --small-case-object-width: 290;           /* האובייקט בהדר, בפיקסלים */
+  --small-case-object-height: 155;
+  --small-case-object-top: 17px;            /* מהפס עד האובייקט */
+  --small-case-role-top: 22px;              /* מהאובייקט עד "My Role:" */
+  --small-case-cover-top: 25px;             /* מהתפקידים עד אתר הנחיתה */
   --study-footer-width: 1128px;             /* רוחב שלושת הפרויקטים יחד */
   --study-footer-shift: 10px;               /* הקבוצה 5 פיקסלים שמאלה מהמרכז, כמו בפיגמה */
   --study-footer-text-top: 263px;           /* מלמעלה עד הכותרות */
@@ -1560,6 +1572,7 @@ body:has(.study) .project-object-canvas {
   --study-object-ratio: var(--talk-object-ratio);
   --study-object-top: var(--talk-object-top);
   --study-object-shift: var(--talk-object-shift);
+  --study-cover-color: var(--talk-yellow);
 }
 
 /* הרקע האפור מאחורי המסכים */
@@ -1567,9 +1580,10 @@ body:has(.study) .project-object-canvas {
   background: var(--talk-panel);
 }
 
-/* בהדר: רקע צהוב בלי תמונה ובלי שכבות, והסרטון באמצע (1382×739, הסרטון 1023×579) */
+/* בהדר: רקע בצבע אחד (צהוב כאן, כחול ב-Small Spaces) בלי תמונה ובלי שכבות,
+   והסרטון באמצע (1382×739, הסרטון 1023×579) */
 .study-cover-color {
-  background: var(--talk-yellow);
+  background: var(--study-cover-color);
 }
 
 .study-cover-color::after {
@@ -1617,6 +1631,72 @@ body:has(.study) .project-object-canvas {
 /* Application: שני מסכים של הטלפון, כל אחד על רקע אפור משלו (448×592) */
 .talk-application-flow    { left: calc(118 / 448 * 100%); top: calc(97 / 592 * 100%); width: calc(211 / 448 * 100%); aspect-ratio: 211 / 397; }
 .talk-application-episode { left: calc(121 / 447 * 100%); top: calc(97 / 592 * 100%); width: calc(206 / 447 * 100%); aspect-ratio: 206 / 397; }
+
+/* ==========================================
+   עמוד Small Spaces במחשב (study-small): אותו מבנה כמו REACH, ומה ששונה ממנו
+   ========================================== */
+
+/* האובייקט בהדר: גודל ומקום אחרים. ורקע כחול מאחורי אתר הנחיתה */
+.study-small {
+  --study-object-width: var(--small-object-width);
+  --study-object-ratio: var(--small-object-ratio);
+  --study-object-top: var(--small-object-top);
+  --study-object-shift: var(--small-object-shift);
+  --study-cover-color: var(--small-blue);
+}
+
+/* אתר הנחיתה על הרקע הכחול (1382×739, התמונה 1023×553) */
+.small-cover-image {
+  position: absolute;
+  left: calc(180 / 1382 * 100%);
+  top: calc(93 / 739 * 100%);
+  width: calc(1023 / 1382 * 100%);
+  aspect-ratio: 1023 / 553;
+  object-fit: cover;
+}
+
+/* במקום חלקים שמתחלפים: טקסט אחד ("About:"), באותם ריווחים כמו החלקים */
+.study-about {
+  margin-top: var(--study-chapters-top);
+}
+
+.study-about-title {
+  font-family: var(--font-hero-display);
+  font-size: var(--study-body-size);
+  font-weight: var(--font-weight-regular);
+  line-height: var(--study-leading);
+}
+
+.study-about-text {
+  margin-top: var(--study-chapter-text-top);
+}
+
+/* שתי פסקאות: שורה ריקה ביניהן */
+.study-about-text p + p {
+  margin-top: calc(var(--study-leading) * 1em);
+}
+
+/* שני מסכים, כל אחד על רקע אפור משלו (448×592) */
+.small-welcome { left: calc(120 / 448 * 100%); top: calc(62 / 592 * 100%); width: calc(239 / 448 * 100%); aspect-ratio: 239 / 467; }
+.small-share   { left: calc(105 / 447 * 100%); top: calc(62 / 592 * 100%); width: calc(238 / 447 * 100%); aspect-ratio: 238 / 467; }
+
+/* שלושה מסכים על רקע אפור אחד (915×531, כל מסך בגובה 467) */
+.small-screens {
+  aspect-ratio: 915 / 531;
+}
+
+.small-screen {
+  top: calc(33 / 531 * 100%);
+  width: calc(var(--w) / 915 * 100%);
+  aspect-ratio: var(--w) / 467;
+}
+
+.small-reminders { --w: 239; left: calc(32 / 915 * 100%); }
+.small-club      { --w: 232; left: calc(344 / 915 * 100%); }
+.small-chores    { --w: 234; left: calc(649 / 915 * 100%); }
+
+/* בפוטר: Let’s Talk About It בעמודה האמצעית, והטקסט שלו 50 פיקסלים ימינה מהאובייקט */
+.study-small .study-footer-talk { --field-left: 50; --about-left: 50; --field-width: 214; --about-width: 219; }
 
 /* ==========================================
    עמוד פרויקט בטלפון (case), למשל projects/reach. בפיגמה: פריים ברוחב 393.
@@ -1950,6 +2030,32 @@ body:has(.study) .project-object-canvas {
 .case-talk-insight-exhibition { --x: 250.49; --y: 12.88; --w: 95.16; --h: 179.17; }
 .case-talk-flow-video         { --x: 97.24;  --y: 65.71; --w: 161.67; --h: 304.4; }
 .case-talk-episode-image      { --x: 96.64;  --y: 77.47; --w: 164.7; --h: 316.73; }
+
+/* --- עמוד Small Spaces בטלפון (case-small): אותו מבנה כמו REACH, ומה ששונה ממנו --- */
+
+/* האובייקט בהדר והריווחים סביבו */
+.case-small {
+  --case-object-width: var(--small-case-object-width);
+  --case-object-height: var(--small-case-object-height);
+  --case-object-top: var(--small-case-object-top);
+  --case-role-top: var(--small-case-role-top);
+  --case-cover-top: var(--small-case-cover-top);
+}
+
+/* אתר הנחיתה מתחת לתפקידים (357×193) */
+.case-small .case-wide {
+  aspect-ratio: 357 / 193;
+}
+
+/* הרקעים האפורים, והמקום והגודל של כל מסך עליהם (בפיקסלים של הפיגמה) */
+.case-small-welcome { --panel-w: 357; --panel-h: 471.75; }
+.case-small-screen  { --panel-w: 357; --panel-h: 592; }
+
+.case-small-welcome-image   { --x: 94.03; --y: 76.5;   --w: 161.73; --h: 316.43; }
+.case-small-share-image     { --x: 88.63; --y: 117.08; --w: 180.73; --h: 354.38; }
+.case-small-reminders-image { --x: 89;    --y: 119;    --w: 181.52; --h: 354.38; }
+.case-small-chores-image    { --x: 90;    --y: 119;    --w: 177.19; --h: 354.38; }
+.case-small-club-image      { --x: 91;    --y: 119;    --w: 175.81; --h: 354.38; }
 
 /* --- התנועה בגלילה: כל חלק מופיע כשהוא נכנס למסך, כמו הטקסט שמתחלף במחשב.
    מתחיל שקוף וקצת למטה, ועולה למקום. רק כשהסקריפט פועל (scroll-reveal.js מוסיף is-revealing),

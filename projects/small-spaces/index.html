@@ -4,17 +4,17 @@
   <meta charset="UTF-8">
   <!-- מתאים את העמוד לרוחב המסך בטלפון ובטאבלט -->
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>404 – Or Sinalevich</title>
+  <title>Small Spaces – Or Sinalevich</title>
 
   <!-- הפונטים מהפיגמה, מ-Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Aldrich&family=Cal+Sans&family=Crimson+Text:ital@0;1&display=swap">
 
-  <!-- העמוד הזה מופיע בכל כתובת שלא קיימת (גם /a/b/c), אז כל הנתיבים מתחילים מהשורש: "/" -->
-  <link rel="stylesheet" href="/styles.css">
+  <link rel="stylesheet" href="../../styles.css">
 
-  <!-- three.js למילה התלת-ממדית (כמו בעמוד הבית) -->
+
+  <!-- three.js לאובייקט התלת-ממדי (כמו בעמוד הבית) -->
   <script type="importmap">
     {
       "imports": {
@@ -24,19 +24,224 @@
     }
   </script>
 </head>
-<body class="page-light not-found-page">
+<body class="page-light">
 
-  <!-- העמוד של הפרויקט (small-spaces) עוד לא מוכן, אז בינתיים מוצג כאן עמוד ה-404 (העתק של /404.html).
-       הפלייסהולדר הקודם שמור ב-git -->
-  <!-- עמוד 404: המספר הגדול, המשפט שמתחתיו, קישור הביתה, ומילה מכרום שמרחפת ומתחלפת בכל פגיעה בקצה (not-found.js) -->
-  <main class="not-found">
-    <h1 class="not-found-title">404</h1>
-    <p class="not-found-subtitle">This page Was Not Found</p>
-    <a class="hero-link not-found-home" href="/">[Go Back Home]</a>
+  <!-- ==========================================
+       במחשב: עמוד הפרויקט (study), באותו מבנה כמו REACH: header, הקייס סטאדי, פוטר.
+       study-small: מה ששונה (האובייקט, הרקע הכחול, טקסט About אחד במקום חלקים), styles.css
+       ========================================== -->
+  <main class="study study-small">
+
+    <!-- הפס העליון: נשאר למעלה לאורך כל העמוד -->
+    <nav class="study-bar">
+      <a class="hero-link study-back" href="../../" data-back-to-hero>[Hi, I’m Orsi]</a>
+      <a class="hero-link study-next" href="../euka-tea/">[Next Project →]</a>
+    </nav>
+
+    <!-- 1. header: האובייקט, הסקירה, התפקיד שלי, ואתר הנחיתה על רקע כחול -->
+    <header class="study-header">
+      <div class="study-header-top">
+        <!-- האובייקט של הפרויקט (project-object.js): אפשר לסובב ולשחק בו, ולחיצה מחזירה להירו -->
+        <div class="study-object-area">
+          <a class="project-object study-object" href="../../" data-object="small-spaces" data-back-to-hero aria-label="Back to home"></a>
+        </div>
+
+        <div class="study-overview">
+          <h2 class="study-label">Overview:</h2>
+          <p class="study-heading-text study-overview-text">Illustrations for a conceptual sub-brand &amp; household management app for IKEA, designed around the concept of daily life within a small living space.</p>
+          <p class="study-body-text study-credits">Designed during "Illustration for digital products" course, Bezalel, 2025</p>
+        </div>
+      </div>
+
+      <h2 class="study-label">My Role:</h2>
+      <ul class="study-heading-text study-roles">
+        <li>Digital Illustration</li>
+        <li>Visual Identity</li>
+        <li>UX/UI</li>
+        <li>Web Design</li>
+      </ul>
+
+      <!-- רקע כחול, ועליו אתר הנחיתה -->
+      <div class="study-cover study-cover-color">
+        <img class="small-cover-image" src="media/landing-page.png" alt="The Small Spaces landing page: Make Space">
+      </div>
+    </header>
+
+    <!-- 2. הקייס סטאדי: משמאל הטקסט (נשאר במקום), מימין מסכי האפליקציה בגלילה -->
+    <section class="study-case">
+
+      <div class="study-case-text">
+        <h1 class="study-title">Small Spaces<br>X IKEA</h1>
+        <!-- TODO: הכתובת של App Overview (חסרה בפיגמה) -->
+        <p class="study-case-links">
+          <a class="study-body-text study-text-link" href="#" target="_blank" rel="noopener">App Overview</a>
+        </p>
+
+        <!-- כאן אין חלקים שמתחלפים: טקסט אחד, About -->
+        <div class="study-about">
+          <h2 class="study-about-title">About:</h2>
+          <div class="study-body-text study-about-text">
+            <p>Drawing from IKEA’s values of practicality, flexibility, and empowerment, these illustrations were designed to depict everyday situations where people and objects bend and adjust to fit inside a small, contained space. Elements are bended in tight compositions &amp; compressed into defined boundaries.</p>
+            <p>The color palette takes the famous IKEA blue &amp; yellow, and adds a few more shades to create a fun, non-judgmental feel.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- מסכי האפליקציה על רקע אפור, 20 פיקסלים ביניהם -->
+      <div class="study-case-media">
+
+        <!-- שני מסכים, כל אחד על רקע אפור משלו: מסך הפתיחה, והזמנת שותפים לבית -->
+        <div class="study-pair">
+          <div class="study-panel study-panel-half">
+            <img class="study-in-panel small-welcome" src="media/phone-welcome.png" alt="The app’s welcome screen: IKEA Small Spaces">
+          </div>
+          <div class="study-panel study-panel-half">
+            <img class="study-in-panel small-share" src="media/phone-share.png" alt="Share Your Space: inviting housemates">
+          </div>
+        </div>
+
+        <!-- שלושה מסכים על רקע אפור אחד: תזכורות, המועדון, מטלות יומיות -->
+        <div class="study-panel small-screens">
+          <img class="study-in-panel small-screen small-reminders" src="media/phone-reminders.png" alt="My Home: no reminders yet">
+          <img class="study-in-panel small-screen small-club" src="media/phone-club.png" alt="The Small Spaces+ Club subscription">
+          <img class="study-in-panel small-screen small-chores" src="media/phone-chores.png" alt="Daily chores: all chores done">
+        </div>
+
+      </div>
+    </section>
+
+    <!-- 3. הפוטר: שלושת הפרויקטים האחרים, כמו ב-Classic View.
+         אפשר לסובב ולשחק עם האובייקטים, ולחיצה על אובייקט פותחת את הפרויקט שלו (project-object.js) -->
+    <footer class="study-footer">
+      <ul class="study-footer-list">
+        <li class="study-footer-item study-footer-reach">
+          <a class="project-object study-footer-object" href="../reach/" data-object="reach" aria-label="REACH project"></a>
+          <h2 class="study-heading-text study-footer-field">Product Design, UX/UI, Branding</h2>
+          <p class="study-body-text study-footer-about">AI Powered training app for pro climbers</p>
+        </li>
+        <li class="study-footer-item study-footer-talk">
+          <a class="project-object study-footer-object" href="../talk-about-it/" data-object="talk-about-it" aria-label="Let’s Talk About It project"></a>
+          <h2 class="study-heading-text study-footer-field">Web Design, Brand Identity</h2>
+          <p class="study-body-text study-footer-about">Branding and mini-site Design for a kids podcast</p>
+        </li>
+        <li class="study-footer-item study-footer-euka">
+          <a class="project-object study-footer-object" href="../euka-tea/" data-object="euka-tea" aria-label="Euka Tea project"></a>
+          <h2 class="study-heading-text study-footer-field">Branding &amp; Packaging Design</h2>
+          <p class="study-body-text study-footer-about">Psycho-active mushroom tea Branding</p>
+        </li>
+      </ul>
+
+      <!-- יצירת קשר בתחתית: מייל משמאל (לחיצה מעתיקה את הכתובת, copy-email.js), LinkedIn באמצע, Instagram מימין -->
+      <nav class="study-contact">
+        <a class="hero-link hero-link-two-lines study-contact-email" href="mailto:orsinalevich@gmail.com" data-copy-email><span class="hero-link-line">E-Mail</span><br><span class="hero-link-line copy-email-feedback" aria-live="polite">[Say Hi]</span></a>
+        <a class="hero-link hero-link-two-lines study-contact-linkedin" href="https://www.linkedin.com/in/orsinalevich/" target="_blank" rel="noopener"><span class="hero-link-line">LinkedIn</span><br><span class="hero-link-line">[Connect]</span></a>
+        <a class="hero-link hero-link-two-lines study-contact-instagram" href="https://www.instagram.com/orsi.221/" target="_blank" rel="noopener"><span class="hero-link-line">Instagram</span><br><span class="hero-link-line">[orsi.221]</span></a>
+      </nav>
+    </footer>
+
   </main>
 
-  <script src="/hover-line.js"></script>
-  <script type="module" src="/not-found.js"></script>
+  <!-- ==========================================
+       בטלפון: עמוד הפרויקט בטור אחד (case), באותו מבנה כמו REACH.
+       case-small: מה ששונה (האובייקט, אתר הנחיתה בלי רקע), styles.css.
+       מתחת לסקירה, כל חלק מופיע בתנועה קטנה כשגוללים אליו (scroll-reveal.js, case-reveal)
+       ========================================== -->
+  <main class="case case-small">
+
+    <!-- הפס העליון: נשאר למעלה לאורך כל העמוד -->
+    <nav class="case-bar">
+      <a class="hero-link case-back" href="../../" data-back-to-hero>[Hi, I’m Orsi]</a>
+      <a class="hero-link case-next" href="../euka-tea/">[Next →]</a>
+    </nav>
+
+    <!-- 1. header: האובייקט, התפקיד שלי, אתר הנחיתה, הסקירה -->
+    <header class="case-header">
+      <!-- האובייקט של הפרויקט (project-object.js): אפשר לסובב ולשחק בו, ולחיצה מחזירה להירו -->
+      <a class="project-object case-object" href="../../" data-object="small-spaces" data-back-to-hero aria-label="Back to home"></a>
+
+      <div>
+        <h2 class="case-body-text case-role-label">My Role:</h2>
+        <ul class="case-heading-text case-roles">
+          <li>Digital Illustration</li>
+          <li>UX/UI</li>
+          <li>Visual Identity</li>
+          <li>Web Design</li>
+        </ul>
+      </div>
+
+      <!-- אתר הנחיתה -->
+      <img class="case-wide case-cover" src="media/landing-page.png" alt="The Small Spaces landing page: Make Space">
+
+      <div class="case-text-block case-overview">
+        <h2 class="case-body-text">Overview:</h2>
+        <p class="case-heading-text">Illustrations for a conceptual sub-brand &amp; household management app for IKEA, designed around the concept of daily life within a small living space.</p>
+      </div>
+
+      <div class="case-text-block case-credits">
+        <p class="case-body-text">Designed during "Illustration for digital products" course, Bezalel, 2025</p>
+        <!-- TODO: הכתובת של App Overview (חסרה בפיגמה) -->
+        <p class="case-links">
+          <a class="case-body-text case-text-link" href="#" target="_blank" rel="noopener">App Overview</a>
+        </p>
+      </div>
+    </header>
+
+    <!-- 2. מסכי האפליקציה, כל אחד על רקע אפור משלו -->
+    <div class="case-section">
+      <div class="case-media case-panel case-small-welcome case-reveal">
+        <img class="case-in-panel case-small-welcome-image" src="media/phone-welcome.png" alt="The app’s welcome screen: IKEA Small Spaces" loading="lazy">
+      </div>
+      <div class="case-media case-panel case-small-screen case-reveal">
+        <img class="case-in-panel case-small-share-image" src="media/phone-share.png" alt="Share Your Space: inviting housemates" loading="lazy">
+      </div>
+      <div class="case-media case-panel case-small-screen case-reveal">
+        <img class="case-in-panel case-small-reminders-image" src="media/phone-reminders.png" alt="My Home: no reminders yet" loading="lazy">
+      </div>
+      <div class="case-media case-panel case-small-screen case-reveal">
+        <img class="case-in-panel case-small-chores-image" src="media/phone-chores.png" alt="Daily chores: all chores done" loading="lazy">
+      </div>
+      <div class="case-media case-panel case-small-screen case-reveal">
+        <img class="case-in-panel case-small-club-image" src="media/phone-club.png" alt="The Small Spaces+ Club subscription" loading="lazy">
+      </div>
+    </div>
+
+    <!-- 3. הפוטר: שלושת הפרויקטים האחרים, זזים בקרוסלה (footer-carousel.js).
+         אפשר לסובב ולשחק עם האובייקטים, ולחיצה פותחת את הפרויקט (project-object.js) -->
+    <footer class="case-footer">
+      <h2 class="case-body-text case-footer-title case-reveal">Check These Out:</h2>
+      <div class="case-footer-carousel case-reveal">
+      <ul class="case-footer-list">
+        <li class="case-footer-item case-footer-euka">
+          <div class="case-footer-object-area">
+            <a class="project-object case-footer-object" href="../euka-tea/" data-object="euka-tea" aria-label="Euka Tea project"></a>
+          </div>
+          <h2 class="case-footer-field">Branding &amp; Packaging Design</h2>
+        </li>
+        <li class="case-footer-item case-footer-reach">
+          <div class="case-footer-object-area">
+            <a class="project-object case-footer-object" href="../reach/" data-object="reach" aria-label="REACH project"></a>
+          </div>
+          <h2 class="case-footer-field">Product Design, UX/UI, Branding</h2>
+        </li>
+        <li class="case-footer-item case-footer-talk">
+          <div class="case-footer-object-area">
+            <a class="project-object case-footer-object" href="../talk-about-it/" data-object="talk-about-it" aria-label="Let’s Talk About It project"></a>
+          </div>
+          <h2 class="case-footer-field">Web Design, Brand Identity</h2>
+        </li>
+      </ul>
+      </div>
+    </footer>
+
+  </main>
+
+  <script src="../../copy-email.js"></script>
+  <script src="../../hover-line.js"></script>
+  <script src="../../case-study.js"></script>
+  <script src="../../scroll-reveal.js"></script>
+  <!-- לפני project-object.js: הקרוסלה משכפלת את הפרויקטים בפוטר, ואז מציירים אובייקט לכל אחד -->
+  <script src="../../footer-carousel.js"></script>
+  <script type="module" src="../../project-object.js"></script>
 
 </body>
 </html>
