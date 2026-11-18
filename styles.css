@@ -75,7 +75,7 @@
   --study-role-gap: 3px;                    /* מ-"My Role:" עד התפקידים */
   --study-paragraph-gap: 27px;              /* בין הסקירה לשורת הקורס */
   --study-cover-gap: 34px;                  /* מהתפקידים עד התמונה */
-  --study-cover-shade: rgba(78, 78, 78, 0.36);  /* שכבה אפורה שקופה מעל התמונה */
+  --study-cover-color: #FD463E;             /* הרקע האדום מאחורי הסרטון בהדר (בעמודים האחרים: צבע אחר) */
   /* הקייס סטאדי */
   --study-text-column: 410px;               /* רוחב טור הטקסט משמאל */
   --study-columns-gap: 57px;                /* בין הטקסט לדימויים */
@@ -1222,25 +1222,12 @@ body:has(.study) .project-object-canvas {
   overflow: hidden;
 }
 
-/* רואים את החלק התחתון של התמונה, כמו בפיגמה */
-.study-cover-image {
-  display: block;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  object-position: center bottom;
+/* רקע בצבע אחד: אדום ב-REACH, צהוב ב-Let’s Talk About It, כחול ב-Small Spaces */
+.study-cover-color {
+  background: var(--study-cover-color);
 }
 
-/* שכבה אפורה ושכבה אדומה, שקופות, מעל התמונה */
-.study-cover::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(var(--study-impact-tint), var(--study-impact-tint)),
-              linear-gradient(var(--study-cover-shade), var(--study-cover-shade));
-}
-
-/* הסרטון מעל התמונה ומעל השכבה האפורה. המקום והגודל באחוזים מהתמונה, כמו בפיגמה (881×553) */
+/* הסרטון על הרקע. המקום והגודל באחוזים מהרקע, כמו בפיגמה (881×553) */
 .study-cover-video {
   position: absolute;
   left: calc(248 / 1382 * 100%);
@@ -1580,17 +1567,8 @@ body:has(.study) .project-object-canvas {
   background: var(--talk-panel);
 }
 
-/* בהדר: רקע בצבע אחד (צהוב כאן, כחול ב-Small Spaces) בלי תמונה ובלי שכבות,
-   והסרטון באמצע (1382×739, הסרטון 1023×579) */
-.study-cover-color {
-  background: var(--study-cover-color);
-}
-
-.study-cover-color::after {
-  content: none;
-}
-
-.study-cover-color .study-cover-video {
+/* בהדר: הסרטון גדול יותר (1382×739, הסרטון 1023×579) */
+.study-talk .study-cover-video {
   left: calc(180 / 1382 * 100%);
   top: calc(80 / 739 * 100%);
   width: calc(1023 / 1382 * 100%);
