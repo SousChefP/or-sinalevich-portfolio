@@ -68,6 +68,7 @@
   --study-top-height: 300px;                /* מ-"Overview:" עד "My Role:" */
   --study-object-top: 14px;                 /* האובייקט מתחיל קצת מתחת ל-"Overview:" */
   --study-object-width: 470px;
+  --study-object-ratio: 470 / 236;          /* הפרופורציות של האובייקט (רוחב / גובה) */
   --study-object-shift: 42px;               /* האובייקט קצת שמאלה ממרכז החלק שלו */
   --study-overview-width: 446px;            /* הטור של הסקירה מימין */
   --study-overview-gap: 11px;               /* מ-"Overview:" עד הטקסט */
@@ -83,7 +84,7 @@
   --study-links-gap: 8px;                   /* מ-"Reach" עד הקישורים */
   --study-link-spacing: 22px;               /* בין App flow ל-landing page */
   --study-chapters-top: 40px;               /* מהקישורים עד הכותרת הראשונה */
-  --study-chapter-gap: 9px;                 /* בין כותרות החלקים */
+  --study-chapter-gap: 9px;                /* בין כותרות החלקים */
   --study-chapter-text-top: 17px;           /* מהכותרת עד הטקסט שלה */
   --study-chapter-text-bottom: 27px;        /* מהטקסט עד הכותרת הבאה (36 פחות הרווח שבין כותרות) */
   --study-chapter-time: 0.5s;               /* כמה זמן לוקח לטקסט להתחלף */
@@ -98,6 +99,20 @@
   --font-impact-text: "Reckless Standard S", serif;
   /* הפוטר: הפרויקטים האחרים */
   --study-footer-height: 496px;             /* גובה הפוטר (הפריים בפיגמה) */
+  /* עמוד Let’s Talk About It במחשב: מה ששונה מ-REACH */
+  --talk-yellow: #F4C848;                   /* הרקע הצהוב מאחורי הסרטון בהדר */
+  --talk-panel: #E7E5E1;                    /* הרקע האפור מאחורי המסכים */
+  --talk-object-width: 475px;               /* האובייקט בהדר */
+  --talk-object-ratio: 475 / 297;
+  --talk-object-top: -28px;                 /* האובייקט מתחיל 28 פיקסלים מעל "Overview:" */
+  --talk-object-shift: 83px;                /* האובייקט שמאלה ממרכז החלק שלו */
+  /* עמוד Let’s Talk About It בטלפון: מה ששונה מ-REACH */
+  --talk-case-object-width: 262;            /* האובייקט בהדר, בפיקסלים */
+  --talk-case-object-height: 164;
+  --talk-case-object-top: 8px;              /* מהפס עד האובייקט */
+  --talk-case-role-top: 22px;               /* מהאובייקט עד "My Role:" */
+  --talk-case-cover-top: 25px;              /* מהתפקידים עד הסרטון */
+  --talk-case-video-radius: 3px;            /* הפינות המעוגלות של סרטון הציור הראשון ב-Application */
   --study-footer-width: 1128px;             /* רוחב שלושת הפרויקטים יחד */
   --study-footer-shift: 10px;               /* הקבוצה 5 פיקסלים שמאלה מהמרכז, כמו בפיגמה */
   --study-footer-text-top: 263px;           /* מלמעלה עד הכותרות */
@@ -1162,7 +1177,7 @@ body:has(.study) .project-object-canvas {
   display: block;
   width: 100%;
   max-width: var(--study-object-width);
-  aspect-ratio: 470 / 236;
+  aspect-ratio: var(--study-object-ratio);
   margin-top: var(--study-object-top);
 }
 
@@ -1239,6 +1254,14 @@ body:has(.study) .project-object-canvas {
   position: sticky;
   top: var(--study-bar-height);
   padding-top: var(--study-title-top);
+  max-height: calc(100vh - var(--study-bar-height));
+}
+
+/* במסך נמוך, כשהטקסט לא נכנס (case-study.js מוסיף is-scrollable): אפשר לגלול אותו בנפרד, כשהעכבר עליו.
+   contain: גלילה על הטקסט מזיזה רק את הטקסט, גם כשהוא מגיע לסוף (העמוד לא ממשיך לזוז) */
+.study-case-text.is-scrollable {
+  overflow-y: auto;
+  overscroll-behavior: contain;
 }
 
 .study-title {
@@ -1472,6 +1495,7 @@ body:has(.study) .project-object-canvas {
   list-style: none;
 }
 
+.study-footer-reach        { --object-width: 301; --object-height: 151; --object-top: 96; --object-left: -19; --field-left: 12; --about-left: 12; --field-width: 225; --about-width: 214; }
 .study-footer-talk         { --object-width: 282; --object-height: 177; --object-top: 70; --field-left: 24; --about-left: 22; --field-width: 206; --about-width: 238; }
 .study-footer-small-spaces { --object-width: 336; --object-height: 179; --object-top: 70; --field-left: 50; --about-left: 50; --field-width: 214; --about-width: 219; }
 .study-footer-euka         { --object-width: 250; --object-height: 198; --object-top: 53; --field-left: 8;  --about-left: 8;  --field-width: 256; --about-width: 219; }
@@ -1485,7 +1509,7 @@ body:has(.study) .project-object-canvas {
 .study-footer-object {
   position: absolute;
   top: calc(var(--object-top) * 1px);
-  left: 0;
+  left: calc(var(--object-left, 0) * 1px);   /* בדרך כלל בתחילת העמודה */
   width: min(calc(var(--object-width) * 1px), 100%);
   aspect-ratio: var(--object-width) / var(--object-height);
 }
@@ -1525,6 +1549,74 @@ body:has(.study) .project-object-canvas {
   right: var(--study-margin);
   text-align: right;
 }
+
+/* ==========================================
+   עמוד Let’s Talk About It במחשב (study-talk): אותו מבנה כמו REACH, ומה ששונה ממנו
+   ========================================== */
+
+/* האובייקט בהדר: גודל ומקום אחרים */
+.study-talk {
+  --study-object-width: var(--talk-object-width);
+  --study-object-ratio: var(--talk-object-ratio);
+  --study-object-top: var(--talk-object-top);
+  --study-object-shift: var(--talk-object-shift);
+}
+
+/* הרקע האפור מאחורי המסכים */
+.study-talk .study-panel {
+  background: var(--talk-panel);
+}
+
+/* בהדר: רקע צהוב בלי תמונה ובלי שכבות, והסרטון באמצע (1382×739, הסרטון 1023×579) */
+.study-cover-color {
+  background: var(--talk-yellow);
+}
+
+.study-cover-color::after {
+  content: none;
+}
+
+.study-cover-color .study-cover-video {
+  left: calc(180 / 1382 * 100%);
+  top: calc(80 / 739 * 100%);
+  width: calc(1023 / 1382 * 100%);
+  aspect-ratio: 1023 / 579;
+}
+
+/* דימוי לכל רוחב הטור (915×518), וגרסה נמוכה יותר לציורים על נגן הפרק (915×475) */
+.study-wide {
+  width: 100%;
+  aspect-ratio: 915 / 518;
+}
+
+.talk-wide-short {
+  aspect-ratio: 915 / 475;
+}
+
+/* בתמונות האלה רואים את החלק התחתון, כמו החיתוך בפיגמה */
+.talk-idea-exhibition,
+.talk-application-events {
+  object-position: center bottom;
+}
+
+/* Insight: שלושה מסכים של הטלפון על רקע אפור (915×522, כל מסך 244×459) */
+.talk-insight {
+  aspect-ratio: 915 / 522;
+}
+
+.talk-insight-phone {
+  top: calc(33 / 522 * 100%);
+  width: calc(244 / 915 * 100%);
+  aspect-ratio: 244 / 459;
+}
+
+.talk-insight-episode    { left: calc(29 / 915 * 100%); }
+.talk-insight-scroll     { left: calc(334 / 915 * 100%); }
+.talk-insight-exhibition { left: calc(642 / 915 * 100%); }
+
+/* Application: שני מסכים של הטלפון, כל אחד על רקע אפור משלו (448×592) */
+.talk-application-flow    { left: calc(118 / 448 * 100%); top: calc(97 / 592 * 100%); width: calc(211 / 448 * 100%); aspect-ratio: 211 / 397; }
+.talk-application-episode { left: calc(121 / 447 * 100%); top: calc(97 / 592 * 100%); width: calc(206 / 447 * 100%); aspect-ratio: 206 / 397; }
 
 /* ==========================================
    עמוד פרויקט בטלפון (case), למשל projects/reach. בפיגמה: פריים ברוחב 393.
@@ -1816,6 +1908,48 @@ body:has(.study) .project-object-canvas {
 .case-footer-euka         { --item-width: 145; --object-width: 123; --object-height: 97; --field-width: 145; }
 .case-footer-talk         { --item-width: 145; --object-width: 145; --object-height: 91; --field-width: 145; }
 .case-footer-small-spaces { --item-width: 174; --object-width: 174; --object-height: 93; --field-width: 137; }
+
+.case-footer-reach        { --item-width: 147; --object-width: 147; --object-height: 74; --field-width: 145; }
+
+/* --- עמוד Let’s Talk About It בטלפון (case-talk): אותו מבנה כמו REACH, ומה ששונה ממנו --- */
+
+/* האובייקט בהדר והריווחים סביבו */
+.case-talk {
+  --case-object-width: var(--talk-case-object-width);
+  --case-object-height: var(--talk-case-object-height);
+  --case-object-top: var(--talk-case-object-top);
+  --case-role-top: var(--talk-case-role-top);
+  --case-cover-top: var(--talk-case-cover-top);
+}
+
+/* הרקע האפור מאחורי המסכים */
+.case-talk .case-panel {
+  background: var(--talk-panel);
+}
+
+/* הסרטונים והתמונות לרוחב העמוד (357×202), וגרסה נמוכה יותר לציורים על נגן הפרק (357×185) */
+.case-talk .case-wide {
+  aspect-ratio: 357 / 202;
+}
+
+.case-talk .case-talk-short {
+  aspect-ratio: 357 / 185;
+}
+
+.case-talk-rounded {
+  border-radius: var(--talk-case-video-radius);
+}
+
+/* הרקעים האפורים, והמקום והגודל של כל מסך עליהם (בפיקסלים של הפיגמה) */
+.case-talk-insight { --panel-w: 357; --panel-h: 203.67; }
+.case-talk-flow    { --panel-w: 357; --panel-h: 436.45; }
+.case-talk-episode { --panel-w: 357; --panel-h: 472.81; }
+
+.case-talk-insight-episode    { --x: 11.31;  --y: 12.88; --w: 95.16; --h: 179.17; }
+.case-talk-insight-scroll     { --x: 130.31; --y: 12.88; --w: 95.16; --h: 179.17; }
+.case-talk-insight-exhibition { --x: 250.49; --y: 12.88; --w: 95.16; --h: 179.17; }
+.case-talk-flow-video         { --x: 97.24;  --y: 65.71; --w: 161.67; --h: 304.4; }
+.case-talk-episode-image      { --x: 96.64;  --y: 77.47; --w: 164.7; --h: 316.73; }
 
 /* --- התנועה בגלילה: כל חלק מופיע כשהוא נכנס למסך, כמו הטקסט שמתחלף במחשב.
    מתחיל שקוף וקצת למטה, ועולה למקום. רק כשהסקריפט פועל (scroll-reveal.js מוסיף is-revealing),
