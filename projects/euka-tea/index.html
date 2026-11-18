@@ -4,17 +4,16 @@
   <meta charset="UTF-8">
   <!-- מתאים את העמוד לרוחב המסך בטלפון ובטאבלט -->
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>404 – Or Sinalevich</title>
+  <title>Euka Tea – Or Sinalevich</title>
 
   <!-- הפונטים מהפיגמה, מ-Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Aldrich&family=Cal+Sans&family=Crimson+Text:ital@0;1&display=swap">
 
-  <!-- העמוד הזה מופיע בכל כתובת שלא קיימת (גם /a/b/c), אז כל הנתיבים מתחילים מהשורש: "/" -->
-  <link rel="stylesheet" href="/styles.css">
+  <link rel="stylesheet" href="../../styles.css">
 
-  <!-- three.js למילה התלת-ממדית (כמו בעמוד הבית) -->
+  <!-- three.js לאובייקט התלת-ממדי (כמו בעמוד הבית) -->
   <script type="importmap">
     {
       "imports": {
@@ -24,19 +23,196 @@
     }
   </script>
 </head>
-<body class="page-light not-found-page">
+<body class="page-light">
 
-  <!-- העמוד של הפרויקט (euka-tea) עוד לא מוכן, אז בינתיים מוצג כאן עמוד ה-404 (העתק של /404.html).
-       הפלייסהולדר הקודם שמור ב-git -->
-  <!-- עמוד 404: המספר הגדול, המשפט שמתחתיו, קישור הביתה, ומילה מכרום שמרחפת ומתחלפת בכל פגיעה בקצה (not-found.js) -->
-  <main class="not-found">
-    <h1 class="not-found-title">404</h1>
-    <p class="not-found-subtitle">This page Was Not Found</p>
-    <a class="hero-link not-found-home" href="/">[Go Back Home]</a>
+  <!-- ==========================================
+       במחשב: עמוד הפרויקט (study), באותו מבנה כמו REACH: header, הקייס סטאדי, פוטר.
+       study-euka: מה ששונה (האובייקט, תמונה גבוהה יותר בהדר, טקסט About אחד בלי קישורים), styles.css
+       ========================================== -->
+  <main class="study study-euka">
+
+    <!-- הפס העליון: נשאר למעלה לאורך כל העמוד. הפרויקט האחרון, אז "הבא" חוזר ל-REACH -->
+    <nav class="study-bar">
+      <a class="hero-link study-back" href="../../" data-back-to-hero>[Hi, I’m Orsi]</a>
+      <a class="hero-link study-next" href="../reach/">[Next Project →]</a>
+    </nav>
+
+    <!-- 1. header: האובייקט, הסקירה, התפקיד שלי, ותמונה של שקיות התה -->
+    <header class="study-header">
+      <div class="study-header-top">
+        <!-- האובייקט של הפרויקט (project-object.js): אפשר לסובב ולשחק בו, ולחיצה מחזירה להירו -->
+        <div class="study-object-area">
+          <a class="project-object study-object" href="../../" data-object="euka-tea" data-back-to-hero aria-label="Back to home"></a>
+        </div>
+
+        <div class="study-overview">
+          <h2 class="study-label">Overview:</h2>
+          <p class="study-heading-text study-overview-text">Brand identity &amp; packaging system for euka, a conceptual psychoactive mushroom tea line that combines clinical medicine and holistic, alternative care</p>
+          <p class="study-body-text study-credits">Designed during "Introduction to Branding" course, Bezalel, 2025, in collaboration with Shira Biton</p>
+        </div>
+      </div>
+
+      <h2 class="study-label">My Role:</h2>
+      <ul class="study-heading-text study-roles">
+        <li>Branding</li>
+        <li>Packaging Design</li>
+        <li>Typography</li>
+        <li>Art Direction</li>
+      </ul>
+
+      <!-- שלוש שקיות התה, לכל הרוחב -->
+      <div class="study-cover euka-cover">
+        <img class="euka-cover-image" src="media/cover-bags.jpg" alt="Three euka tea bags: focus, stress relief, calmness &amp; clarity">
+      </div>
+    </header>
+
+    <!-- 2. הקייס סטאדי: משמאל הטקסט (נשאר במקום), מימין התמונות בגלילה -->
+    <section class="study-case">
+
+      <div class="study-case-text">
+        <h1 class="study-title">Euka Tea</h1>
+
+        <!-- כאן אין חלקים שמתחלפים: טקסט אחד, About -->
+        <div class="study-about euka-about">
+          <h2 class="study-about-title">About:</h2>
+          <div class="study-body-text study-about-text">
+            <p>Euka was developed as a modular product line, including individual tea bags, loose tea blends, and a personalized kit. Each format represents a different level of engagement with the product: from casual use to a more curated experience.</p>
+            <p>After researching the products available on the market, we understood the image psychoactive mushrooms could have, and built the design system around that. With grid-based layouts and monospace typography, referencing clinical and pharmaceutical systems, alongside a softer layer of handwritten labels and natural materials, we created a brand that communicates use in a clear but non-intimidating way.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- התמונות, 20 פיקסלים ביניהן -->
+      <div class="study-case-media">
+
+        <!-- שתי תמונות זו ליד זו: כרטיס ההסבר, והערכה המותאמת אישית -->
+        <div class="study-pair">
+          <img class="euka-half" src="media/label-card.jpg" alt="The handwritten information card on kraft paper">
+          <img class="euka-half euka-kit" src="media/kit.jpg" alt="The personalized kit: tea bags, loose blends, a cup and a paper bag">
+        </div>
+
+        <!-- כל סדרת המוצרים -->
+        <img class="euka-wide" src="media/product-line.jpg" alt="The whole euka product line: bags, boxes, cups, a notebook and a tote bag">
+
+      </div>
+    </section>
+
+    <!-- 3. הפוטר: שלושת הפרויקטים האחרים, כמו ב-Classic View.
+         אפשר לסובב ולשחק עם האובייקטים, ולחיצה על אובייקט פותחת את הפרויקט שלו (project-object.js) -->
+    <footer class="study-footer">
+      <ul class="study-footer-list">
+        <li class="study-footer-item study-footer-reach">
+          <a class="project-object study-footer-object" href="../reach/" data-object="reach" aria-label="REACH project"></a>
+          <h2 class="study-heading-text study-footer-field">Product Design, UX/UI, Branding</h2>
+          <p class="study-body-text study-footer-about">AI Powered training app for pro climbers</p>
+        </li>
+        <li class="study-footer-item study-footer-talk">
+          <a class="project-object study-footer-object" href="../talk-about-it/" data-object="talk-about-it" aria-label="Let’s Talk About It project"></a>
+          <h2 class="study-heading-text study-footer-field">Web Design, Brand Identity</h2>
+          <p class="study-body-text study-footer-about">Branding and mini-site Design for a kids podcast</p>
+        </li>
+        <li class="study-footer-item study-footer-small-spaces">
+          <a class="project-object study-footer-object" href="../small-spaces/" data-object="small-spaces" aria-label="Small Spaces project"></a>
+          <h2 class="study-heading-text study-footer-field">Illustration for Digital Products</h2>
+          <p class="study-body-text study-footer-about">An illustrated sub-brand app for IKEA</p>
+        </li>
+      </ul>
+
+      <!-- יצירת קשר בתחתית: מייל משמאל (לחיצה מעתיקה את הכתובת, copy-email.js), LinkedIn באמצע, Instagram מימין -->
+      <nav class="study-contact">
+        <a class="hero-link hero-link-two-lines study-contact-email" href="mailto:orsinalevich@gmail.com" data-copy-email><span class="hero-link-line">E-Mail</span><br><span class="hero-link-line copy-email-feedback" aria-live="polite">[Say Hi]</span></a>
+        <a class="hero-link hero-link-two-lines study-contact-linkedin" href="https://www.linkedin.com/in/orsinalevich/" target="_blank" rel="noopener"><span class="hero-link-line">LinkedIn</span><br><span class="hero-link-line">[Connect]</span></a>
+        <a class="hero-link hero-link-two-lines study-contact-instagram" href="https://www.instagram.com/orsi.221/" target="_blank" rel="noopener"><span class="hero-link-line">Instagram</span><br><span class="hero-link-line">[orsi.221]</span></a>
+      </nav>
+    </footer>
+
   </main>
 
-  <script src="/hover-line.js"></script>
-  <script type="module" src="/not-found.js"></script>
+  <!-- ==========================================
+       בטלפון: עמוד הפרויקט בטור אחד (case), באותו מבנה כמו REACH.
+       case-euka: מה ששונה (האובייקט והריווחים סביבו, גודל התמונות), styles.css.
+       מתחת לסקירה, כל חלק מופיע בתנועה קטנה כשגוללים אליו (scroll-reveal.js, case-reveal)
+       ========================================== -->
+  <main class="case case-euka">
+
+    <!-- הפס העליון: נשאר למעלה לאורך כל העמוד -->
+    <nav class="case-bar">
+      <a class="hero-link case-back" href="../../" data-back-to-hero>[Hi, I’m Orsi]</a>
+      <a class="hero-link case-next" href="../reach/">[Next →]</a>
+    </nav>
+
+    <!-- 1. header: האובייקט, התפקיד שלי, שקיות התה, הסקירה -->
+    <header class="case-header">
+      <!-- האובייקט של הפרויקט (project-object.js): אפשר לסובב ולשחק בו, ולחיצה מחזירה להירו -->
+      <a class="project-object case-object" href="../../" data-object="euka-tea" data-back-to-hero aria-label="Back to home"></a>
+
+      <div>
+        <h2 class="case-body-text case-role-label">My Role:</h2>
+        <ul class="case-heading-text case-roles">
+          <li>Branding</li>
+          <li>Art Direction</li>
+          <li>Typography</li>
+          <li>Packaging Design</li>
+        </ul>
+      </div>
+
+      <!-- שלוש שקיות התה -->
+      <img class="case-wide case-cover" src="media/cover-bags.jpg" alt="Three euka tea bags: focus, stress relief, calmness &amp; clarity">
+
+      <div class="case-text-block case-overview">
+        <h2 class="case-body-text">Overview:</h2>
+        <p class="case-heading-text">Brand identity &amp; packaging system for euka, a conceptual psychoactive mushroom tea line that combines clinical, science based medicine and holistic, alternative care</p>
+      </div>
+
+      <div class="case-text-block case-credits">
+        <p class="case-body-text">Designed during "Introduction to Branding" course, Bezalel, 2025, in collaboration with Shira Biton</p>
+      </div>
+    </header>
+
+    <!-- 2. התמונות, אחת מתחת לשנייה -->
+    <div class="case-section">
+      <img class="case-media case-wide case-euka-label case-reveal" src="media/label-card.jpg" alt="The handwritten information card on kraft paper" loading="lazy">
+      <img class="case-media case-wide case-euka-kit euka-kit case-reveal" src="media/kit.jpg" alt="The personalized kit: tea bags, loose blends, a cup and a paper bag" loading="lazy">
+      <img class="case-media case-wide case-euka-line case-reveal" src="media/product-line.jpg" alt="The whole euka product line: bags, boxes, cups, a notebook and a tote bag" loading="lazy">
+    </div>
+
+    <!-- 3. הפוטר: שלושת הפרויקטים האחרים, זזים בקרוסלה (footer-carousel.js).
+         אפשר לסובב ולשחק עם האובייקטים, ולחיצה פותחת את הפרויקט (project-object.js) -->
+    <footer class="case-footer">
+      <h2 class="case-body-text case-footer-title case-reveal">Check These Out:</h2>
+      <div class="case-footer-carousel case-reveal">
+      <ul class="case-footer-list">
+        <li class="case-footer-item case-footer-small-spaces">
+          <div class="case-footer-object-area">
+            <a class="project-object case-footer-object" href="../small-spaces/" data-object="small-spaces" aria-label="Small Spaces project"></a>
+          </div>
+          <h2 class="case-footer-field">Illustration for Digital Products</h2>
+        </li>
+        <li class="case-footer-item case-footer-reach">
+          <div class="case-footer-object-area">
+            <a class="project-object case-footer-object" href="../reach/" data-object="reach" aria-label="REACH project"></a>
+          </div>
+          <h2 class="case-footer-field">Product Design, UX/UI, Branding</h2>
+        </li>
+        <li class="case-footer-item case-footer-talk">
+          <div class="case-footer-object-area">
+            <a class="project-object case-footer-object" href="../talk-about-it/" data-object="talk-about-it" aria-label="Let’s Talk About It project"></a>
+          </div>
+          <h2 class="case-footer-field">Web Design, Brand Identity</h2>
+        </li>
+      </ul>
+      </div>
+    </footer>
+
+  </main>
+
+  <script src="../../copy-email.js"></script>
+  <script src="../../hover-line.js"></script>
+  <script src="../../case-study.js"></script>
+  <script src="../../scroll-reveal.js"></script>
+  <!-- לפני project-object.js: הקרוסלה משכפלת את הפרויקטים בפוטר, ואז מציירים אובייקט לכל אחד -->
+  <script src="../../footer-carousel.js"></script>
+  <script type="module" src="../../project-object.js"></script>
 
 </body>
 </html>

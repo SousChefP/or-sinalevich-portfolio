@@ -125,6 +125,20 @@
   --small-case-object-top: 17px;            /* מהפס עד האובייקט */
   --small-case-role-top: 22px;              /* מהאובייקט עד "My Role:" */
   --small-case-cover-top: 25px;             /* מהתפקידים עד אתר הנחיתה */
+  /* עמוד Euka Tea במחשב: מה ששונה מ-REACH */
+  --euka-object-width: 384px;               /* האובייקט בהדר */
+  --euka-object-ratio: 384 / 304;
+  --euka-object-top: -15px;                 /* האובייקט מתחיל 15 פיקסלים מעל "Overview:" */
+  --euka-object-shift: 102px;               /* האובייקט שמאלה ממרכז החלק שלו */
+  --euka-about-top: 42px;                   /* מ-"Euka Tea" עד "About:" (אין קישורים ביניהם) */
+  /* עמוד Euka Tea בטלפון: מה ששונה מ-REACH */
+  --euka-case-object-width: 234;            /* האובייקט בהדר, בפיקסלים */
+  --euka-case-object-height: 185;
+  --euka-case-object-top: 5px;              /* מהפס עד האובייקט */
+  --euka-case-role-top: 4px;                /* מהאובייקט עד "My Role:" */
+  --euka-case-cover-top: 25px;              /* מהתפקידים עד התמונה */
+  --euka-case-credits-width: 335px;         /* שורת הקורס: קצת צרה יותר, כדי שתישבר כמו בפיגמה */
+  --euka-case-footer-objects: 91px;         /* גובה השורה של האובייקטים בפוטר (האובייקט הגבוה: talk about it) */
   --study-footer-width: 1128px;             /* רוחב שלושת הפרויקטים יחד */
   --study-footer-shift: 10px;               /* הקבוצה 5 פיקסלים שמאלה מהמרכז, כמו בפיגמה */
   --study-footer-text-top: 263px;           /* מלמעלה עד הכותרות */
@@ -1509,7 +1523,8 @@ body:has(.study) .project-object-canvas {
   position: absolute;
   top: calc(var(--object-top) * 1px);
   left: calc(var(--object-left, 0) * 1px);   /* בדרך כלל בתחילת העמודה */
-  width: min(calc(var(--object-width) * 1px), 100%);
+  /* לא רחב יותר מהמקום שיש לו עד סוף העמודה (גם כשהוא מתחיל לפניה) */
+  width: min(calc(var(--object-width) * 1px), calc(100% - var(--object-left, 0) * 1px));
   aspect-ratio: var(--object-width) / var(--object-height);
 }
 
@@ -1673,8 +1688,58 @@ body:has(.study) .project-object-canvas {
 .small-club      { --w: 232; left: calc(344 / 915 * 100%); }
 .small-chores    { --w: 234; left: calc(649 / 915 * 100%); }
 
-/* בפוטר: Let’s Talk About It בעמודה האמצעית, והטקסט שלו 50 פיקסלים ימינה מהאובייקט */
-.study-small .study-footer-talk { --field-left: 50; --about-left: 50; --field-width: 214; --about-width: 219; }
+/* בפוטר: Let’s Talk About It בעמודה האמצעית, והטקסט שלו 50 פיקסלים ימינה מהאובייקט (גם ב-Euka Tea) */
+.study-small .study-footer-talk,
+.study-euka .study-footer-talk { --field-left: 50; --about-left: 50; --field-width: 214; --about-width: 219; }
+
+/* ==========================================
+   עמוד Euka Tea במחשב (study-euka): אותו מבנה כמו REACH, ומה ששונה ממנו
+   ========================================== */
+
+/* האובייקט בהדר: גודל ומקום אחרים */
+.study-euka {
+  --study-object-width: var(--euka-object-width);
+  --study-object-ratio: var(--euka-object-ratio);
+  --study-object-top: var(--euka-object-top);
+  --study-object-shift: var(--euka-object-shift);
+}
+
+/* בהדר: תמונה אחת לכל הרוחב, קצת יותר גבוהה מבעמודים האחרים (1382×777) */
+.euka-cover {
+  aspect-ratio: 1382 / 777;
+}
+
+.euka-cover-image {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* "About:" קרוב יותר לכותרת, כי אין קישורים ביניהם */
+.euka-about {
+  margin-top: var(--euka-about-top);
+}
+
+/* שתי תמונות זו ליד זו (448×560), ותמונה לכל רוחב הטור (915×506) */
+.euka-half {
+  width: 100%;
+  aspect-ratio: 448 / 560;
+}
+
+.euka-wide {
+  width: 100%;
+  aspect-ratio: 915 / 506;
+  object-position: center bottom;   /* רואים את החלק התחתון, כמו החיתוך בפיגמה */
+}
+
+/* הערכה: רואים את החלק העליון, כמו החיתוך בפיגמה (במחשב ובטלפון) */
+.euka-kit {
+  object-position: center top;
+}
+
+/* בפוטר: Small Spaces בעמודה הימנית, והאובייקט שלו 49 פיקסלים שמאלה מתחילת העמודה */
+.study-euka .study-footer-small-spaces { --object-width: 312; --object-height: 166; --object-top: 81; --object-left: -49; --field-left: 8; --about-left: 8; --field-width: 256; --about-width: 219; }
 
 /* ==========================================
    עמוד פרויקט בטלפון (case), למשל projects/reach. בפיגמה: פריים ברוחב 393.
@@ -2034,6 +2099,35 @@ body:has(.study) .project-object-canvas {
 .case-small-reminders-image { --x: 89;    --y: 119;    --w: 181.52; --h: 354.38; }
 .case-small-chores-image    { --x: 90;    --y: 119;    --w: 177.19; --h: 354.38; }
 .case-small-club-image      { --x: 91;    --y: 119;    --w: 175.81; --h: 354.38; }
+
+/* --- עמוד Euka Tea בטלפון (case-euka): אותו מבנה כמו REACH, ומה ששונה ממנו --- */
+
+/* האובייקט בהדר והריווחים סביבו */
+.case-euka {
+  --case-object-width: var(--euka-case-object-width);
+  --case-object-height: var(--euka-case-object-height);
+  --case-object-top: var(--euka-case-object-top);
+  --case-role-top: var(--euka-case-role-top);
+  --case-cover-top: var(--euka-case-cover-top);
+}
+
+/* התמונות לרוחב העמוד, כל אחת בגובה שלה בפיגמה */
+.case-euka .case-wide { aspect-ratio: 357 / 201; }   /* שקיות התה בהדר */
+.case-euka .case-euka-label { aspect-ratio: 357 / 446; }
+.case-euka .case-euka-kit { aspect-ratio: 357 / 447; }
+.case-euka .case-euka-line { aspect-ratio: 357 / 197; object-position: center bottom; }
+
+.case-euka .case-credits p {
+  max-width: var(--euka-case-credits-width);
+  margin: 0 auto;
+}
+
+/* בפוטר: האובייקט של Small Spaces קטן יותר, והשורה של האובייקטים נמוכה יותר */
+.case-euka .case-footer-small-spaces { --item-width: 159; --object-width: 159; --object-height: 85; --field-width: 145; }
+
+.case-euka .case-footer-object-area {
+  height: var(--euka-case-footer-objects);
+}
 
 /* --- התנועה בגלילה: כל חלק מופיע כשהוא נכנס למסך, כמו הטקסט שמתחלף במחשב.
    מתחיל שקוף וקצת למטה, ועולה למקום. רק כשהסקריפט פועל (scroll-reveal.js מוסיף is-revealing),
