@@ -112,8 +112,7 @@
   --talk-case-object-top: 8px;              /* מהפס עד האובייקט */
   --talk-case-role-top: 22px;               /* מהאובייקט עד "My Role:" */
   --talk-case-cover-top: 25px;              /* מהתפקידים עד הסרטון */
-  --talk-case-video-radius: 3px;            /* הפינות המעוגלות של סרטון הציור הראשון ב-Application */
-  --talk-drawing-radius: 23px;              /* במחשב: הפינות המעוגלות של סרטון הציור הראשון ב-Application */
+  --talk-drawing-radius: 23px;              /* הפינות המעוגלות של סרטון הציור הראשון ב-Application (במחשב ובטלפון) */
   --talk-drawing-zoom: 1.0645;              /* הסרטון מוגדל כדי שלא יראו את השוליים של ההקלטה (החיתוך בפיגמה) */
   /* עמוד Small Spaces במחשב: מה ששונה מ-REACH */
   --small-blue: #1377FC;                    /* הרקע הכחול מאחורי אתר הנחיתה בהדר */
@@ -1602,16 +1601,15 @@ body:has(.study) .project-object-canvas {
   aspect-ratio: 915 / 475;
 }
 
-/* סרטון הציור הראשון ב-Application: מסגרת עם פינות מעוגלות (915×472 במחשב),
-   והסרטון בתוכה מוגדל קצת מהמרכז, כדי שלא יראו את השוליים של ההקלטה (כמו החיתוך בפיגמה).
-   בטלפון המסגרת בגודל של case-talk-short */
+/* סרטון הציור הראשון ב-Application: מסגרת עם פינות מעוגלות (915×472 במחשב, 357×184 בטלפון),
+   והסרטון בתוכה מוגדל קצת מהמרכז, כדי שלא יראו את השוליים של ההקלטה (כמו החיתוך בפיגמה) */
 .talk-drawing-frame {
   overflow: hidden;
+  border-radius: var(--talk-drawing-radius);
 }
 
 .study-case-media .talk-drawing-frame {
   aspect-ratio: 915 / 472;
-  border-radius: var(--talk-drawing-radius);
 }
 
 .talk-drawing-video {
@@ -2081,8 +2079,9 @@ body:has(.study) .project-object-canvas {
   aspect-ratio: 357 / 185;
 }
 
-.case-talk-rounded {
-  border-radius: var(--talk-case-video-radius);
+/* סרטון הציור הראשון ב-Application (המסגרת והפינות: talk-drawing-frame) */
+.case-talk .talk-drawing-frame {
+  aspect-ratio: 357 / 184;
 }
 
 /* הרקעים האפורים, והמקום והגודל של כל מסך עליהם (בפיקסלים של הפיגמה) */
