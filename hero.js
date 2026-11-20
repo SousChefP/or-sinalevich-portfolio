@@ -366,13 +366,13 @@ let lastClient = { x: 0, y: 0 };       // המיקום האחרון של העכ�
 // --- הטקסט שמופיע ליד אובייקט ---
 // במחשב: כשהעכבר מעל האובייקט וכל עוד מחזיקים אותו. בטלפון: כל עוד האצבע עליו.
 const label = document.querySelector('.hero-object-label');
-const labelText = label.querySelector('.hero-object-label-text');  // השורות עם הרקע השחור
+const labelTexts = label.querySelectorAll('.hero-object-label-text');  // שתי השכבות: הרקעים השחורים, והאותיות מעליהם
 let labelItem = null;      // האובייקט שהטקסט שלו מוצג עכשיו
 let labelByTouch = false;  // הטקסט הופיע מנגיעה באצבע: אז הוא מעל האובייקט, כדי שהיד לא תסתיר אותו
 
 function showLabel(item) {
   if (!item || !item.label) { hideLabel(); return; }
-  if (labelItem !== item) labelText.textContent = item.label;
+  if (labelItem !== item) labelTexts.forEach((text) => { text.textContent = item.label; });
   labelItem = item;
   label.classList.add('is-visible');
 }
@@ -382,20 +382,30 @@ function hideLabel() {
   label.classList.remove('is-visible');
 }
 
-// הטקסט צמוד לפינה הימנית-תחתונה של האובייקט (כמו בפיגמה), ונשאר בתוך המסך.
-// בנגיעה באצבע: מעל האובייקט, כדי שהאצבע והיד לא יסתירו אותו
+// בעכבר (במחשב): הטקסט הוא הסמן. הפינה השמאלית-העליונה שלו בדיוק בנקודה של העכבר, והסמן הרגיל מוסתר.
+// בנגיעה באצבע: הטקסט ליד האובייקט, מעליו, כדי שהאצבע והיד לא יסתירו אותו
 function placeLabel() {
   if (!labelItem) return;
-  const { right, bottom, top } = labelItem.bounds;
   const width = label.offsetWidth;
   const height = label.offsetHeight;
+
+  if (!labelByTouch) {
+    // נשאר בתוך המסך: ליד הקצה הימני או התחתון הוא עובר לצד השני של הסמן
+    let x = lastClient.x - heroRect.left;
+    let y = lastClient.y - heroRect.top;
+    if (x + width > heroScreen.width) x -= width;
+    if (y + height > heroScreen.height) y -= height;
+    label.style.transform = `translate(${x}px, ${y}px)`;
+    return;
+  }
+
+  // באצבע: צמוד לפינה הימנית של האובייקט, ונשאר בתוך המסך
+  const { right, bottom, top } = labelItem.bounds;
   const textSize = parseFloat(getComputedStyle(label).fontSize);  // 18px בפיגמה; בטלפון קטן יותר
   let x = right - (98 / 18) * textSize;  // המרחק מהאובייקט קטן יחד עם הטקסט
   const above = top - height - (7 / 18) * textSize;
   const below = bottom + (7 / 18) * textSize;
-  let y = labelByTouch ? above : below;
-  if (labelByTouch && y < 0) y = below;                             // אין מקום למעלה: מתחת
-  if (!labelByTouch && y + height > heroScreen.height) y = above;   // אין מקום למטה: מעל
+  const y = above < 0 ? below : above;  // אין מקום למעלה: מתחת
   x = THREE.MathUtils.clamp(x, 8, heroScreen.width - width - 8);
   label.style.transform = `translate(${x}px, ${y}px)`;
 }
@@ -451,11 +461,11 @@ hero.addEventListener('pointerdown', (event) => {
   item.velocity.set(0, 0);
   item.lastPointer = { x: event.clientX, y: event.clientY, time: event.timeStamp };
   item.pressStart = { x: event.clientX, y: event.clientY, time: event.timeStamp };
-  hero.style.cursor = 'grabbing';
-
-  // הטקסט של האובייקט מופיע ונשאר כל עוד מחזיקים אותו (גם בגרירה), במחשב ובטלפון
+  // הטקסט של האובייקט מופיע ונשאר כל עוד מחזיקים אותו (גם בגרירה), במחשב ובטלפון.
+  // בעכבר הטקסט הוא הסמן, אז הסמן הרגיל מוסתר
   labelByTouch = event.pointerType === 'touch';
   showLabel(item);
+  hero.style.cursor = labelByTouch ? 'grabbing' : 'none';
 });
 
 // ב-Classic View וב-About: לחיצה על אובייקט מתחילה לסובב אותו במקום
@@ -945,9 +955,11 @@ function update() {
   let hovered = null;
   if (pointerInside && !held && !turning) {
     hovered = objectAt(lastClient.x, lastClient.y);
-    hero.style.cursor = hovered ? 'grab' : '';
+    // בתצוגה המשחקית הטקסט הוא הסמן (הסמן הרגיל מוסתר). ב-Classic View וב-About: יד פתוחה
+    hero.style.cursor = !hovered ? '' : playful ? 'none' : 'grab';
   }
   if (playful && pointerInside && !held) {
+    labelByTouch = false;  // העכבר: הטקסט בנקודה של הסמן
     if (hovered) showLabel(hovered);
     else hideLabel();
   }

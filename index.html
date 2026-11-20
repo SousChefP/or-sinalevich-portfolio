@@ -98,7 +98,8 @@
 
     <!-- הטקסט שמופיע ליד אובייקט: בהובר ובזמן שמחזיקים אותו במחשב, ובזמן נגיעה בטלפון.
          התוכן והמיקום נקבעים ב-hero.js (label של כל אובייקט) -->
-    <p class="hero-object-label"><span class="hero-object-label-text"></span></p>
+    <!-- שתי שכבות של אותו טקסט: למטה הרקעים השחורים, ומעליהם האותיות (כדי שהרקע של שורה לא יסתיר את השורה שמעליה) -->
+    <p class="hero-object-label"><span class="hero-object-label-text"></span><span class="hero-object-label-ink" aria-hidden="true"><span class="hero-object-label-text"></span></span></p>
 
   </main>
 

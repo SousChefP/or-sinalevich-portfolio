@@ -192,8 +192,13 @@
   --case-reveal-shift: var(--study-chapter-shift);
   --project-parts-size: 20px;               /* בעמוד פרויקט: הרשימה "→ Mobile App" */
   --project-parts-leading: 31px;            /* המרחק בין השורות ברשימה (בפיגמה) */
+  --hero-label-size: 24;                            /* במחשב: הטקסט בסמן (בפריים של 1440) */
+  --hero-label-width: calc(199 / 24 * 1em);         /* במחשב: הרוחב שבו השורות נשברות, כמו בפיגמה */
+  --hero-label-pad-x: calc(6 / 24 * 1em);           /* במחשב: 6px מהצדדים */
+  --hero-label-pad-y: calc(4 / 24 * 1em);           /* במחשב: 4px למעלה ולמטה */
   --hero-label-size-mobile: 14px;                   /* הטקסט ליד אובייקט בטלפון: קטן יותר מבמחשב */
-  --hero-label-pad-x: 0.28em;                       /* הטקסט בהובר: 5px מהצדדים בפיגמה (18px טקסט) */
+  --hero-label-width-mobile: calc(162 / 18 * 1em);  /* בטלפון: כמו קודם */
+  --hero-label-pad-x-mobile: 0.28em;                /* בטלפון: 5px מהצדדים בפיגמה (18px טקסט) */
   /* לוח הכיוונון לתנועה (motion-tuner.js, רק בכתובת עם ?tune) */
   --tuner-font: system-ui, sans-serif;
   --tuner-text-size: 12px;
@@ -590,9 +595,9 @@ button.hero-link {
   position: absolute;
   top: 0;
   left: 0;
-  width: calc(162 / 18 * 1em);  /* הרוחב לפי גודל הטקסט (152 + הריפוד), כדי שהשורות יישברו כמו בפיגמה */
+  width: var(--hero-label-width);  /* הרוחב לפי גודל הטקסט, כדי שהשורות יישברו כמו בפיגמה */
   font-family: var(--font-hero-display);
-  font-size: max(var(--hero-text-min), calc(18 * var(--hero-scale)));
+  font-size: max(var(--hero-text-min), calc(var(--hero-label-size) * var(--hero-scale)));
   line-height: 1.2;
   pointer-events: none;
   z-index: 3;
@@ -600,13 +605,30 @@ button.hero-link {
   transition: opacity 0.2s ease;
 }
 
-/* רקע שחור לכל שורה בנפרד: כל שורה ברוחב שלה, והשורות צמודות זו לזו */
+/* רקע שחור לכל שורה בנפרד: כל שורה ברוחב שלה, והשורות צמודות זו לזו.
+   במחשב: ריפוד גם למעלה ולמטה, כמו בפיגמה (הרקעים של השורות נוגעים זה בזה) */
 .hero-object-label-text {
-  padding: 0 var(--hero-label-pad-x);  /* בלי ריפוד למעלה ולמטה: הרקע כבר ממלא את גובה השורה */
+  padding: var(--hero-label-pad-y) var(--hero-label-pad-x);
   background: var(--color-black);
   color: var(--color-white);
   -webkit-box-decoration-break: clone;  /* הריפוד חוזר בכל שורה */
   box-decoration-break: clone;
+}
+
+/* שתי שכבות של אותו טקסט, שנשברות לשורות באותו מקום:
+   בשכבה התחתונה רואים רק את הרקעים השחורים, ובשכבה העליונה רק את האותיות.
+   כך הרקע של שורה לא מסתיר את תחתית האותיות בשורה שמעליה (כמו בפיגמה) */
+.hero-object-label > .hero-object-label-text {
+  color: transparent;
+}
+
+.hero-object-label-ink {
+  position: absolute;
+  inset: 0;
+}
+
+.hero-object-label-ink .hero-object-label-text {
+  background: none;
 }
 
 .hero-object-label.is-visible {
@@ -786,9 +808,15 @@ button.hero-link {
     display: none;
   }
 
-  /* הטקסט ליד האובייקט (כשנוגעים בו): קטן יותר. הרוחב והריפוד ב-em, אז הם קטנים איתו */
+  /* הטקסט ליד האובייקט (כשנוגעים בו): קטן יותר, ובלי ריפוד למעלה ולמטה (כמו קודם).
+     הרוחב והריפוד ב-em, אז הם קטנים איתו */
   .hero-object-label {
+    width: var(--hero-label-width-mobile);
     font-size: var(--hero-label-size-mobile);
+  }
+
+  .hero-object-label-text {
+    padding: 0 var(--hero-label-pad-x-mobile);
   }
 
   .hero-nav-mobile {
