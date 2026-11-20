@@ -382,14 +382,19 @@ function hideLabel() {
   label.classList.remove('is-visible');
 }
 
+// בנגיעה באצבע: המרחק בין הרקע השחור התחתון לקצה העליון של האובייקט (5px בפיגמה),
+// והמרחק המינימלי מקצוות המסך
+const LABEL_GAP_ABOVE = 5;
+const LABEL_SCREEN_EDGE = 8;
+
 // בעכבר (במחשב): הטקסט הוא הסמן. הפינה השמאלית-העליונה שלו בדיוק בנקודה של העכבר, והסמן הרגיל מוסתר.
-// בנגיעה באצבע: הטקסט ליד האובייקט, מעליו, כדי שהאצבע והיד לא יסתירו אותו
+// בנגיעה באצבע: הטקסט תמיד מעל האובייקט (לא עליו ולא מתחתיו), כדי שהאצבע והיד לא יסתירו אותו
 function placeLabel() {
   if (!labelItem) return;
-  const width = label.offsetWidth;
-  const height = label.offsetHeight;
 
   if (!labelByTouch) {
+    const width = label.offsetWidth;
+    const height = label.offsetHeight;
     // נשאר בתוך המסך: ליד הקצה הימני או התחתון הוא עובר לצד השני של הסמן
     let x = lastClient.x - heroRect.left;
     let y = lastClient.y - heroRect.top;
@@ -399,14 +404,34 @@ function placeLabel() {
     return;
   }
 
-  // באצבע: צמוד לפינה הימנית של האובייקט, ונשאר בתוך המסך
-  const { right, bottom, top } = labelItem.bounds;
-  const textSize = parseFloat(getComputedStyle(label).fontSize);  // 18px בפיגמה; בטלפון קטן יותר
-  let x = right - (98 / 18) * textSize;  // המרחק מהאובייקט קטן יחד עם הטקסט
-  const above = top - height - (7 / 18) * textSize;
-  const below = bottom + (7 / 18) * textSize;
-  const y = above < 0 ? below : above;  // אין מקום למעלה: מתחת
-  x = THREE.MathUtils.clamp(x, 8, heroScreen.width - width - 8);
+  // באצבע: הרקעים השחורים (מה שרואים) באמצע מעל האובייקט, 5px מעל הקצה העליון שלו.
+  // מודדים את הרקעים ביחס לטקסט כולו, כי הם בולטים קצת למעלה ולמטה (הריפוד) ורוחבם לפי השורה הארוכה
+  const { top, left, right, centerX } = labelItem.bounds;
+  const box = label.getBoundingClientRect();
+  const visible = labelTexts[0].getBoundingClientRect();
+  const visibleLeft = visible.left - box.left;
+  const visibleTop = visible.top - box.top;
+  const visibleBottom = visible.bottom - box.top;
+
+  let x = centerX - visibleLeft - visible.width / 2;
+  x = THREE.MathUtils.clamp(x, LABEL_SCREEN_EDGE - visibleLeft, heroScreen.width - LABEL_SCREEN_EDGE - visibleLeft - visible.width);
+
+  // תמיד מעל
+  let y = top - LABEL_GAP_ABOVE - visibleBottom;
+
+  // אם גררו את האובייקט לראש המסך ואין מקום מעליו: הטקסט עובר לצד שיש בו יותר מקום (שמאל או ימין),
+  // בגובה הקצה העליון של האובייקט, כדי שלא יכסה אותו ולא יהיה מתחתיו.
+  // אם הצד צר מדי, הטקסט נשאר בתוך המסך ומכסה רק קצת מהקצה של האובייקט
+  const highest = LABEL_SCREEN_EDGE - visibleTop;
+  if (y < highest) {
+    const roomLeft = left - LABEL_SCREEN_EDGE;
+    const roomRight = heroScreen.width - LABEL_SCREEN_EDGE - right;
+    x = roomRight >= roomLeft
+      ? right + LABEL_GAP_ABOVE - visibleLeft
+      : left - LABEL_GAP_ABOVE - visibleLeft - visible.width;
+    x = THREE.MathUtils.clamp(x, LABEL_SCREEN_EDGE - visibleLeft, heroScreen.width - LABEL_SCREEN_EDGE - visibleLeft - visible.width);
+    y = Math.max(top - visibleTop, highest);
+  }
   label.style.transform = `translate(${x}px, ${y}px)`;
 }
 

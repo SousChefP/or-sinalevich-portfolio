@@ -196,9 +196,11 @@
   --hero-label-width: calc(199 / 24 * 1em);         /* במחשב: הרוחב שבו השורות נשברות, כמו בפיגמה */
   --hero-label-pad-x: calc(6 / 24 * 1em);           /* במחשב: 6px מהצדדים */
   --hero-label-pad-y: calc(4 / 24 * 1em);           /* במחשב: 4px למעלה ולמטה */
-  --hero-label-size-mobile: 14px;                   /* הטקסט ליד אובייקט בטלפון: קטן יותר מבמחשב */
-  --hero-label-width-mobile: calc(162 / 18 * 1em);  /* בטלפון: כמו קודם */
-  --hero-label-pad-x-mobile: 0.28em;                /* בטלפון: 5px מהצדדים בפיגמה (18px טקסט) */
+  --hero-label-size-mobile: 20px;                   /* בטלפון: הטקסט מעל האובייקט (Text בפיגמה) */
+  --hero-label-leading-mobile: 1.25;                /* בטלפון: 25px בין השורות, כמו בפיגמה */
+  --hero-label-width-mobile: 172px;                 /* בטלפון: הרוחב שבו השורות נשברות: כל טקסט בשתי שורות (השורה הארוכה, Packaging Design, 160 + הריפוד) */
+  --hero-label-pad-x-mobile: 6px;                   /* בטלפון: 6px מהצדדים */
+  --hero-label-pad-y-mobile: 4px;                   /* בטלפון: 4px למעלה ולמטה */
   /* לוח הכיוונון לתנועה (motion-tuner.js, רק בכתובת עם ?tune) */
   --tuner-font: system-ui, sans-serif;
   --tuner-text-size: 12px;
@@ -808,15 +810,15 @@ button.hero-link {
     display: none;
   }
 
-  /* הטקסט ליד האובייקט (כשנוגעים בו): קטן יותר, ובלי ריפוד למעלה ולמטה (כמו קודם).
-     הרוחב והריפוד ב-em, אז הם קטנים איתו */
+  /* הטקסט מעל האובייקט (כשנוגעים בו): בגודל קבוע, כמו בפיגמה (המקום נקבע ב-hero.js) */
   .hero-object-label {
     width: var(--hero-label-width-mobile);
     font-size: var(--hero-label-size-mobile);
+    line-height: var(--hero-label-leading-mobile);
   }
 
   .hero-object-label-text {
-    padding: 0 var(--hero-label-pad-x-mobile);
+    padding: var(--hero-label-pad-y-mobile) var(--hero-label-pad-x-mobile);
   }
 
   .hero-nav-mobile {
