@@ -107,7 +107,11 @@ const MOTION = {
   impactSpin: 0.008,     // כמה התנגשות מסובבת אותם
   dragSpin: 0.01,        // כמה סיבוב יוצרת גרירה
   returnSpring: 3.5,     // כמה חזק האובייקט נמשך חזרה לזווית המנוחה
-  liftWhenHeld: 150,     // כמה האובייקט "מתקרב" למסך כשמחזיקים אותו
+  liftWhenHeld: 150,     // כמה האובייקט "מתקרב" למסך (גדל) כשהעכבר עליו וכשמחזיקים אותו
+  growSpeed: 30,         // כמה מהר הוא גדל כשהעכבר מגיע אליו (גבוה = בבת אחת)
+  hoverKeep: 20,         // כמה פיקסלים מחוץ לאובייקט העכבר צריך להתרחק כדי שההובר ייגמר (נגד רעידה בתפר)
+  pressDepth: 60,        // לחיצה קצרה שפותחת פרויקט: כמה האובייקט קטן לרגע מהגודל הגדול, כמו כפתור שנלחץ
+  pressTime: 0.14,       // כמה שניות ההקטנה נמשכת לפני שעמוד הפרויקט נפתח
   shakeThreshold: 12,    // בטלפון: כמה חזק צריך לנער (מטר לשנייה בריבוע) כדי שהאובייקטים יזוזו
   shakePush: 450,        // כמה חזק ניעור זורק את האובייקטים (פיקסלים לשנייה)
   shakeSpin: 6,          // כמה ניעור מסובב אותם
@@ -361,6 +365,7 @@ let turning = null;                    // ב-Classic View: האובייקט שמ
 let turningByTouch = false;            // מסובבים באצבע (ולא בעכבר)
 let suppressClick = false;             // לא להפעיל קישור שנמצא מתחת לאובייקט שלחצו עליו
 let pointerInside = false;             // העכבר נמצא מעל ההירו (במחשב)
+let lastHovered = null;                // האובייקט שהעכבר היה עליו בפריים הקודם (כדי שלא ירעד בתפר)
 let lastClient = { x: 0, y: 0 };       // המיקום האחרון של העכבר במסך
 
 // --- הטקסט שמופיע ליד אובייקט ---
@@ -560,14 +565,24 @@ function isTap(item, event) {
 
 // לחיצה על אובייקט (בלי לגרור): פותחת את עמוד הפרויקט שלו.
 // שומרים מאיזו תצוגה באו, כדי שהאובייקט בעמוד הפרויקט יחזיר בדיוק לשם (project-object.js)
+// לפני שהעמוד נפתח, האובייקט "שוקע" לרגע (pressDepth), כדי שירגישו שהלחיצה נקלטה
 function openProject(item) {
+  if (item.opening) return;
+  item.opening = true;
   try {
     sessionStorage.setItem('heroView', view);
   } catch {
     // בלי שמירה (למשל בחלון פרטי): החזרה תהיה לתצוגה המשחקית
   }
-  window.location.href = item.page;
+  const go = () => { window.location.href = item.page; };
+  if (REDUCE_MOTION) go();
+  else setTimeout(go, MOTION.pressTime * 1000);
 }
+
+// חזרה לדף הבית עם "אחורה" בדפדפן: האובייקט שלחצו עליו לא נשאר שקוע
+window.addEventListener('pageshow', () => {
+  for (const item of OBJECTS) item.opening = false;
+});
 
 function release(event) {
   if (turning) {
@@ -687,6 +702,27 @@ function measure(item) {
   }
   item.outline = outlineAround(points);
   updateBounds(item);
+}
+
+// האם נקודה (במסך) נמצאת בתוך קו המתאר של האובייקט, או לכל היותר margin פיקסלים מחוצה לו.
+// לכל צלע בודקים כמה הנקודה רחוקה ממנה החוצה. מספיקה צלע אחת שהנקודה רחוקה ממנה יותר מ-margin
+function nearOutline(item, x, y, margin) {
+  const outline = item.outline;
+  if (!outline || outline.length < 3) return false;
+  // כיוון ההקפה של המצולע (עם או נגד השעון), כדי לדעת איזה צד של כל צלע הוא "החוצה"
+  let area = 0;
+  for (let i = 0; i < outline.length; i++) {
+    const a = outline[i], b = outline[(i + 1) % outline.length];
+    area += a.x * b.y - b.x * a.y;
+  }
+  const side = Math.sign(area) || 1;
+  for (let i = 0; i < outline.length; i++) {
+    const a = outline[i], b = outline[(i + 1) % outline.length];
+    const length = Math.hypot(b.x - a.x, b.y - a.y) || 1;
+    const outward = -side * ((b.x - a.x) * (y - a.y) - (b.y - a.y) * (x - a.x)) / length;
+    if (outward > margin) return false;
+  }
+  return true;
 }
 
 // קו המתאר: המצולע הקטן ביותר שמקיף את כל הנקודות (convex hull)
@@ -965,6 +1001,22 @@ function travel(item, target, dt) {
   return pose;
 }
 
+// כמה האובייקט "מתקרב" למסך (גדל): כשהעכבר עליו וכשמחזיקים אותו (או מסובבים אותו) הוא גדול.
+// לחיצה קצרה שפותחת את הפרויקט מקטינה אותו קצת מהגודל הגדול, כדי שירגישו ש"נלחץ"
+function liftFor(item, hovered, bigLift) {
+  if (item.opening) return bigLift - MOTION.pressDepth;
+  if (item === held || item === turning || item === hovered) return bigLift;
+  return 0;
+}
+
+// כמה מהר הוא מגיע לשם: גדל בבת אחת, וההקטנה בלחיצה מהירה (כדי שתסתיים לפני שהעמוד מתחלף).
+// כשהעכבר עוזב, הוא חוזר לגודל הרגיל לאט יותר
+function liftSpeed(item, target, normalSpeed) {
+  if (item.opening) return 40;
+  if (target > item.lift) return MOTION.growSpeed;
+  return normalSpeed;
+}
+
 const clock = new THREE.Clock();
 
 function update() {
@@ -980,9 +1032,15 @@ function update() {
   let hovered = null;
   if (pointerInside && !held && !turning) {
     hovered = objectAt(lastClient.x, lastClient.y);
+    // עזיבה: האובייקט נשאר "תחת העכבר" עד שהעכבר מתרחק קצת מקו המתאר שלו (hoverKeep),
+    // כדי שבתפר הוא לא ירעד בין גדול לרגיל. הכניסה להובר לא משתנה
+    if (!hovered && lastHovered && nearOutline(lastHovered, lastClient.x - containerRect.left, lastClient.y - containerRect.top, MOTION.hoverKeep * scale)) {
+      hovered = lastHovered;
+    }
     // בתצוגה המשחקית הטקסט הוא הסמן (הסמן הרגיל מוסתר). ב-Classic View וב-About: יד פתוחה
     hero.style.cursor = !hovered ? '' : playful ? 'none' : 'grab';
   }
+  lastHovered = hovered;
   if (playful && pointerInside && !held) {
     labelByTouch = false;  // העכבר: הטקסט בנקודה של הסמן
     if (hovered) showLabel(hovered);
@@ -1026,9 +1084,10 @@ function update() {
       springBack(item.spin, item.spinVelocity, dt, 'x');
       springBack(item.spin, item.spinVelocity, dt, 'y');
 
-      // 4. "הרמה": האובייקט שמחזיקים מתקרב קצת למסך
-      const liftTarget = item === held ? MOTION.liftWhenHeld : 0;
-      item.lift += (liftTarget - item.lift) * (1 - Math.exp(-10 * dt));
+      // 4. "הרמה": האובייקט שהעכבר עליו או שמחזיקים מתקרב למסך (גדל).
+      // ולחיצה קצרה שפותחת פרויקט: קטן קצת לרגע
+      const liftTarget = liftFor(item, hovered, MOTION.liftWhenHeld);
+      item.lift += (liftTarget - item.lift) * (1 - Math.exp(-liftSpeed(item, liftTarget, 10) * dt));
 
       // מחברים הכול למיקום ולזווית הסופיים
       target = {
@@ -1044,8 +1103,8 @@ function update() {
       // Classic View ו-About: במקום שלו, מרחף קלות. מסתובב כשנוגעים בו, ומתקרב כשהעכבר עליו
       springBack(item.spin, item.spinVelocity, dt, 'x');
       springBack(item.spin, item.spinVelocity, dt, 'y');
-      const liftTarget = item === hovered || item === turning ? IDLE.hoverLift : 0;
-      item.lift += (liftTarget - item.lift) * (1 - Math.exp(-8 * dt));
+      const liftTarget = liftFor(item, hovered, IDLE.hoverLift);
+      item.lift += (liftTarget - item.lift) * (1 - Math.exp(-liftSpeed(item, liftTarget, 8) * dt));
 
       let placeOnHero = item.calmPlaces[view];
       if (onConveyor) placeOnHero = conveyorPlace(item);
