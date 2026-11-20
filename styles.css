@@ -113,6 +113,8 @@
   --talk-case-role-top: 22px;               /* מהאובייקט עד "My Role:" */
   --talk-case-cover-top: 25px;              /* מהתפקידים עד הסרטון */
   --talk-case-video-radius: 3px;            /* הפינות המעוגלות של סרטון הציור הראשון ב-Application */
+  --talk-drawing-radius: 23px;              /* במחשב: הפינות המעוגלות של סרטון הציור הראשון ב-Application */
+  --talk-drawing-zoom: 1.0645;              /* הסרטון מוגדל כדי שלא יראו את השוליים של ההקלטה (החיתוך בפיגמה) */
   /* עמוד Small Spaces במחשב: מה ששונה מ-REACH */
   --small-blue: #1377FC;                    /* הרקע הכחול מאחורי אתר הנחיתה בהדר */
   --small-object-width: 509px;              /* האובייקט בהדר */
@@ -1598,6 +1600,26 @@ body:has(.study) .project-object-canvas {
 
 .talk-wide-short {
   aspect-ratio: 915 / 475;
+}
+
+/* סרטון הציור הראשון ב-Application: מסגרת עם פינות מעוגלות (915×472 במחשב),
+   והסרטון בתוכה מוגדל קצת מהמרכז, כדי שלא יראו את השוליים של ההקלטה (כמו החיתוך בפיגמה).
+   בטלפון המסגרת בגודל של case-talk-short */
+.talk-drawing-frame {
+  overflow: hidden;
+}
+
+.study-case-media .talk-drawing-frame {
+  aspect-ratio: 915 / 472;
+  border-radius: var(--talk-drawing-radius);
+}
+
+.talk-drawing-video {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transform: scale(var(--talk-drawing-zoom));
 }
 
 /* בתמונות האלה רואים את החלק התחתון, כמו החיתוך בפיגמה */

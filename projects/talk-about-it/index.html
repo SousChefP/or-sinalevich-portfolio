@@ -128,7 +128,10 @@
         <img class="study-wide" data-chapter="idea" src="media/idea-events.png" alt="The site’s home page with upcoming live events">
 
         <!-- Application: ציור על נגן של פרק, שני מסכים בטלפון, עמוד הפרקים ועמוד האירועים -->
-        <video class="study-wide talk-wide-short" data-chapter="application" autoplay muted loop playsinline preload="auto"><source src="media/application-drawing.mp4" media="(min-width: 768px)"></video>
+        <!-- הסרטון מוגדל קצת בתוך מסגרת עם פינות מעוגלות, כדי שלא יראו את השוליים של ההקלטה (כמו בפיגמה) -->
+        <div class="study-wide talk-drawing-frame" data-chapter="application">
+          <video class="talk-drawing-video" autoplay muted loop playsinline preload="auto"><source src="media/application-drawing.mp4" media="(min-width: 768px)"></video>
+        </div>
         <div class="study-pair" data-chapter="application">
           <div class="study-panel study-panel-half">
             <video class="study-in-panel talk-application-flow" autoplay muted loop playsinline preload="auto"><source src="media/application-phone-flow.mp4" media="(min-width: 768px)"></video>
@@ -253,7 +256,10 @@
       </section>
 
       <!-- Application: ציור על נגן של פרק, ושני מסכים בטלפון, כל אחד על רקע אפור -->
-      <video class="case-media case-wide case-talk-short case-talk-rounded case-reveal" data-src="media/application-drawing.mp4" autoplay muted loop playsinline></video>
+      <!-- הסרטון מוגדל קצת בתוך מסגרת עם פינות מעוגלות, כדי שלא יראו את השוליים של ההקלטה -->
+      <div class="case-media case-wide case-talk-short case-talk-rounded talk-drawing-frame case-reveal">
+        <video class="talk-drawing-video" data-src="media/application-drawing.mp4" autoplay muted loop playsinline></video>
+      </div>
       <div class="case-media case-panel case-talk-flow case-reveal">
         <video class="case-in-panel case-talk-flow-video" data-src="media/application-phone-flow.mp4" autoplay muted loop playsinline></video>
       </div>
