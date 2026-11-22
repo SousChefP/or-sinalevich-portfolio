@@ -147,7 +147,34 @@ function createProjectObject(link) {
   return state;
 }
 
-const objects = [...document.querySelectorAll('.project-object')].map(createProjectObject);
+// --- בונים אובייקט רק כשהמקום שלו גלוי וקרוב למסך ---
+// (בכל עמוד יש הרבה מקומות: גרסת מחשב, גרסת טלפון והעותקים בקרוסלה. רובם מוסתרים, ובניית אובייקט לוקחת זמן.
+// כך הדף מופיע אחרי בניית האובייקט שבהדר בלבד, ושאר האובייקטים נבנים כשמתקרבים אליהם)
+const BUILD_AHEAD = 1.5;   // כמה מסכים מראש בונים אובייקט (כדי שיהיה מוכן לפני שמגיעים אליו)
+const waitingToBuild = [...document.querySelectorAll('.project-object')];
+const objects = [];
+let firstFrameDone = false;   // בפריים הראשון בונים את כל מה שקרוב (בעיקר האובייקט שבהדר)
+
+function isNearScreen(element) {
+  const box = element.getBoundingClientRect();
+  const aheadY = window.innerHeight * BUILD_AHEAD;
+  const aheadX = window.innerWidth;
+  return box.width > 0 && box.bottom > -aheadY && box.top < window.innerHeight + aheadY
+    && box.right > -aheadX && box.left < window.innerWidth + aheadX;
+}
+
+// בונה עד maxCount אובייקטים שהגיע זמנם (בפריים הראשון: כל מה שקרוב, אחר כך: אחד בכל פריים, כדי שהגלילה לא תיתקע)
+function buildNearObjects(maxCount) {
+  for (let i = 0; i < waitingToBuild.length && maxCount > 0;) {
+    if (isNearScreen(waitingToBuild[i])) {
+      objects.push(createProjectObject(waitingToBuild[i]));
+      waitingToBuild.splice(i, 1);
+      maxCount--;
+    } else {
+      i++;
+    }
+  }
+}
 
 // הסיבוב נמשך חזרה לזווית המנוחה, כמו קפיץ (ואחרי סיבוב שלם משלים לסיבוב הקרוב)
 function springBack(state, axis, dt) {
@@ -166,6 +193,7 @@ function update() {
   const dt = Math.min(clock.getDelta(), 0.05);
   const time = clock.elapsedTime;
   mouseTilt.lerp(mouse, 1 - Math.exp(-4 * dt));
+  buildNearObjects(firstFrameDone ? 1 : Infinity);
 
   for (const state of objects) {
     const { link, item, object, baseSize } = state;
@@ -201,6 +229,8 @@ function update() {
   }
 
   renderer.render(scene, camera);
+  firstFrameDone = true;
+
   requestAnimationFrame(update);
 }
 

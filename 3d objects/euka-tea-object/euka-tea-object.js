@@ -83,18 +83,25 @@ function paperTextures(seed) {
   const paper = new THREE.Color(PAPER), rim = new THREE.Color(RIM_COL);
   // honeycomb: three cosine waves 60° apart; low values are the cell walls. A soft warp keeps it hand-made.
   const cell = 3.4, k = 2 * Math.PI / (cell * 0.866);
-  const dirs = [[1, 0], [0.5, 0.866], [-0.5, 0.866]];
+  // (for speed, with the exact same result: values that depend only on the column or only on the row
+  //  are computed once, and the colour mix is done with plain numbers instead of a new Color per pixel)
+  const sinX = new Float64Array(cw), cosY = new Float64Array(ch);
+  for (let px = 0; px < cw; px++) sinX[px] = Math.sin((px / S) * 0.13);
+  for (let py = 0; py < ch; py++) cosY[py] = Math.cos((py / S) * 0.11);
+  const cD = cI.data, nD = nI.data;
   for (let py = 0; py < ch; py++) for (let px = 0; px < cw; px++) {
     const x = px / S, y = py / S;
-    const wx = x + 0.45 * Math.sin(y * 0.21 + Math.sin(x * 0.13)), wy = y + 0.45 * Math.sin(x * 0.19 + Math.cos(y * 0.11));
-    let f = 0; for (const [dx, dy] of dirs) f += Math.cos(k * (wx * dx + wy * dy));
+    const wx = x + 0.45 * Math.sin(y * 0.21 + sinX[px]), wy = y + 0.45 * Math.sin(x * 0.19 + cosY[py]);
+    // the three waves, at 0°, 60° and 120°
+    const f = Math.cos(k * (wx * 1 + wy * 0)) + Math.cos(k * (wx * 0.5 + wy * 0.866)) + Math.cos(k * (wx * -0.5 + wy * 0.866));
     const net = Math.pow(Math.min(1, Math.max(0, (0.1 - f) / 1.6)), 1.4);
     const i = (py * cw + px) * 4;
     const r = rimD[i + 3] / 255, rib = ribD[i + 3] / 255;
-    const base = paper.clone().lerp(rim, r);
+    // paper colour mixed toward the rim colour (like Color.lerp)
+    const baseR = paper.r + (rim.r - paper.r) * r, baseG = paper.g + (rim.g - paper.g) * r, baseB = paper.b + (rim.b - paper.b) * r;
     const shade = r > 0.5 ? 0.98 - rib * 0.03 : 0.95 + net * 0.06;
-    cI.data[i] = base.r * 255 * shade; cI.data[i + 1] = base.g * 255 * shade; cI.data[i + 2] = base.b * 255 * shade; cI.data[i + 3] = 255;
-    nI.data[i] = (r > 0.5 ? 0.45 + rib * 0.2 : net * 0.9) * 255; nI.data[i + 1] = r * 255; nI.data[i + 2] = 0; nI.data[i + 3] = 255;
+    cD[i] = baseR * 255 * shade; cD[i + 1] = baseG * 255 * shade; cD[i + 2] = baseB * 255 * shade; cD[i + 3] = 255;
+    nD[i] = (r > 0.5 ? 0.45 + rib * 0.2 : net * 0.9) * 255; nD[i + 1] = r * 255; nD[i + 2] = 0; nD[i + 3] = 255;
   }
   cg.putImageData(cI, 0, 0); ng.putImageData(nI, 0, 0);
   // a few tea specks scattered on the paper and rim
