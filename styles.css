@@ -168,7 +168,7 @@
   --study-footer-text-top: 263px;           /* מלמעלה עד הכותרות */
   --study-contact-top: 448px;               /* מלמעלה עד יצירת הקשר בתחתית הפוטר */
   /* עמוד 404: פריים של 1440×781 במחשב ו-393×670 בטלפון, שגדל וקטן לפי המסך */
-  --not-found-scale: min(calc(100vw / 1440), calc(100svh / 781));
+  --not-found-scale: min(calc(100vw / 1440), calc(100svh / 781), calc(var(--hero-max-scale) * 1px));  /* עד מסך ברוחב 1920, כמו עמוד הבית */
   --not-found-size: 600;                    /* "404" */
   --not-found-leading: 100;
   --not-found-x: -27.5;                     /* "404" קצת שמאלה מהמרכז */
@@ -241,26 +241,29 @@
 
   /* יחידת מידה: פיקסל אחד בפיגמה.
      הפריים ברוחב 1440px, אז במסך צר יותר הכול קטן באותו יחס */
-  --page-width: 1440px;
+  --page-width: calc(1440 * var(--unit-grow));
   --unit: min(1px, calc(100vw / 1440));
+  /* כמו unit, אבל במסך רחב מ-1440 גם גדל, עד מסך ברוחב 1920 (ואז נעצר, כמו עמוד הבית).
+     לדברים הגדולים: Coming Soon והכותרת בעמוד ה-process */
+  --unit-grow: min(calc(100vw / 1440), calc(var(--hero-max-scale) * 1px));
 
   /* גדלי טקסט */
-  --text-title: calc(128 * var(--unit));  /* "COMING SOON" */
-  --text-small: calc(20 * var(--unit));   /* "My Process" בעמוד ה-Coming Soon */
+  --text-title: calc(128 * var(--unit-grow));  /* "COMING SOON" */
+  --text-small: calc(20 * var(--unit-grow));   /* "My Process" בעמוד ה-Coming Soon */
   --letter-spacing-wide: 0.21em;          /* 21% בפיגמה, בעמוד ה-Coming Soon */
 
   /* ריווחים (המרחקים מהפריים בפיגמה) */
-  --space-title-top: calc(300 * var(--unit));       /* "COMING SOON" מתחילה 300px מלמעלה */
-  --space-title-side: calc(163 * var(--unit));      /* ו-163px משמאל */
-  --space-link-indent: calc(20 * var(--unit));      /* "My Process" מוזז 20px ימינה מהכותרת */
+  --space-title-top: calc(300 * var(--unit-grow));       /* "COMING SOON" מתחילה 300px מלמעלה */
+  --space-title-side: calc(163 * var(--unit-grow));      /* ו-163px משמאל */
+  --space-link-indent: calc(20 * var(--unit-grow));      /* "My Process" מוזז 20px ימינה מהכותרת */
 
   /* עמוד ה-process (פריים של 1440 בפיגמה). הגדלים ב-unit, אז במסך צר יותר הכול קטן באותו יחס */
   --process-side: calc(29 * var(--unit));            /* השוליים בצדדים */
   --process-back-top: calc(22 * var(--unit));        /* [Hi, I’m Orsi] למעלה משמאל */
-  --process-title-top: calc(98 * var(--unit));       /* מלמעלה עד הכותרת */
-  --process-title-size: calc(130 * var(--unit));     /* הכותרת, כמו בעמוד הבית */
-  --process-title-leading: calc(100 * var(--unit));
-  --process-steps-top: calc(75 * var(--unit));       /* מהכותרת עד התאריך הראשון (387 בפריים) */
+  --process-title-top: calc(98 * var(--unit-grow));       /* מלמעלה עד הכותרת */
+  --process-title-size: calc(130 * var(--unit-grow));     /* הכותרת, כמו בעמוד הבית */
+  --process-title-leading: calc(100 * var(--unit-grow));
+  --process-steps-top: calc(75 * var(--unit-grow));       /* מהכותרת עד התאריך הראשון (387 בפריים) */
   --process-text-width: calc(323 * var(--unit));     /* רוחב הטקסט של כל שלב */
   --process-date-size: calc(30 * var(--unit));       /* התאריך (Desktop Heading) */
   --process-note-size: calc(22 * var(--unit));       /* המשפט מתחת לתאריך */
@@ -272,6 +275,15 @@
   --process-phone-gap: calc(15 * var(--unit));       /* בין מסכי הטלפון */
   --process-step-gap: calc(30 * var(--unit));        /* מהרקע האפור עד התאריך הבא */
   --process-bottom: calc(87 * var(--unit));          /* מתחת לשלב האחרון */
+}
+
+/* מסך גדול (1920 ומעלה): הטקסט בעמוד ה-process גדל במדרגה אחת, כמו בעמודי הפרויקטים */
+@media (min-width: 1920px) {
+  :root {
+    --process-date-size: 34px;
+    --process-note-size: 24px;
+    --process-text-width: calc(323 / 22 * 24px);   /* רוחב הטקסט גדל יחד איתו, כדי שיישבר כמו בפיגמה */
+  }
 }
 
 /* ==========================================

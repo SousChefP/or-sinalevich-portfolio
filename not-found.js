@@ -72,7 +72,9 @@ function layout() {
   screenWidth = window.innerWidth;
   screenHeight = window.innerHeight;
   const frame = MOBILE_QUERY.matches ? FRAMES.mobile : FRAMES.desktop;
-  frameScale = Math.min(screenWidth / frame.width, screenHeight / frame.height);
+  // במחשב, במסך גדול: גדל עד מסך ברוחב 1920 ולא יותר (כמו --not-found-scale ב-CSS ועמוד הבית)
+  const maxScale = MOBILE_QUERY.matches ? Infinity : 1920 / 1440;
+  frameScale = Math.min(screenWidth / frame.width, screenHeight / frame.height, maxScale);
   renderer.setSize(screenWidth, screenHeight);
   camera.aspect = screenWidth / screenHeight;
   camera.position.z = (screenHeight / 2) / Math.tan(THREE.MathUtils.degToRad(camera.fov / 2));
