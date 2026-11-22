@@ -55,6 +55,7 @@
   --type-body: 22;                          /* המשפט על כל פרויקט */
   --type-body-leading: 1.1;
   --classic-column: 323;                    /* Classic View: רוחב הטור של כל פרויקט (הטקסט ממורכז בו) */
+  --about-lift: 34.5;                       /* במחשב: About me (הכותרת, הטקסט והכפתור) עולה ביחד, כדי שיהיה ממורכז לגובה המסך */
   /* בטלפון: כמה אזור הלחיצה של כפתור גדול מהטקסט שלו, לכל כיוון (כדי להגיע ל-44px) */
   --hero-tap-extra: 13px;
   --hero-contact-gap: 16px;                         /* בטלפון: הרווח בין Instagram, LinkedIn ו-E-Mail */
@@ -712,7 +713,7 @@ button.hero-link {
    hero.js מוסיף ל-.hero את המחלקה is-about
    ========================================== */
 .hero.is-about .hero-title {
-  top: calc(50% - 151.5 * var(--hero-scale));  /* 239 בפריים */
+  top: calc(50% - (151.5 + var(--about-lift)) * var(--hero-scale));  /* 239 בפריים, פחות ההרמה */
 }
 
 /* ב-About אין מעבר ל-Classic View (וגם לא קישורי יצירת הקשר בטלפון) */
@@ -747,7 +748,7 @@ button.hero-link {
 
 .about-text {
   --delay: 0.6s;
-  top: calc(50% + (365 - 390.5) * var(--hero-scale));
+  top: calc(50% + (365 - 390.5 - var(--about-lift)) * var(--hero-scale));
   width: calc(910 / 40 * 1em);
   font-family: var(--font-hero-name);
   font-size: max(var(--hero-text-min), calc(var(--type-lead) * var(--hero-scale)));
@@ -757,7 +758,7 @@ button.hero-link {
 
 .about-cv {
   --delay: 0.75s;
-  top: calc(50% + (594 - 390.5) * var(--hero-scale));
+  top: calc(50% + (594 - 390.5 - var(--about-lift)) * var(--hero-scale));
 }
 
 /* מי שביקש פחות תנועה בהגדרות המכשיר: המעבר מיידי */
