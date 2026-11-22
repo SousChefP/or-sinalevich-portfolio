@@ -29,15 +29,18 @@
 
   /* ההירו: מידת קנה מידה. פיקסל אחד בפריים של פיגמה (1440×781 במחשב),
      קטן או גדל לפי המסך כך שכל הפריים תמיד נכנס */
-  --hero-scale: min(calc(100vw / 1440), calc(100svh / 781));
+  /* במסך גדול הפריים גדל עד פי hero-max-scale (מסך ברוחב 1920), ומעבר לזה נשאר בגודל הזה וממורכז (כמו MAX_SCALE ב-hero.js) */
+  --hero-max-scale: calc(1920 / 1440);
+  --hero-scale: min(calc(100vw / 1440), calc(100svh / 781), calc(var(--hero-max-scale) * 1px));
   /* במסך גבוה יותר מהפריים: הגובה שנשאר מעבר לפריים. ב-Classic View הוא מתחלק שווה בין שלושת המרווחים
      (מעל הכותרת, בין הכותרת לפרויקטים, ומתחת לפרויקטים), ולכן הכותרת עולה שישית ממנו והפרויקטים יורדים שישית */
   --hero-extra: calc(100svh - 781 * var(--hero-scale));
-  --hero-link-size: 16px;                           /* UI בפיגמה */
+  /* הקישורים בפינות: בגודל של הפיגמה, ובמסך גדול גדלים יחד עם הפריים (אבל לא קטנים ממנו) */
+  --hero-link-size: max(16px, calc(16 * var(--hero-scale)));  /* UI בפיגמה */
   --phone-button-size: 18px;                        /* כל הכפתורים בטלפון (ההירו, עמוד פרויקט, 404) */
-  --hero-edge: 29px;                                /* מרחק הקישורים משולי המסך */
-  --hero-link-top: 22px;                            /* במחשב: About me ו-Classic View למעלה, 22 מלמעלה */
-  --hero-link-bottom: 16px;                         /* במחשב: יצירת הקשר למטה, 16 מלמטה */
+  --hero-edge: max(29px, calc(29 * var(--hero-scale)));                                /* מרחק הקישורים משולי המסך */
+  --hero-link-top: max(22px, calc(22 * var(--hero-scale)));                            /* במחשב: About me ו-Classic View למעלה, 22 מלמעלה */
+  --hero-link-bottom: max(16px, calc(16 * var(--hero-scale)));                         /* במחשב: יצירת הקשר למטה, 16 מלמטה */
   /* גודל מינימלי לטקסט שקטן יחד עם המסך, כדי שיישאר קריא (במסך מלא לא משנה כלום) */
   --hero-text-min: 16px;                            /* טקסט לקריאה: תיאורים, About */
   --hero-heading-min: 18px;                         /* התחומים ב-Classic View */
@@ -70,6 +73,9 @@
   --study-object-top: 14px;                 /* האובייקט מתחיל קצת מתחת ל-"Overview:" */
   --study-object-width: 470px;
   --study-object-ratio: 470 / 236;          /* הפרופורציות של האובייקט (רוחב / גובה) */
+  --study-object-figma-height: 236;         /* גובה האובייקט בפיגמה (מספר בלי px, לחישוב לפי גובה המסך) */
+  --study-object-figma-top: 14;             /* המרחק מ-"Overview:" עד האובייקט בפיגמה (מספר בלי px) */
+  --study-top-figma-height: 300;            /* מ-"Overview:" עד "My Role:" בפיגמה (מספר בלי px) */
   --study-object-shift: 42px;               /* האובייקט קצת שמאלה ממרכז החלק שלו */
   --study-overview-width: 446px;            /* הטור של הסקירה מימין */
   --study-overview-gap: 11px;               /* מ-"Overview:" עד הטקסט */
@@ -98,6 +104,15 @@
   --study-impact-leading: 1.07;
   --font-impact-title: "ABC Gravity", sans-serif;
   --font-impact-text: "Reckless Standard S", serif;
+  /* ניסיון בעמוד REACH (study-grid): ההדר בגריד של 12 עמודות, עם החוקיות של signal-a.studio.
+     השוליים קבועים והכל נשאר צמוד אליהם, והמרווחים נפתחים באמצע */
+  --grid-grid-columns: 12;
+  --grid-grid-gutter: 20px;                /* הרווח בין העמודות */
+  --grid-frame-height: 900;                /* גובה המסך שבו הגדלים כמו בפיגמה */
+  --grid-object-max: 1.4;                   /* האובייקט גדל עד פי 1.4 מהגודל בפיגמה, ולא יותר (כדי שלא יתפקסל) */
+  --grid-overview-max: 640px;              /* הכי רחב שהסקירה נמתחת (אחר כך נשארת צמודה לשוליים מימין) */
+  --grid-overview-max-big: 720px;          /* מ-1920, כשהטקסט גדול יותר */
+  --grid-roles-gap: 33px;                  /* מתחת לאובייקט או לסקירה (הגבוה מביניהם) עד "My Role:" */
   /* הפוטר: הפרויקטים האחרים */
   --study-footer-height: 496px;             /* גובה הפוטר (הפריים בפיגמה) */
   /* עמוד Let’s Talk About It במחשב: מה ששונה מ-REACH */
@@ -105,6 +120,8 @@
   --talk-panel: #E7E5E1;                    /* הרקע האפור מאחורי המסכים */
   --talk-object-width: 475px;               /* האובייקט בהדר */
   --talk-object-ratio: 475 / 297;
+  --talk-object-figma-top: -28;
+  --talk-object-figma-height: 297;
   --talk-object-top: -28px;                 /* האובייקט מתחיל 28 פיקסלים מעל "Overview:" */
   --talk-object-shift: 83px;                /* האובייקט שמאלה ממרכז החלק שלו */
   /* עמוד Let’s Talk About It בטלפון: מה ששונה מ-REACH */
@@ -119,6 +136,8 @@
   --small-blue: #1377FC;                    /* הרקע הכחול מאחורי אתר הנחיתה בהדר */
   --small-object-width: 509px;              /* האובייקט בהדר */
   --small-object-ratio: 509 / 272;
+  --small-object-figma-top: -15;
+  --small-object-figma-height: 272;
   --small-object-top: -15px;                /* האובייקט מתחיל 15 פיקסלים מעל "Overview:" */
   --small-object-shift: 83px;               /* האובייקט שמאלה ממרכז החלק שלו */
   /* עמוד Small Spaces בטלפון: מה ששונה מ-REACH */
@@ -130,6 +149,8 @@
   /* עמוד Euka Tea במחשב: מה ששונה מ-REACH */
   --euka-object-width: 384px;               /* האובייקט בהדר */
   --euka-object-ratio: 384 / 304;
+  --euka-object-figma-top: -15;
+  --euka-object-figma-height: 304;
   --euka-object-top: -15px;                 /* האובייקט מתחיל 15 פיקסלים מעל "Overview:" */
   --euka-object-shift: 102px;               /* האובייקט שמאלה ממרכז החלק שלו */
   --euka-about-top: 42px;                   /* מ-"Euka Tea" עד "About:" (אין קישורים ביניהם) */
@@ -1582,6 +1603,66 @@ body:has(.study) .project-object-canvas {
 }
 
 /* ==========================================
+   ניסיון: ההדר של REACH (study-grid) בגריד של 12 עמודות, רק במחשב.
+   ב-1440 נראה כמו בפיגמה. כשהמסך גדל:
+   - השוליים קבועים, והכל צמוד אליהם. המרווחים נפתחים באמצע, בין האובייקט לסקירה
+   - הסקירה על עמודות 9–12, צמודה למעלה: השורות מתארכות והתיבה מתקצרת, עד רוחב מקסימלי, ואז נשארת צמודה לימין
+   - האובייקט מתחיל בעמודה 2, ושומר על היחס לגובה המסך (כמו הכותרת ב-signal-a)
+   - "My Role:" מתחת לגבוה מבין האובייקט והסקירה
+   ========================================== */
+@media (min-width: 768px) {
+  /* האובייקט: שומר על היחס לגובה המסך (כמו הכותרת ב-signal-a), עד פי grid-object-max מהפיגמה */
+  .study-grid {
+    /* פיקסל אחד בפיגמה של אזור האובייקט: גדל עם גובה המסך, עד פי grid-object-max */
+    --grid-object-scale: min(calc(100vh / var(--grid-frame-height)), calc(var(--grid-object-max) * 1px));
+    --grid-object-height: calc(var(--study-object-figma-height) * var(--grid-object-scale));
+  }
+
+  .study-grid .study-header-top {
+    display: grid;
+    grid-template-columns: repeat(var(--grid-grid-columns), minmax(0, 1fr));
+    column-gap: var(--grid-grid-gutter);
+    align-items: start;
+    height: auto;
+    padding-bottom: var(--grid-roles-gap);
+  }
+
+  /* האובייקט מצויר מעל העמוד (position: absolute), אז האזור שלו שומר לו מקום.
+     כל האזור גדל באותו יחס כמו האובייקט: האובייקט, המרווח מעליו והמרווח מתחתיו (כמו הגדלה של הפריים בפיגמה).
+     ב-1440 בגובה 900 הכל כמו בפיגמה, בכל עמוד */
+  .study-grid .study-object-area {
+    grid-column: 2 / 9;
+    justify-content: flex-start;
+    padding-right: 0;
+    min-height: calc(var(--study-top-figma-height) * var(--grid-object-scale) - var(--grid-roles-gap));
+  }
+
+  /* הגובה לפי המסך, והרוחב לפי הפרופורציות (ולא יותר מהעמודות שלו) */
+  .study-grid .study-object {
+    width: auto;
+    max-width: 100%;
+    height: var(--grid-object-height);
+    margin-top: calc(var(--study-object-figma-top) * var(--grid-object-scale));
+  }
+
+  .study-grid .study-overview {
+    grid-column: 9 / 13;
+    justify-self: end;
+    width: min(100%, var(--grid-overview-max));
+  }
+}
+
+/* מ-1920: הטקסט גדל במדרגה אחת */
+@media (min-width: 1920px) {
+  .study-grid {
+    --study-ui-size: 17px;
+    --study-body-size: 22px;
+    --study-heading-size: 34px;
+    --grid-overview-max: var(--grid-overview-max-big);
+  }
+}
+
+/* ==========================================
    עמוד Let’s Talk About It במחשב (study-talk): אותו מבנה כמו REACH, ומה ששונה ממנו
    ========================================== */
 
@@ -1589,6 +1670,8 @@ body:has(.study) .project-object-canvas {
 .study-talk {
   --study-object-width: var(--talk-object-width);
   --study-object-ratio: var(--talk-object-ratio);
+  --study-object-figma-height: var(--talk-object-figma-height);
+  --study-object-figma-top: var(--talk-object-figma-top);
   --study-object-top: var(--talk-object-top);
   --study-object-shift: var(--talk-object-shift);
   --study-cover-color: var(--talk-yellow);
@@ -1669,6 +1752,8 @@ body:has(.study) .project-object-canvas {
 .study-small {
   --study-object-width: var(--small-object-width);
   --study-object-ratio: var(--small-object-ratio);
+  --study-object-figma-height: var(--small-object-figma-height);
+  --study-object-figma-top: var(--small-object-figma-top);
   --study-object-top: var(--small-object-top);
   --study-object-shift: var(--small-object-shift);
   --study-cover-color: var(--small-blue);
@@ -1736,6 +1821,8 @@ body:has(.study) .project-object-canvas {
 .study-euka {
   --study-object-width: var(--euka-object-width);
   --study-object-ratio: var(--euka-object-ratio);
+  --study-object-figma-height: var(--euka-object-figma-height);
+  --study-object-figma-top: var(--euka-object-figma-top);
   --study-object-top: var(--euka-object-top);
   --study-object-shift: var(--euka-object-shift);
 }

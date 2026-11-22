@@ -240,6 +240,7 @@ let screenWidth = 0;   // גודל האזור שבו מצוירים האוביי
 let screenHeight = 0;
 let heroScreen = null; // גודל ההירו כשהוא מסך אחד (בתצוגה המשחקית)
 let scale = 1;         // כמה פיקסלים במסך שווה פיקסל אחד בפריים (כמו --hero-scale ב-CSS)
+const MAX_SCALE = 1920 / 1440;  // במחשב: הכי הרבה שהפריים גדל (מסך ברוחב 1920)
 
 // אזור הציור בגודל של ה-container, והמצלמה מותאמת אליו
 function fitDrawingArea() {
@@ -270,7 +271,8 @@ function layout() {
     width: hero.clientWidth,
     height: longHero ? heroScreen.height : hero.clientHeight,
   };
-  scale = Math.min(heroScreen.width / frame.width, heroScreen.height / frame.height);
+  // במסך גדול הפריים גדל עד פי MAX_SCALE ולא יותר (כמו --page-max-scale ב-CSS), ומעבר לזה נשאר ממורכז
+  scale = Math.min(heroScreen.width / frame.width, heroScreen.height / frame.height, mobile ? Infinity : MAX_SCALE);
 
   // במחשב, במסך רחב: כמה המרווחים של Classic View ו-About נפתחים לרוחב (כמו --spread ב-CSS)
   const spread = mobile ? scale : Math.min(Math.max(scale, heroScreen.width / frame.width), scale * IDLE.maxSpread);
