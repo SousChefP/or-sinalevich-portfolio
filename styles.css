@@ -163,9 +163,11 @@
   --euka-case-cover-top: 25px;              /* מהתפקידים עד התמונה */
   --euka-case-credits-width: 335px;         /* שורת הקורס: קצת צרה יותר, כדי שתישבר כמו בפיגמה */
   --euka-case-footer-objects: 91px;         /* גובה השורה של האובייקטים בפוטר (האובייקט הגבוה: talk about it) */
-  --study-footer-width: 1128px;             /* רוחב שלושת הפרויקטים יחד */
-  --study-footer-shift: 10px;               /* הקבוצה 5 פיקסלים שמאלה מהמרכז, כמו בפיגמה */
-  --study-footer-text-top: 263px;           /* מלמעלה עד הכותרות */
+  --study-footer-side: 121px;              /* מהקצה של המסך עד העמודה הראשונה והאחרונה (נשמר תמיד, והרווחים בין העמודות גדלים) */
+  --study-footer-column: 323px;             /* רוחב העמודה של כל פרויקט (הטקסט ממורכז בה) */
+  --study-footer-object-bottom: 255px;      /* מלמעלה עד התחתית של כל האובייקטים (כולם על אותו קו) */
+  --study-footer-text-top: 262px;           /* מלמעלה עד הכותרות */
+  --study-footer-about-size: 22px;          /* המשפט מתחת לכותרת (Desktop Body בפיגמה של הפוטר) */
   --study-contact-top: 448px;               /* מלמעלה עד יצירת הקשר בתחתית הפוטר */
   /* עמוד 404: פריים של 1440×781 במחשב ו-393×670 בטלפון, שגדל וקטן לפי המסך */
   --not-found-scale: min(calc(100vw / 1440), calc(100svh / 781), calc(var(--hero-max-scale) * 1px));  /* עד מסך ברוחב 1920, כמו עמוד הבית */
@@ -182,6 +184,7 @@
   --not-found-home-x: 0;
   --not-found-home-size: var(--study-ui-size);  /* [Go Back Home] */
   --study-footer-about-top: 9px;            /* מהכותרת עד המשפט */
+  --study-footer-about-width: 219;          /* רוחב המשפט בפיגמה, בטקסט של 22 (מספר בלי px: הרוחב גדל יחד עם הטקסט) */
   /* עמוד פרויקט בטלפון (case): פריים ברוחב 393 בפיגמה. הטקסטים בגודל קבוע, הדימויים נמתחים לרוחב המסך */
   --case-margin: 18px;                      /* השוליים בצדדים */
   --case-bar-height: 53px;                  /* הפס העליון הלבן */
@@ -1539,55 +1542,54 @@ body:has(.study) .project-object-canvas {
   text-indent: calc(70 / 915 * 100cqw);
 }
 
-/* --- 3. הפוטר: שלושת הפרויקטים האחרים בשורה, במרכז העמוד (פריים של 1440×496 בפיגמה).
-   המידות של כל פרויקט מהפיגמה: רוחב העמודה שלו, גודל האובייקט ומרחקו מלמעלה,
-   כמה הטקסט זז ימינה מהאובייקט, ורוחב הכותרת והמשפט (כדי שיישברו כמו בפיגמה) --- */
+/* --- 3. הפוטר: שלושת הפרויקטים האחרים בשורה (פריים של 1440×496 בפיגמה).
+   כל פרויקט בעמודה ברוחב 323, והטקסט ממורכז בה. כל האובייקטים יושבים על אותו קו מעל הכותרות.
+   במסך רחב: העמודות הקיצוניות נשארות באותו מרחק מהשוליים, והרווחים בין העמודות גדלים --- */
 .study-footer {
   position: relative;
   height: var(--study-footer-height);
-  padding: 0 var(--study-margin);
 }
 
-/* העמודות: ברוחב שלהן בפיגמה, ומצטמצמות יחד כשהמסך צר יותר */
 .study-footer-list {
-  display: grid;
-  grid-template-columns: minmax(0, 402fr) minmax(0, 462fr) minmax(min-content, 264fr);
-  max-width: var(--study-footer-width);
-  margin: 0 auto;
-  padding-right: var(--study-footer-shift);
-  box-sizing: content-box;
+  display: flex;
+  justify-content: space-between;
+  padding: 0 var(--study-footer-side);
   list-style: none;
 }
 
-.study-footer-reach        { --object-width: 301; --object-height: 151; --object-top: 96; --object-left: -19; --field-left: 12; --about-left: 12; --field-width: 225; --about-width: 214; }
-.study-footer-talk         { --object-width: 282; --object-height: 177; --object-top: 70; --field-left: 24; --about-left: 22; --field-width: 206; --about-width: 238; }
-.study-footer-small-spaces { --object-width: 336; --object-height: 179; --object-top: 70; --field-left: 50; --about-left: 50; --field-width: 214; --about-width: 219; }
-.study-footer-euka         { --object-width: 250; --object-height: 198; --object-top: 53; --field-left: 8;  --about-left: 8;  --field-width: 256; --about-width: 219; }
+/* כל אובייקט: הגודל שלו בפיגמה, וכמה הוא זז ממרכז העמודה (shift) */
+.study-footer-reach        { --object-width: 271; --object-height: 136; --object-shift: 0;    --field-width: 265; }
+.study-footer-talk         { --object-width: 268; --object-height: 167; --object-shift: -2.5; --field-width: 225; }
+.study-footer-small-spaces { --object-width: 307; --object-height: 163; --object-shift: 0;    --field-width: 265; }
+.study-footer-euka         { --object-width: 225; --object-height: 178; --object-shift: -8;   --field-width: 265; }
 
 .study-footer-item {
   position: relative;
+  flex: none;
+  width: var(--study-footer-column);
   padding-top: var(--study-footer-text-top);
+  text-align: center;
 }
 
-/* האובייקט מצויר על הציור של project-object.js, במקום ובגודל של הקישור הזה */
+/* האובייקט מצויר על הציור של project-object.js, במקום ובגודל של הקישור הזה: במרכז העמודה, והתחתית על הקו */
 .study-footer-object {
   position: absolute;
-  top: calc(var(--object-top) * 1px);
-  left: calc(var(--object-left, 0) * 1px);   /* בדרך כלל בתחילת העמודה */
-  /* לא רחב יותר מהמקום שיש לו עד סוף העמודה (גם כשהוא מתחיל לפניה) */
-  width: min(calc(var(--object-width) * 1px), calc(100% - var(--object-left, 0) * 1px));
-  aspect-ratio: var(--object-width) / var(--object-height);
+  top: calc(var(--study-footer-object-bottom) - var(--object-height) * 1px);
+  left: calc(50% + (var(--object-shift) - var(--object-width) / 2) * 1px);
+  width: calc(var(--object-width) * 1px);
+  height: calc(var(--object-height) * 1px);
 }
 
+/* הכותרת והמשפט: ממורכזים, ונשברים כמו בפיגמה (הרוחב ביחס לגודל הטקסט, גם כשהוא גדל במסך גדול) */
 .study-footer-field {
-  max-width: calc(var(--field-width) * 1px);
-  margin-left: calc(var(--field-left) * 1px);
+  max-width: calc(var(--field-width) / 30 * 1em);
+  margin: 0 auto;
 }
 
 .study-footer-about {
-  max-width: calc(var(--about-width) * 1px);
-  margin-top: var(--study-footer-about-top);
-  margin-left: calc(var(--about-left) * 1px);
+  max-width: calc(var(--study-footer-about-width) / 22 * 1em);
+  margin: var(--study-footer-about-top) auto 0;
+  font-size: var(--study-footer-about-size);
 }
 
 /* יצירת קשר בתחתית הפוטר: מייל משמאל, LinkedIn באמצע, Instagram מימין */
@@ -1626,8 +1628,8 @@ body:has(.study) .project-object-canvas {
 @media (min-width: 768px) {
   /* האובייקט: שומר על היחס לגובה המסך (כמו הכותרת ב-signal-a), עד פי grid-object-max מהפיגמה */
   .study-grid {
-    /* פיקסל אחד בפיגמה של אזור האובייקט: גדל עם גובה המסך, עד פי grid-object-max */
-    --grid-object-scale: min(calc(100vh / var(--grid-frame-height)), calc(var(--grid-object-max) * 1px));
+    /* פיקסל אחד בפיגמה של אזור האובייקט: לא קטן מהגודל בפיגמה, ובמסך גבוה יותר גדל עם גובה המסך, עד פי grid-object-max */
+    --grid-object-scale: clamp(1px, calc(100vh / var(--grid-frame-height)), calc(var(--grid-object-max) * 1px));
     --grid-object-height: calc(var(--study-object-figma-height) * var(--grid-object-scale));
   }
 
@@ -1671,6 +1673,7 @@ body:has(.study) .project-object-canvas {
     --study-ui-size: 17px;
     --study-body-size: 22px;
     --study-heading-size: 34px;
+    --study-footer-about-size: 24px;
     --grid-overview-max: var(--grid-overview-max-big);
   }
 }
@@ -1822,10 +1825,6 @@ body:has(.study) .project-object-canvas {
 .small-club      { --w: 232; left: calc(344 / 915 * 100%); }
 .small-chores    { --w: 234; left: calc(649 / 915 * 100%); }
 
-/* בפוטר: Let’s Talk About It בעמודה האמצעית, והטקסט שלו 50 פיקסלים ימינה מהאובייקט (גם ב-Euka Tea) */
-.study-small .study-footer-talk,
-.study-euka .study-footer-talk { --field-left: 50; --about-left: 50; --field-width: 214; --about-width: 219; }
-
 /* ==========================================
    עמוד Euka Tea במחשב (study-euka): אותו מבנה כמו REACH, ומה ששונה ממנו
    ========================================== */
@@ -1873,9 +1872,6 @@ body:has(.study) .project-object-canvas {
 .euka-kit {
   object-position: center top;
 }
-
-/* בפוטר: Small Spaces בעמודה הימנית, והאובייקט שלו 49 פיקסלים שמאלה מתחילת העמודה */
-.study-euka .study-footer-small-spaces { --object-width: 312; --object-height: 166; --object-top: 81; --object-left: -49; --field-left: 8; --about-left: 8; --field-width: 256; --about-width: 219; }
 
 /* ==========================================
    עמוד פרויקט בטלפון (case), למשל projects/reach. בפיגמה: פריים ברוחב 393.
