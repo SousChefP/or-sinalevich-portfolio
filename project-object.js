@@ -231,6 +231,12 @@ function update() {
   renderer.render(scene, camera);
   firstFrameDone = true;
 
+  // אחרי הציור הראשון: מודיעים שהאובייקטים מוכנים (page-ready.js מחכה לזה לפני שהוא מציג את הדף)
+  if (!window.projectObjectsReady) {
+    window.projectObjectsReady = true;
+    window.dispatchEvent(new Event('project-objects-ready'));
+  }
+
   requestAnimationFrame(update);
 }
 
