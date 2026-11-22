@@ -45,10 +45,10 @@
     });
   }
 
-  // --- האובייקטים התלת-ממדיים: מוכנים אחרי הציור הראשון ---
+  // --- האובייקטים התלת-ממדיים: מוכנים אחרי הציור הראשון (hero.js בעמוד הבית, project-object.js בעמוד פרויקט) ---
   function objectsReady() {
-    if (!document.querySelector('.project-object') || window.projectObjectsReady) return Promise.resolve();
-    return new Promise((resolve) => window.addEventListener('project-objects-ready', resolve, { once: true }));
+    if (!document.querySelector('#hero-objects, .project-object') || window.objectsReady) return Promise.resolve();
+    return new Promise((resolve) => window.addEventListener('objects-ready', resolve, { once: true }));
   }
 
   // --- האם הסרטון נטען בגודל המסך הזה (בטלפון לא נטענים הסרטונים של המחשב, ולהפך) ---

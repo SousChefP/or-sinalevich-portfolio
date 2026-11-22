@@ -232,9 +232,9 @@ function update() {
   firstFrameDone = true;
 
   // אחרי הציור הראשון: מודיעים שהאובייקטים מוכנים (page-ready.js מחכה לזה לפני שהוא מציג את הדף)
-  if (!window.projectObjectsReady) {
-    window.projectObjectsReady = true;
-    window.dispatchEvent(new Event('project-objects-ready'));
+  if (!window.objectsReady) {
+    window.objectsReady = true;
+    window.dispatchEvent(new Event('objects-ready'));
   }
 
   requestAnimationFrame(update);

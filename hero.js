@@ -1165,6 +1165,13 @@ function update() {
   }
 
   renderer.render(scene, camera);
+
+  // אחרי הציור הראשון: מודיעים שהאובייקטים מוכנים (page-ready.js מחכה לזה לפני שהוא מציג את הדף)
+  if (!window.objectsReady) {
+    window.objectsReady = true;
+    window.dispatchEvent(new Event('objects-ready'));
+  }
+
   requestAnimationFrame(update);
 }
 
