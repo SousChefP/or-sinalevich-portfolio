@@ -40,7 +40,7 @@ const OBJECTS = [
     label: 'Product Design, UX/UI, Branding',  // הטקסט שמופיע בהובר ובזמן שמחזיקים את האובייקט (כמו הכותרת ב-Classic View)
     desktop: [1027, 64, 358, 180],  // מתחילים קרוב לפינות, כדי לא להסתיר את הכותרת
     mobile: [210, 63, 151, 76],
-    classicDesktop: [37, 388, 301, 151],
+    classicDesktop: [55, 416, 271, 136],
     classicMobile: [36, 464, 321, 161],
     aboutDesktop: [1180, 132, 231, 117],
     aboutMobile: [330, 570, 111, 56],
@@ -54,7 +54,7 @@ const OBJECTS = [
     label: 'Web Design, Brand Identity',
     desktop: [20, 70, 369, 231],
     mobile: [27, 64, 156, 97],
-    classicDesktop: [399, 374, 282, 177],
+    classicDesktop: [407, 385, 268, 167],
     classicMobile: [31, 799, 331, 207],
     aboutDesktop: [118, 568, 284, 178],
     aboutMobile: [-50, 549, 114, 71],  // חלק מהאובייקט מחוץ למסך, כמו בפיגמה
@@ -68,7 +68,7 @@ const OBJECTS = [
     label: 'Illustration for Digital Products',
     desktop: [64, 465, 436, 233],  // הפריים נהיה נמוך יותר (781): אותו מרחק מהתחתית
     mobile: [178, 499, 184, 98],
-    classicDesktop: [724, 374, 334, 179],
+    classicDesktop: [743, 389, 307, 163],
     classicMobile: [16, 1204, 360, 192],
     aboutDesktop: [29, 128, 281, 150],
     aboutMobile: [179, 553, 136, 73],
@@ -82,7 +82,7 @@ const OBJECTS = [
     label: 'Branding & Packaging Design',
     desktop: [1080, 451, 311, 246],  // הפריים נהיה נמוך יותר (781): אותו מרחק מהתחתית
     mobile: [27, 544, 131, 104],
-    classicDesktop: [1119, 357, 250, 198],
+    classicDesktop: [1129, 374, 225, 178],
     classicMobile: [52, 1572, 287, 227],
     aboutDesktop: [1175, 551, 200, 159],
     aboutMobile: [69, 553, 96, 77],
@@ -128,6 +128,7 @@ const IDLE = {
   hoverLift: 25,         // כמה הוא "מתקרב" למסך כשהעכבר עליו
   dragSpin: 0.15,        // כמה גרירה מסובבת אותו במקום
   maxSpread: 1.3,        // במסך רחב השורה נפתחת לרוחב, עד פי כמה מהמרווחים בפיגמה
+  classicTilt: 0.35,     // ב-Classic View האובייקטים ישרים יותר: כמה מזווית המנוחה נשאר (1 = כמו בתצוגה המשחקית, 0 = ישר לגמרי)
 };
 
 // --- About בטלפון: המסוע ---
@@ -209,6 +210,13 @@ for (const item of OBJECTS) {
   item.object.updateMatrixWorld(true);
   item.baseSize = new THREE.Box3().setFromObject(item.object, true).getSize(new THREE.Vector3());
 
+  // ב-Classic View: אותה זווית, אבל רק חלק ממנה (ישר יותר וקל לקריאה), והגודל בזווית הזאת
+  item.classicTilt = item.tilt.map((angle) => angle * IDLE.classicTilt);
+  item.object.rotation.set(...item.classicTilt);
+  item.object.updateMatrixWorld(true);
+  item.classicBaseSize = new THREE.Box3().setFromObject(item.object, true).getSize(new THREE.Vector3());
+  item.object.rotation.set(...item.tilt);
+
   // המצב של האובייקט. מרחקים בפיקסלים של הפריים בפיגמה, כדי שיישארו נכונים כשהמסך משתנה
   item.offset = new THREE.Vector2();         // כמה הזיזו אותו מהמקום שלו
   item.velocity = new THREE.Vector2();       // מהירות (אחרי זריקה)
@@ -268,7 +276,7 @@ function layout() {
   const spread = mobile ? scale : Math.min(Math.max(scale, heroScreen.width / frame.width), scale * IDLE.maxSpread);
 
   // גודל: האובייקט ממלא את המלבן בלי לחרוג ממנו
-  const fit = (item, w, h) => Math.min((w * scale) / item.baseSize.x, (h * scale) / item.baseSize.y);
+  const fit = (item, w, h, base = item.baseSize) => Math.min((w * scale) / base.x, (h * scale) / base.y);
 
   for (const item of OBJECTS) {
     // התצוגה המשחקית: מרכז המלבן מהפיגמה, ביחס להירו (בפיקסלים, y למטה)
@@ -283,17 +291,23 @@ function layout() {
     const [cx, cy, cw, ch] = mobile ? item.classicMobile : item.classicDesktop;
     item.calmPlaces = {};
     item.calmSizes = {};
-    item.calmSizes.classic = fit(item, cw, ch) * frame.calmSize;
+    item.calmSizes.classic = fit(item, cw, ch, item.classicBaseSize) * frame.calmSize;  // בזווית הישרה של Classic View
     // במחשב, במסך גבוה מהפריים: יורדים שישית מהגובה הנוסף, יחד עם הטקסט (--hero-extra ב-CSS)
     const extraHeight = mobile ? 0 : Math.max(0, heroScreen.height - frame.height * scale);
     item.calmPlaces.classic = new THREE.Vector2(
       heroScreen.width / 2 + (cx + cw / 2 - frame.width / 2) * spread,
       heroScreen.height / 2 + (cy + ch / 2 - frame.height / 2) * scale + extraHeight / 6,
     );
+    if (!mobile) {
+      // במחשב: התחתית של כל האובייקטים בשורה אחת, צמודה לתחתית המלבן מהפיגמה (ממש מעל הטקסט).
+      // מודדים כמה האובייקט יורד מתחת למרכז שלו בזווית ובגודל שלו, ומרימים אותו בהתאם
+      const rest = restingBounds(item, item.calmSizes.classic, item.classicTilt);
+      item.calmPlaces.classic.y = heroScreen.height / 2 + (cy + ch - frame.height / 2) * scale + extraHeight / 6 - rest.bottom;
+    }
     if (mobile) {
       // בטלפון: מודדים כמה מקום האובייקט תופס על המסך (בזווית ובגודל שלו),
       // ושומרים לו בדיוק את המקום הזה מעל הטקסט שלו (classic-object-space)
-      const rest = restingBounds(item, item.calmSizes.classic);
+      const rest = restingBounds(item, item.calmSizes.classic, item.classicTilt);
       item.restTop = rest.top;
       item.space.style.setProperty('--object-height', `${rest.bottom - rest.top}px`);
     }
@@ -324,9 +338,9 @@ function conveyorPlace(item) {
 }
 
 // איפה הקצה העליון והתחתון של אובייקט שעומד בזווית המנוחה, ביחס למרכז שלו (בפיקסלים)
-function restingBounds(item, size) {
+function restingBounds(item, size, tilt = item.tilt) {
   item.object.position.set(0, 0, 0);
-  item.object.rotation.set(...item.tilt);
+  item.object.rotation.set(...tilt);
   item.object.scale.setScalar(size);
   measure(item);
   return { top: item.bounds.top - screenHeight / 2, bottom: item.bounds.bottom - screenHeight / 2 };
@@ -1110,13 +1124,14 @@ function update() {
       if (onConveyor) placeOnHero = conveyorPlace(item);
       else if (view === 'classic' && MOBILE_QUERY.matches) placeOnHero = classicSpacePlace(item);
       const place = heroToWorld(placeOnHero);
+      const tilt = view === 'classic' ? item.classicTilt : item.tilt;  // ב-Classic View: ישר יותר
       target = {
         x: place.x,
         y: place.y + wave * IDLE.floatHeight * scale,
         z: item.lift * scale,
-        rx: item.tilt[0] + item.spin.x + item.mouseTilt.y * IDLE.mouseTilt,
-        ry: item.tilt[1] + item.spin.y + item.mouseTilt.x * IDLE.mouseTilt + sway * IDLE.floatSway,
-        rz: item.tilt[2] + wave * IDLE.floatTurn,
+        rx: tilt[0] + item.spin.x + item.mouseTilt.y * IDLE.mouseTilt,
+        ry: tilt[1] + item.spin.y + item.mouseTilt.x * IDLE.mouseTilt + sway * IDLE.floatSway,
+        rz: tilt[2] + wave * IDLE.floatTurn,
         size: item.calmSizes[view],
       };
     }

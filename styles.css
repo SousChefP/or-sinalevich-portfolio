@@ -49,8 +49,9 @@
   --type-lead-leading: 1.1;
   --type-heading: 30;                       /* התחומים ב-Classic View */
   --type-heading-leading: 1.1;
-  --type-body: 20;                          /* המשפט על כל פרויקט */
+  --type-body: 22;                          /* המשפט על כל פרויקט */
   --type-body-leading: 1.1;
+  --classic-column: 323;                    /* Classic View: רוחב הטור של כל פרויקט (הטקסט ממורכז בו) */
   /* בטלפון: כמה אזור הלחיצה של כפתור גדול מהטקסט שלו, לכל כיוון (כדי להגיע ל-44px) */
   --hero-tap-extra: 13px;
   --hero-contact-gap: 16px;                         /* בטלפון: הרווח בין Instagram, LinkedIn ו-E-Mail */
@@ -193,7 +194,7 @@
   --project-parts-size: 20px;               /* בעמוד פרויקט: הרשימה "→ Mobile App" */
   --project-parts-leading: 31px;            /* המרחק בין השורות ברשימה (בפיגמה) */
   --hero-label-size: 24;                            /* במחשב: הטקסט בסמן (בפריים של 1440) */
-  --hero-label-width: calc(199 / 24 * 1em);         /* במחשב: הרוחב שבו השורות נשברות, כמו בפיגמה */
+  --hero-label-width: calc(206 / 24 * 1em);         /* במחשב: הרוחב שבו השורות נשברות: כל טקסט בשתי שורות (Packaging Design הארוכה, 203 עם הריפוד) */
   --hero-label-pad-x: calc(6 / 24 * 1em);           /* במחשב: 6px מהצדדים */
   --hero-label-pad-y: calc(4 / 24 * 1em);           /* במחשב: 4px למעלה ולמטה */
   --hero-label-size-mobile: 20px;                   /* בטלפון: הטקסט מעל האובייקט (Text בפיגמה) */
@@ -656,14 +657,16 @@ button.hero-link {
   display: none;
 }
 
-/* כל פרויקט: המיקום מהפיגמה (x, y), ורוחב שתי שורות הטקסט.
-   center: מרכז האובייקט שמעליו. במסך רחב השורה נפתחת לרוחב (spread, כמו ב-hero.js),
+/* כל פרויקט: טור ברוחב 323 (בפיגמה), והטקסט ממורכז בו, מתחת לאובייקט.
+   center: מרכז הטור. במסך רחב השורה נפתחת לרוחב (spread, כמו ב-hero.js),
    והטקסט זז יחד עם האובייקט שלו */
 .classic-item {
   --spread: min(max(var(--hero-scale), calc(100vw / 1440)), calc(var(--hero-scale) * 1.3));
   position: absolute;
-  left: calc(50% + (var(--center) - 720) * var(--spread) + (var(--x) - var(--center)) * var(--hero-scale));
+  left: calc(50% + (var(--center) - 720) * var(--spread) - var(--classic-column) / 2 * var(--hero-scale));
   top: calc(50% + (var(--y) - 390.5) * var(--hero-scale) + var(--hero-extra) / 6);
+  width: calc(var(--classic-column) * var(--hero-scale));
+  text-align: center;
 
   /* בתצוגה המשחקית: מוסתר */
   opacity: 0;
@@ -682,10 +685,17 @@ button.hero-link {
               visibility 0s var(--delay);
 }
 
-.classic-item-reach        { --center: 187.5; --x: 68;   --y: 567; --field-width: 221; --about-width: 198; --delay: 0.9s; }
-.classic-item-talk         { --center: 540;   --x: 423;  --y: 567; --field-width: 206; --about-width: 238; --delay: 0.98s; }
-.classic-item-small-spaces { --center: 891;   --x: 774;  --y: 567; --field-width: 214; --about-width: 219; --delay: 1.06s; }
-.classic-item-euka         { --center: 1244;  --x: 1127; --y: 567; --field-width: 256; --about-width: 219; --delay: 1.14s; }
+.classic-item-reach        { --center: 190.5;  --y: 559; --field-width: 265; --about-width: 219; --delay: 0.9s; }
+.classic-item-talk         { --center: 543.5;  --y: 559; --field-width: 225; --about-width: 219; --delay: 0.98s; }
+.classic-item-small-spaces { --center: 896.5;  --y: 559; --field-width: 265; --about-width: 219; --delay: 1.06s; }
+.classic-item-euka         { --center: 1249.5; --y: 559; --field-width: 265; --about-width: 219; --delay: 1.14s; }
+
+/* התחום והמשפט: כל אחד ברוחב שלו מהפיגמה (כדי שהשורות יישברו כמו שם), באמצע הטור */
+.classic-field,
+.classic-about {
+  margin-left: auto;
+  margin-right: auto;
+}
 
 /* התחום: "Product Design, UX/UI, Branding" */
 /* הרוחב נמדד לפי גודל הטקסט (em), כדי שהשורות יישברו כמו בפיגמה גם כשהטקסט בגודל המינימלי */
@@ -925,13 +935,6 @@ button.hero-link {
     display: block;
     height: var(--object-height, 0px);
     margin-bottom: calc(15 * var(--hero-scale));
-  }
-
-  /* הטקסטים ממורכזים מתחת לאובייקט */
-  .classic-field,
-  .classic-about {
-    margin-left: auto;
-    margin-right: auto;
   }
 
   .classic-about {
