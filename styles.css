@@ -220,30 +220,33 @@
   --unit: min(1px, calc(100vw / 1440));
 
   /* גדלי טקסט */
-  --text-huge: calc(360 * var(--unit));   /* "process" */
   --text-title: calc(128 * var(--unit));  /* "COMING SOON" */
-  --text-large: calc(30 * var(--unit));   /* כותרות העדכונים ו-#A/#B */
-  --text-small: calc(20 * var(--unit));   /* "My Process" והמשפט בסוף עמוד ה-process */
+  --text-small: calc(20 * var(--unit));   /* "My Process" בעמוד ה-Coming Soon */
   --letter-spacing-wide: 0.21em;          /* 21% בפיגמה, בעמוד ה-Coming Soon */
 
   /* ריווחים (המרחקים מהפריים בפיגמה) */
-  --space-page-side: calc(34 * var(--unit));        /* מרווח הכותרות מצד שמאל */
-  --space-content-side: calc(82 * var(--unit));     /* מרווח התמונות של #A/#B מצד שמאל */
-  --space-label-side: calc(13 * var(--unit));       /* הזחה של #A/#B מעל התמונה */
-  --space-xs: calc(22 * var(--unit));
-  --space-s: calc(25 * var(--unit));
-  --space-m: calc(54 * var(--unit));
-  --space-directions-gap: calc(65 * var(--unit));   /* רווח בין #A ל-#B */
-  --space-page-bottom: calc(370 * var(--unit));
   --space-title-top: calc(300 * var(--unit));       /* "COMING SOON" מתחילה 300px מלמעלה */
   --space-title-side: calc(163 * var(--unit));      /* ו-163px משמאל */
   --space-link-indent: calc(20 * var(--unit));      /* "My Process" מוזז 20px ימינה מהכותרת */
 
-  /* מיקום וגודל התמונות */
-  --coming-soon-image-left: calc(891 * var(--unit));
-  --coming-soon-image-width: calc(440 * var(--unit));
-  --direction-a-width: calc(594 * var(--unit));
-  --direction-b-width: calc(590 * var(--unit));
+  /* עמוד ה-process (פריים של 1440 בפיגמה). הגדלים ב-unit, אז במסך צר יותר הכול קטן באותו יחס */
+  --process-side: calc(29 * var(--unit));            /* השוליים בצדדים */
+  --process-back-top: calc(22 * var(--unit));        /* [Hi, I’m Orsi] למעלה משמאל */
+  --process-title-top: calc(98 * var(--unit));       /* מלמעלה עד הכותרת */
+  --process-title-size: calc(130 * var(--unit));     /* הכותרת, כמו בעמוד הבית */
+  --process-title-leading: calc(100 * var(--unit));
+  --process-steps-top: calc(75 * var(--unit));       /* מהכותרת עד התאריך הראשון (387 בפריים) */
+  --process-text-width: calc(323 * var(--unit));     /* רוחב הטקסט של כל שלב */
+  --process-date-size: calc(30 * var(--unit));       /* התאריך (Desktop Heading) */
+  --process-note-size: calc(22 * var(--unit));       /* המשפט מתחת לתאריך */
+  --process-leading: 1.1;
+  --process-note-gap: calc(5 * var(--unit));         /* מהתאריך עד המשפט */
+  --process-panel-top: calc(10 * var(--unit));       /* מהמשפט עד הרקע האפור */
+  --process-panel-pad: calc(10 * var(--unit));       /* הרקע האפור בולט 10 מעל ומתחת לתמונות */
+  --process-image-gap: calc(29 * var(--unit));       /* בין שתי תמונות */
+  --process-phone-gap: calc(15 * var(--unit));       /* בין מסכי הטלפון */
+  --process-step-gap: calc(30 * var(--unit));        /* מהרקע האפור עד התאריך הבא */
+  --process-bottom: calc(87 * var(--unit));          /* מתחת לשלב האחרון */
 }
 
 /* ==========================================
@@ -266,11 +269,6 @@ body {
   color: var(--color-black);
 }
 
-/* עמוד כהה: רקע שחור וטקסט לבן (process) */
-.page-dark {
-  background-color: var(--color-black);
-  color: var(--color-white);
-}
 
 img {
   display: block;
@@ -309,106 +307,91 @@ img {
 }
 
 /* ==========================================
-   עמוד "process" (process.html)
+   עמוד ה-process (process/index.html): שלבי העבודה לפי תאריכים.
+   מגיעים אליו רק מהכתובת /process (אין אליו קישור באתר)
    ========================================== */
-
-/* העמוד כולו: ברוחב הפריים, במרכז המסך */
-.process-page {
-  max-width: var(--page-width);
-  margin: 0 auto;
-  padding-bottom: var(--space-page-bottom);
-  overflow-x: clip;  /* "process" רחבה מהמסך, אז חותכים את מה שבולט */
-}
-
-/* הכותרת הענקית: בפיגמה היא יוצאת קצת מלמעלה ומשמאל */
-.process-title {
-  font-size: var(--text-huge);
-  font-weight: var(--font-weight-regular);
-  line-height: 1.325;  /* כמו בפיגמה: 477px גובה ל-360px טקסט */
-  white-space: nowrap;
-  margin-top: calc(-91 * var(--unit));
-  margin-left: calc(-31 * var(--unit));
-}
-
-/* כותרת של עדכון, למשל "19.10 ----- ..." */
-.update-title {
-  font-size: var(--text-large);
-  font-weight: var(--font-weight-regular);
-  line-height: 1.333;
-  margin-left: var(--space-page-side);
-}
-
-/* הכותרת של העדכון השני רחוקה יותר מהתמונה שמעליה */
-.update-title-second {
-  margin-top: var(--space-m);
-}
-
-/* צילום המסך של עמוד ה-Coming Soon, בצד ימין */
-.coming-soon-image {
-  width: var(--coming-soon-image-width);
-  aspect-ratio: 440 / 316;
-  object-fit: cover;
-  margin-top: var(--space-s);
-  margin-left: var(--coming-soon-image-left);
-}
-
-/* שני הכיוונים זה לצד זה */
-.directions {
-  display: grid;
-  grid-template-columns: var(--direction-a-width) var(--direction-b-width);
-  column-gap: var(--space-directions-gap);
-  align-items: start;
-  margin-top: var(--space-s);
-  padding-left: var(--space-content-side);
-}
-
-/* התווית #A או #B */
-.direction-label {
-  font-size: var(--text-large);
-  line-height: 1.333;
-  padding-left: var(--space-label-side);
-}
-
-/* "חלון" שמראה רק חלק מהתמונה, כמו החיתוך בפיגמה */
-.direction-image-frame {
+.process {
   position: relative;
-  overflow: hidden;
+  padding: var(--process-title-top) var(--process-side) var(--process-bottom);
 }
 
-.direction-image-frame-a {
-  aspect-ratio: 594 / 296;
+/* [Hi, I’m Orsi]: חזרה לעמוד הבית, למעלה משמאל */
+.process-back {
+  top: var(--process-back-top);
+  left: var(--process-side);
+  font-family: var(--font-hero-ui);
+  font-size: var(--study-ui-size);
 }
 
-.direction-image-frame-b {
-  aspect-ratio: 590 / 294;
+/* הכותרת, כמו בעמוד הבית: "Hi, I’m" ו-"Process" ב-Cal Sans, "Orsi" ו-"That was my" באיטליק */
+.process-title {
+  font-family: var(--font-hero-display);
+  font-size: var(--process-title-size);
+  font-weight: var(--font-weight-regular);
+  line-height: var(--process-title-leading);
+  text-align: center;
+  white-space: nowrap;
 }
 
-/* אותה תמונה בשני החלונות, כל פעם חלק אחר שלה */
-.direction-image {
-  position: absolute;
-  max-width: none;
+.process-title-line {
+  display: block;
 }
 
-.direction-image-a {
-  width: 208.65%;
-  height: 263.44%;
-  left: 0;
-  top: -0.12%;
+.process-title-italic {
+  font-family: var(--font-hero-name);
+  font-style: italic;
 }
 
-.direction-image-b {
-  width: 210.1%;
-  height: 265.23%;
-  left: -110.1%;
-  top: -0.8%;
+.process-steps {
+  margin-top: var(--process-steps-top);
+  list-style: none;
 }
 
-/* המשפט הקטן בסוף */
-.update-note {
-  font-size: var(--text-small);
-  line-height: 1.35;
-  margin-top: var(--space-xs);
-  margin-left: var(--space-content-side);
+.process-step + .process-step {
+  margin-top: var(--process-step-gap);
+}
+
+/* התאריך והמשפט */
+.process-date,
+.process-note {
+  width: var(--process-text-width);
+  font-weight: var(--font-weight-regular);
+  line-height: var(--process-leading);
+}
+
+.process-date {
+  font-family: var(--font-hero-display);
+  font-size: var(--process-date-size);
+}
+
+.process-note {
+  margin-top: var(--process-note-gap);
+  font-family: var(--font-hero-name);
+  font-size: var(--process-note-size);
+}
+
+/* הרקע האפור: מקצה לקצה של המסך (יוצא מהשוליים של העמוד), והתמונות בתוכו בשוליים הרגילים,
+   בשני טורים (שלב עם תמונה אחת: רק הטור השמאלי) */
+.process-panel {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  column-gap: var(--process-image-gap);
+  margin: var(--process-panel-top) calc(-1 * var(--process-side)) 0;
+  padding: var(--process-panel-pad) var(--process-side);
+  background: var(--study-panel);
+}
+
+.process-image {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+/* שלושה מסכי טלפון בטור הימני */
+.process-phones {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  column-gap: var(--process-phone-gap);
 }
 
 /* ==========================================
@@ -420,23 +403,7 @@ img {
     --text-title: 9vw;  /* "COMING SOON" ממלאת את רוחב המסך */
     --space-title-side: 16px;
     --space-link-indent: 0px;
-    --text-large: 18px;
     --text-small: 14px;
-    --space-page-side: 16px;
-    --space-content-side: 16px;
-    --space-s: 16px;
-    --space-m: 40px;
-  }
-
-  .coming-soon-image {
-    width: calc(100% - 2 * var(--space-page-side));
-    margin-left: var(--space-page-side);
-  }
-
-  .directions {
-    grid-template-columns: 1fr;
-    row-gap: var(--space-s);
-    padding-right: var(--space-content-side);
   }
 }
 

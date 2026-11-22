@@ -17,7 +17,7 @@ index.html               ← עמוד הבית (הכתובת /)
 coming-soon/index.html   ← הכתובת /coming-soon
 404.html                 ← עמוד 404: מופיע בכל כתובת שלא קיימת (Vercel). כל הנתיבים בו מתחילים ב-"/"
 not-found.js             ← המילה מכרום בעמוד 404: מרחפת, נזרקת, ומתחלפת בכל פגיעה בקצה המסך
-process/index.html       ← הכתובת /process
+process/index.html       ← הכתובת /process: שלבי העבודה (חלק מההגשה). אין אליו כפתור באתר: מגיעים מהכתובת או מ-My Process בעמוד ה-Coming Soon. התמונות שלו ב-process/media
 projects/<name>/index.html ← עמודי הפרויקטים: /projects/reach, talk-about-it, small-spaces, euka-tea
 project-object.js        ← האובייקטים התלת-ממדיים בעמוד פרויקט: בהדר רק לשחק (לחיצה לא פותחת כלום), בפוטר לחיצה פותחת את הפרויקט
 scroll-reveal.js         ← בעמוד פרויקט בטלפון: כל חלק מופיע בתנועה קטנה כשגוללים אליו, והסרטונים נטענים רק כשמגיעים אליהם

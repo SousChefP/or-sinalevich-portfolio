@@ -4,50 +4,90 @@
   <meta charset="UTF-8">
   <!-- מתאים את העמוד לרוחב המסך בטלפון ובטאבלט -->
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Process</title>
+  <title>Process – Or Sinalevich</title>
+  <!-- עמוד שמגיעים אליו רק מהכתובת (/process): אין אליו קישור באתר, ומנועי חיפוש לא מציגים אותו -->
+  <meta name="robots" content="noindex">
+
+  <!-- הפונטים מהפיגמה, מ-Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Aldrich&family=Cal+Sans&family=Crimson+Text:ital@0;1&display=swap">
+
   <!-- הדף נמצא בתיקייה, אז ../ עולה לתיקייה הראשית -->
   <link rel="stylesheet" href="../styles.css">
 </head>
-<body class="page-dark">
+<body class="page-light">
 
-  <!-- עמוד "process": יומן של שלבי העבודה על האתר -->
-  <main class="process-page">
+  <!-- ==========================================
+       עמוד ה-process: שלבי העבודה על האתר, לפי תאריכים (חלק מההגשה).
+       לכל שלב: תאריך, משפט, ומתחתיו צילומי מסך על רקע אפור
+       ========================================== -->
+  <main class="process">
 
-    <!-- כותרת ענקית בראש העמוד -->
-    <h1 class="process-title">process</h1>
+    <!-- חזרה לעמוד הבית -->
+    <a class="hero-link process-back" href="../">[Hi, I’m Orsi]</a>
 
-    <!-- עדכון 1: עמוד ה-Coming Soon -->
-    <section class="update">
-      <h2 class="update-title">19.10 ----- Uploaded my Coming Soon page</h2>
-      <img class="coming-soon-image" src="../images/coming-soon-page.png" alt="The Coming Soon page: the words COMING SOON on a white background">
-    </section>
+    <!-- הכותרת: כמו בעמוד הבית -->
+    <h1 class="process-title">
+      <span class="process-title-line">Hi, I’m <em class="process-title-italic">Orsi</em></span>
+      <span class="process-title-line"><em class="process-title-italic">That was my</em> Process</span>
+    </h1>
 
-    <!-- עדכון 2: שני כיווני עיצוב, #A ו-#B -->
-    <section class="update">
-      <h2 class="update-title update-title-second">26.10 ----- Two visual directions</h2>
+    <ol class="process-steps">
 
-      <div class="directions">
-        <!-- כיוון A: רקע לבן -->
-        <figure class="direction">
-          <figcaption class="direction-label">#A</figcaption>
-          <div class="direction-image-frame direction-image-frame-a">
-            <img class="direction-image direction-image-a" src="../images/visual-directions.png" alt="Direction A: a white layout with a project list on the right">
+      <li class="process-step">
+        <h2 class="process-date">19/10</h2>
+        <p class="process-note">Uploaded my Coming Soon Page</p>
+        <div class="process-panel">
+          <img class="process-image" src="media/coming-soon.png" alt="The Coming Soon page">
+        </div>
+      </li>
+
+      <li class="process-step">
+        <h2 class="process-date">26/10</h2>
+        <p class="process-note">Two Visual Directions, I chose non</p>
+        <div class="process-panel">
+          <img class="process-image" src="media/direction-b.png" alt="Visual direction B: a dark layout with the REACH project" loading="lazy">
+          <img class="process-image" src="media/direction-a.png" alt="Visual direction A: a light layout with the REACH project" loading="lazy">
+        </div>
+      </li>
+
+      <li class="process-step">
+        <h2 class="process-date">2/11</h2>
+        <p class="process-note">My new concept of an interactive site</p>
+        <div class="process-panel">
+          <img class="process-image" src="media/concept-playful.png" alt="The new home page, with 3D objects around the title" loading="lazy">
+          <img class="process-image" src="media/concept-index.png" alt="The new home page in Classic View, the projects in a row" loading="lazy">
+        </div>
+      </li>
+
+      <li class="process-step">
+        <h2 class="process-date">9/11</h2>
+        <p class="process-note">first project page, decided it was too “straight” and not interactive enough. Designed mobile version.</p>
+        <div class="process-panel">
+          <img class="process-image" src="media/first-project-page.png" alt="The first REACH project page" loading="lazy">
+          <!-- שלושה מסכי טלפון של עמוד הבית: About, התצוגה המשחקית, Classic View -->
+          <div class="process-phones">
+            <img class="process-image" src="media/mobile-about.png" alt="The home page on the phone: About me" loading="lazy">
+            <img class="process-image" src="media/mobile-playful.png" alt="The home page on the phone: the playful view" loading="lazy">
+            <img class="process-image" src="media/mobile-classic.png" alt="The home page on the phone: Classic View" loading="lazy">
           </div>
-        </figure>
+        </div>
+      </li>
 
-        <!-- כיוון B: רקע שחור עם מסגרת אדומה -->
-        <figure class="direction">
-          <figcaption class="direction-label">#B</figcaption>
-          <div class="direction-image-frame direction-image-frame-b">
-            <img class="direction-image direction-image-b" src="../images/visual-directions.png" alt="Direction B: a dark layout with a red frame around the project">
-          </div>
-        </figure>
-      </div>
+      <li class="process-step">
+        <h2 class="process-date">16/11</h2>
+        <p class="process-note">Designed a new project page and created a new structure &amp; interactive scrolling for the case study</p>
+        <div class="process-panel">
+          <img class="process-image" src="media/new-project-header.png" alt="The new REACH project page: the header" loading="lazy">
+          <img class="process-image" src="media/new-project-application.png" alt="The new REACH project page: the case study with scrolling images" loading="lazy">
+        </div>
+      </li>
 
-      <p class="update-note">I chose to create a new direction</p>
-    </section>
-
+    </ol>
   </main>
+
+  <script src="../hover-line.js"></script>
 
 </body>
 </html>
